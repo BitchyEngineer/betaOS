@@ -1,0 +1,1343 @@
+﻿
+body {
+    image-rendering: optimizeQuality;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+    width: auto;
+    height: auto;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: url('') no-repeat center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-attachment: fixed;
+    display: inline-block;
+}
+
+.navbar {
+    overflow: visible; /* allow icons to overflow visually */
+    position: fixed; /* keep navbar fixed to viewport bottom */
+    left: 50%;
+    transform: translateX(-50%); /* center horizontally */
+    display: flex;
+    bottom: 0;
+    z-index: 10;
+    width: fit-content;
+    height: 50px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    animation: slidenavbar;
+    animation-duration: 2s;
+    background-color: rgba(255, 255, 255, .15);  
+    backdrop-filter: blur(5px);
+}
+
+.sloadbar{
+    width: 50%;
+    height: 30px;
+    background: linear-gradient(red, black);
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .5) 5px 5px;
+    animation: sloadbar;
+    animation-duration: 7s;
+    position: absolute;
+    left: 25%;
+    bottom: 100px;
+}
+
+.so4icon{
+    width: 50%;
+    position: absolute;
+    top: 300px;
+    left: 25%;
+    animation: zoomfade;
+    animation-duration: 3s;
+}
+
+#close:hover{
+    cursor: pointer;
+}
+
+#fullscreen:hover{
+    cursor: pointer;
+}
+
+#minimizebutt:hover{
+    cursor: pointer;
+}
+
+#videolist{
+    width: 100%;
+    height: fit-content;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.vthumb{
+    width: 30%;
+    height: 30%;
+    background-size: cover;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.vthumb:hover{
+    box-shadow: rgba(0, 0, 0, 0.75) 7.5px 7.5px 7.5px;
+    transform: scale(1.25);
+}
+
+.appopt{
+    width: 15%;
+    height: 15%;
+    z-index: 10;
+    box-shadow: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    color: white;
+}
+
+#bottom-button {
+    border-style: solid;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 50px;
+}
+
+.desktopicon{
+    width: 75px;
+    height : 75px;
+    border-radius: 15px;
+    background-repeat: no-repeat;
+    position: absolute;
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
+    background: rgba(0, 0, 0, .25);
+}
+.desktopicon:hover{
+    background: rgba(255, 0, 0, 0.25);
+}
+
+#actiondiv{
+    width: fit-content;
+    height: 50px; 
+}
+
+/*#actiondiv:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+    filter: blur(10px);
+}*/
+
+
+#appdiv{
+    width: fit-content;
+    height: 50px;
+    display: inline;
+}
+
+#minimized{
+    width: fit-content;
+    height: 50px;
+}
+
+.miniicon {
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    z-index: 100;
+    animation: zoomfade;
+    animation-duration: 2s;
+    margin-left: 5px;
+    margin-right: 5px;
+    top: 5px;
+    bottom: 5px;
+    box-shadow: rgba(255, 0, 0, .5) 0 0 7px;
+}
+.miniicon:hover{
+    z-index: 100;
+    transform: scale(1.25);
+    box-shadow: rgba(255, 0, 0, .5) 0 0 8px 2px;
+}
+
+#rightdiv{
+    position: absolute;
+    width: fit-content;
+    height: 50px;
+    right: 5px;
+    bottom: 5px;
+    animation: sliderightdiv;
+    animation-duration: 2s;
+}
+
+.rightdiv{
+    position: absolute;
+    width: fit-content;
+    height: 50px;
+    right: 0px;
+    bottom: 0px;
+}
+
+.notifbody {
+    width: 500px;
+    height: 200px;
+    resize: none;
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    animation: zoomfade; 
+    animation-duration: .5s;
+    z-index: 10;
+    border: 1px solid #d3d3d3;
+    border-radius: 15px;
+    border-style: none;
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: inherit;
+    background-color: rgba(31, 31, 31, 0.15);  
+    backdrop-filter: blur(5px);
+    transition: top 0.3s ease;
+}
+
+.notifcontrol{
+    margin-top: auto;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 5px;
+}
+
+.notifbutt{
+    width: 40%;
+    height: 30px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu {
+    width: auto;
+    z-index: 100;
+    position: fixed;
+    box-shadow: 5px;
+    display: none;
+    color: white;
+    text-shadow: black 5px 5px 5px;
+    border-radius: 10px;
+    text-align: left;
+    cursor: context-menu;
+    animation: zoomfade;
+    animation-duration: .5s;
+}
+
+.menu:active{
+    cursor: pointer;
+}
+
+.menubutton {
+    width: 200px;
+    height: 20px;
+}
+.menubutton:hover{
+    background: rgba(255, 0, 0, 0.25);
+    box-shadow: rgba(0, 0, 0, .25) 5px 5px 5px;
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    transform: scale(1.15);
+}
+
+.navbar {
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    z-index: 10;
+    width: calc(fit-content + 10px);
+    margin: 5px;
+    height: 60px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    animation: slidenavbar;
+    animation-duration: 2s;
+    background-color: rgba(0, 0, 0, 0.5);  
+    backdrop-filter: blur(5px);
+    right: 50% - width/2;
+    left: 50% - width/2;
+
+}
+
+.logbar {
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    animation: slidelogbar;
+    animation-duration: 2s;
+}
+
+.logininput{
+    border-radius: 25px; 
+    border-style: none; 
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px; 
+    background: rgba(0,0,0, .25); 
+    margin: 10px;
+    width: 75%; 
+    height: 70px; 
+    font-size: 50px; 
+    z-index:10; 
+    animation:zoomfade; 
+    animation-duration: 2s;
+    color: white;
+    position: relative;
+}
+.logininput:hover{
+    box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
+    background-color: rgba(255, 0, 0, 0.5);
+}
+.logininput input:active{
+    box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
+    background-color: rgba(255, 0, 0, 0.6);
+}
+
+.loginbutt{
+    border-radius: 25px; 
+    border-style: none; 
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px; 
+    background: rgba(0,0,0, .25); 
+    width: 200px; 
+    height: 60px; 
+    margin: 10px;
+    font-size: 40px; 
+    z-index:10; 
+    animation:zoomfade; 
+    animation-duration: 2s;
+    color: white;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.loginbutt:hover{
+    box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.appicon {
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    z-index: 100;
+    animation: zoomfade;
+    animation-duration: 2s;
+    margin-left: 5px;
+    margin-right: 5px;
+    top: 5px;
+    bottom: 5px;
+}
+
+.appicon:hover{
+    z-index: 100;
+    transform: scale(1.25);
+    box-shadow: rgba(0,0,0,0.6) 0 5px 5px 5px;
+}
+
+.vidplay{
+    width: 80%;
+    margin: 10px;
+}
+
+.uesricon {
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
+    background: rgba(0, 0, 0, .25);
+    animation: zoomfade;
+    animation-duration: 2s;
+}
+
+.topnav {
+    color: white;
+    background-color: #333;
+    z-index: 9;
+    overflow: hidden;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    display: inline-block;
+    animation: slidetopbar;
+    animation-duration: 2s;
+}
+
+.backgroundoption {
+    width: 20%;
+    height: 20%;
+    border-radius: 15px;
+    margin: 10px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px 5px;
+    background-size: cover;
+}
+.backgroundoption:hover{
+    box-shadow: rgba(0, 0, 0, 0.5) 0 8px 8px 8px; 
+    transform: scale(1.25);
+    border-radius: 15px;
+}
+
+.notebody{
+    background-color: rgba(255, 217, 0, 0.75);
+    box-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+    position: absolute;
+    animation: zoomfade;
+    animation-duration: 2s;
+    resize: both;
+    border-style: none;
+    display: flex;
+    flex-direction: column;
+    background: inherit; 
+    backdrop-filter: blur(5px);
+     min-width: 250px;
+     /* Use a concrete min-height in pixels so children using calc()/inset
+         have a reliable reference immediately when the note is created. */
+     min-height: 250px;
+    top: 40%;
+    left: 45%;
+    overflow: hidden;
+    /* Reserve space for the native resize handle so the textarea doesn't
+       intercept pointer events and block resizing the container. */
+    padding-bottom: 24px;
+}
+
+.noteheader {
+    padding: 10px;
+    z-index: 10;
+    color: white;
+    background: rgba(255, 217, 0, 0.5);
+    height: 40px;
+    text-shadow: rgba(0, 0, 0, 0.5) 5px 5px 5px;
+    display: block;
+}.noteheader:hover{
+    cursor: grab;
+}.noteheader:active{
+    cursor:grabbing;
+}
+
+
+.notetxt{
+    /* Absolutely position the textarea inside the note so it
+       matches the note body size immediately at creation. */
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* header height (40px) + header vertical padding (10px top + 10px bottom) = 60px */
+    top: 60px;
+    /* leave space at bottom for resize handle */
+    bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    background: rgba(255, 217, 0, 0.75);
+    box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 5px;
+    color: black;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    resize: none; /* keep resizing controlled by the note container */
+}
+
+.codetxt{
+    
+    /* Absolutely position the textarea inside the note so it
+       matches the note body size immediately at creation. */
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* header height (40px) + header vertical padding (10px top + 10px bottom) = 60px */
+    top: 60px;
+    /* leave space at bottom for resize handle */
+    bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 5px;
+    color: black;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    resize: none; /* keep resizing controlled by the note container */
+}
+
+.usercard{
+    width: 100%;
+    height: 75px;
+    border-radius: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: white;
+    background:rgba(0, 0, 0, .5);
+    box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 5px;
+}
+
+.usernametxt{
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.userpic{
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin: 5px;
+    border-radius: 15px;
+    background:rgba(0, 0, 0, .5);
+    box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 5px;
+
+}
+
+@keyframes slidetopam {
+    0% {
+        opacity: 5%;
+        bottom: -700px;
+    }
+    100%{
+        opacity: 100%;
+        bottom: 80px;
+    }
+}
+
+@keyframes sloadbar{
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 50%;
+    }
+}
+
+@keyframes slidenavbar {
+    0% {
+        opacity: 5%;
+        top: 100%;
+    }
+    100%{
+        opacity: 100%;
+        top: 95%;
+    }
+}
+
+@keyframes sliderightdiv {
+    0% {
+        opacity: 5%;
+        top: 100%;
+    }
+    100%{
+        opacity: 100%;
+        top: 95%;
+    }
+}
+
+@keyframes slidelogbar {
+    0% {
+        opacity: 5%;
+        top: 0%;
+    }
+    100%{
+        opacity: 100%;
+        top: 97.5%;
+    }
+}
+
+@keyframes slidetopbar {
+    0% {
+        opacity: 5%;
+        top: -5%;
+    }
+    100%{
+        opacity: 100%;
+        top: 0%;
+    }
+}
+
+@keyframes slidetopdrop{
+    0% {
+        opacity: 5%;
+        top: -10%;
+    }
+    100%{
+        opacity: 100%;
+        top: 2%;
+    }
+}
+
+@keyframes scriptosslideup{
+    0% {
+        opacity: 100%;
+        top: 2%;
+    }
+    100%{
+        opacity: 5%;
+        top: -10%;
+    }
+}
+
+@keyframes slidetop100 {
+    0% {
+        opacity: 5%;
+        top: 0px;
+    }
+    100%{
+        opacity: 100%;
+        top: 100px;
+    }
+}
+
+@keyframes swipeup{
+    0% {
+        bottom:0px;
+    }
+    100% {
+        top:0px;
+    }
+}
+
+@keyframes zoomfade{
+    0%{
+        opacity: 0%;
+        transform: scale(0.025);
+    }
+    100%{
+        opacity: 100%;
+        transform: scale(1.0);
+    }
+}
+
+@keyframes zoom{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.25);
+    }
+}
+
+@keyframes rgb {
+    0% {
+        color: red;
+        background-color: blue;
+        opacity: 0;
+    }
+
+    15% {
+        color: orange;
+        background-color: green;
+        opacity: 15;
+    }
+
+    30% {
+        color: yellow;
+        background-color: indigo;
+        opacity: 30;
+    }
+
+    45%{
+        color: green;
+        background-color: orange;
+        opacity: 45;
+    }
+
+    60% {
+        color: blue;
+        background-color: red;
+        opacity: 60;
+    }
+
+    75% {
+        color: indigo;
+        background-color: yellow;
+        opacity: 75;
+    }
+
+    100% {
+        color: white;
+        opacity: 100;
+    }
+}
+
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 25;
+    }
+
+    50% {
+        opacity: 50;
+    }
+
+    75% {
+        opacity: 75;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+.app {
+    width: 50%; 
+    height: 50%;
+    max-height: calc(100% - 50px);
+    max-width: 100%;
+    min-height: 17.5%;
+    min-width: 17.5%;
+    resize: both;
+    position: absolute;
+    animation: zoomfade; 
+    animation-duration: .5s;
+    z-index: 10;
+    border: 1px solid #d3d3d3;
+    left: 25%;
+    top: 25%;
+    border-radius: 15px;
+    border-style: none;
+    display: inline;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, .5) 0 0 5px 5px;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: inherit;
+    background-color: rgba(50, 50, 50, 0.15);  
+    backdrop-filter: blur(25px);
+}
+
+.appheader {
+    padding: 10px;
+    z-index: 10;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    height: 40px;
+    text-shadow: rgba(0, 0, 0, 0.5) 5px 5px 5px;
+}
+.appheader:hover{
+    cursor: grab;
+}
+.appheader:active{
+    cursor: grabbing;
+}
+
+.appbody{
+    /* Absolutely position the textarea inside the note so it
+       matches the note body size immediately at creation. */
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    /* header height (40px) + header vertical padding (10px top + 10px bottom) = 60px */
+    /*top: 40px;*/
+    /* leave space at bottom for resize handle */
+    padding: 2.5px;
+    height: calc(100% - 70px);
+    box-sizing: border-box;
+    color: black;
+    font-size: 20px;
+    overflow-y: scroll;
+    overflow-x: none;
+    border: none;
+    outline: none;
+    resize: none; /* keep resizing controlled by the note container */
+}
+
+.controlcenter{
+    width: 50%;
+    height: 100%;
+    resize: none;
+    overflow: hidden;
+    vertical-align: top;
+    box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
+    background-color: rgba(0,0,0,0.25);
+    float: right;
+}
+
+.appcenter{
+    width: 50%;
+    height: 100%;
+    resize: none;
+    overflow-y:scroll;
+    position: relative;
+    text-align: left;
+    box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
+    background-color: rgba(0, 0, 0, .25);
+}
+
+input[type=text]{
+    border-radius: 15px;
+    width: 75%;
+    height: 30px;
+    box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
+    background-color: rgba(0, 0, 0, .25);
+    color: white;
+    outline: none;
+    border: none;
+}
+
+input[type=file]{
+    border-radius: 15px;
+    width: 300px;
+    height: 30px;
+    box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
+    background-color: rgba(0, 0, 0, .25);
+    color: white;
+    outline: none;
+    border: none;
+} input[type=file]:hover{
+    background: rgba(255, 0, 0, 0.25);
+    box-shadow: rgba(255, 0, 0, .5)10px 10px 10px;
+    cursor: pointer;
+    transform: translateX(20px) scale(1.15);
+}
+
+input[type=image]{
+    outline: none;
+}
+
+textarea{
+    outline: none;
+}
+
+.popuplist {
+    position: absolute;
+    z-index: 99;
+    animation: slidetopam;
+    animation-duration: 2s;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 15px;
+    width: 525px;
+    height: auto;
+    max-height: 80vh;
+    border-style: none;
+    box-shadow: rgba(0, 0, 0, .5) 0 0 5px 5px;
+    background-color: rgba(50, 50, 50, 0.15);  
+    backdrop-filter: blur(25px);
+    color: white;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.popuplist .appicon{
+    
+    position: relative; 
+    z-index: 200; 
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+}
+
+.popuplist .appicon:hover{
+    transform: translateY(-10px) scale(1.25);
+    box-shadow: rgba(0,0,0,0.6) 0 8px 8px 8px;
+}
+
+.appcenter {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    z-index: 100;
+    flex: 1;
+}
+
+.appcenter .appicon {
+    width: 100px;
+    height: 100px;
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    margin: 10px;
+    
+    position: relative; 
+    z-index: 200; 
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+}
+
+.appcenter .appicon:hover {
+    background-color: rgba(106, 0, 0, 0.15);
+    transform: translateY(-10px) scale(1.25);
+    box-shadow: rgba(0,0,0,0.6) 0 8px 8px 8px;
+}
+
+.appbutt {
+    width: 100%;
+    height: 120px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.8) 2px 2px 4px;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.appbutt:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    background-color: rgba(106, 0, 0, 0.15);
+}
+
+.controlcenter {
+    width: 100%;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+::-webkit-resizer {
+    border-width: 15px;
+    width: 15px;
+    height: 15px;
+    margin-top: 15px;
+    border-style: solid;
+    border-color: transparent blue blue blue;
+    background-color: rgba(0, 0, 0, .25);
+  }
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    margin-bottom: 20px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, .25);
+  }
+   
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 15px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+#actionarea {
+    width: 50%;
+    height: 100%;
+}
+
+.bslider{
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
+    background: rgba(0, 0, 0, .25);
+    width: 100px;
+    height: 15px;
+}
+
+.appchoice{
+    transform: translateX(-140%);
+    width: 75px;
+    height : 75px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
+    background: rgba(0, 0, 0, .25);
+}
+
+.appbutt{
+    width: 275px;
+    height : 75px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
+    background: rgba(0, 0, 0, .25);
+    text-shadow: rgba(0, 0, 0, .5) 3px 3px 3px;
+    background-repeat: no-repeat;
+    animation: zoomfade;
+    animation-duration: 2s;
+    background-color: rgba(50, 50, 50, 0.15);  
+    backdrop-filter: blur(10px);
+}
+
+.appbutt:hover{
+    background: rgba(255, 0, 0, 0.25);
+    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
+    backdrop-filter: blur(25px);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transform: translateX(20px) scale(1.15);
+}
+
+tbutton{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 15px;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0);
+    text-shadow: rgba(0, 0, 0, 0.5) 5px 5px 5px;
+    color: white;
+  } tbutton:hover {
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
+    transform: scale(1.25);
+    border-radius: 15px;
+  }
+
+button{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 15px;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0);
+    text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    color: white;
+  } button:hover {
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    transform: scale(1.25);
+    border-radius: 15px;
+  }
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    border: none;
+  }
+  
+  .tab button {
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0);
+    color: white;
+  }
+  
+  .tab button:hover {
+    background: rgba(255, 0, 0, 0.5);
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    transform: scale(1.25);
+    border-radius: 15px;
+  }
+  
+  .tab button.active {
+    background: rgba(50, 50, 50, 0.5);
+  }
+  
+  .tabcontent {
+    display: none;
+    border-style: none;
+    overflow-y: scroll;
+    height: 90%;
+    overflow-x: hidden;
+    width: calc(100% - 10px);
+    color: white;
+  }
+
+  .ntab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
+    border: none;
+  }
+  
+  .ntab button {
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0);
+    color: white;
+  }
+  
+  .ntab button:hover {
+    background: rgba(255, 0, 0, 0.5);
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
+    transform: scale(1.25);
+    border-radius: 15px;
+  }
+  
+  .ntab button.active {
+    background: rgba(50, 50, 50, 0.5);
+  }
+  
+  .ntabcontent {
+    display: none;
+    border-style: none;
+    overflow-y: scroll;
+    height: 90%;
+    overflow-x: hidden;
+    width: calc(100% - 10px);
+  }
+
+
+iframe{
+    width: 100%;
+    height: calc(100% - 10px);
+    border-style: none;
+    background-color: white;
+    resize: none;
+    /* Absolutely position the textarea inside the note so it
+       matches the note body size immediately at creation. */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    /* header height (40px) + header vertical padding (10px top + 10px bottom) = 60px */
+    /*top: 60px;*/
+    /* leave space at bottom for resize handle */
+}
+
+.injectbutt {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+    color: white;
+  }
+  
+  .injectbutt:hover {
+    background: rgba(255, 0, 0, 0.5);
+    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
+    transform: scale(1.25);
+    border-radius: 15px;
+  }
+
+#desktopbody{
+    width: 100%;
+    height: 100%;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 15px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, .25);
+    box-shadow: rgba(0, 0, 0, .5) 2px 2px;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background: rgba(255, 255, 255, .5);
+    box-shadow: rgba(0, 0, 0, .5) 2px 2px;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background: rgba(255, 255, 255, .5);
+    box-shadow: rgba(0, 0, 0, .5) 2px 2px;
+  }
+
+  input:checked + .slider::before {
+    background-color: lime;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px black;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(36px);
+    -ms-transform: translateX(36px);
+    transform: translateX(36px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+.appheadbutt{
+    background-color: grey;
+    opacity: 40%;
+    width: 30px;
+    height: 30px;
+    margin: 2.5px;
+}
+
+#close:hover{
+    text-shadow: red 5px 5px 5px;
+    color: red;
+    background-color: red;
+}
+
+#fullscreen:hover{
+    text-shadow: blue 5px 5px 5px;
+    color: blue;
+    background-color: blue;
+}
+#minimize:hover{
+    text-shadow: yellow 5px 5px 5px;
+    color: yellow;
+    background-color: yellow;
+}
+
+#apphistory{
+    width: 100%;
+    height: 98%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.appheadtxt{
+    font-size: 25px;
+    color: white;
+    text-shadow: black 5px 5px 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.favorite{
+    width: 15%;
+    height: 10%;
+    background-color: #333;
+    border-radius: 15px;
+}
+
+/* Navbar icon visual overflow and hover lift
+   Keeps icons as children of .navbar but allows them to visually
+   extend and appear above the bar on hover. */
+.navbar {
+    overflow: visible; /* allow visual overflow from children */
+}
+.navbar .appicon {
+    position: relative; /* contained in DOM but can be translated */
+    z-index: 200; /* above navbar (navbar z-index is 10) */
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+}
+.navbar .appicon:hover {
+    transform: translateY(-10px) scale(1.25);
+    box-shadow: rgba(0,0,0,0.6) 0 8px 8px 8px;
+}
+
+.navbar .miniicon {
+    position: relative; /* contained in DOM but can be translated */
+    z-index: 200; /* above navbar (navbar z-index is 10) */
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+}
+.navbar .miniicon:hover {
+    transform: translateY(-10px) scale(1.25);
+    box-shadow: rgba(255, 0, 0, .5) 0 0 8px 8px;
+}
+
+.soalert{
+    margin: 1;
+    width: 20%;
+    height: 50%;
+    resize: none;
+    position: absolute;
+    top: 25%;
+    right: 40%;
+    animation: zoomfade; 
+    animation-duration: .5s;
+    z-index: 100;
+    border: 1px solid #d3d3d3;
+    border-radius: 15px;
+    border-style: none;
+    display: block;
+    box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
+    background-color: rgba(0, 0, 0, .25);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
