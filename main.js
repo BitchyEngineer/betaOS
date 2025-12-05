@@ -6,6 +6,7 @@
 var betaOSversion = "1.0.0 [development]";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
+var savedtheme = localStorage.getItem("theme");
 var batterybar = document.getElementById("batteryprogress");
 var errorsound = new Audio("sounds/so4error.mp3");
 var chargesound = new Audio("sounds/so4chargesound.mp3");
@@ -211,6 +212,12 @@ function pushNotification(appname, message){
         repositionNotifications();
     };
 
+    if(savedtheme){
+        notifbody.style.backgroundColor = localStorage.getItem('theme');
+    } else {
+        notifbody.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    }
+
     chargesound.play();
 
     desktopbody.appendChild(notifbody);
@@ -233,12 +240,6 @@ function repositionNotifications(){
         var topPosition = baseTop + ((notificationStack.length - 1 - index) * (notifHeight + gap));
         notif.style.top = topPosition + 'px';
     });
-}
-
-function themeChange(theme){
-    document.getElementById('appdiv').backgroundColor = theme;
-    document.getElementById('actiondiv').backgroundColor = theme;
-    localStorage.setItem('theme', themechoice);
 }
 
 var so4icon = document.createElement('img');
@@ -283,6 +284,8 @@ function deviceDetection() {
 
 var actiondiv = document.createElement('div');
 var appdiv = document.createElement('div');
+var pinneddiv = document.createElement('div');
+pinneddiv.className = 'pinneddiv';
 var minimized = document.createElement("div");
 minimized.className = "miniapps";
 
@@ -313,7 +316,7 @@ function loadDesktop(){
     if(savedbackground){
         document.body.style.backgroundImage = localStorage.getItem('background');
     } else{
-        document.body.style.backgroundImage = 'url("images/nonono banner 2026.png")';
+        document.body.style.backgroundImage = 'url("images/Nonono.png")';
     }
 
     navbar.className = 'navbar';
@@ -324,6 +327,7 @@ function loadDesktop(){
     appdiv.id = 'appdiv';
     navbar.appendChild(actiondiv);
     navbar.appendChild(appdiv);
+    navbar.appendChild(pinneddiv);
     navbar.appendChild(minimized);
 
     var actionmenuicon = document.createElement('button');
@@ -387,13 +391,12 @@ function loadDesktop(){
     }
     
     if(savednav){
-        appdiv.innerHTML = '';
-        appdiv.innerHTML = localStorage.getItem("savednav");
+        pinneddiv.innerHTML = localStorage.getItem("savednav");
     }
 
-    if(savedesk){
-        desktopbody.innerHTML = '';
-        desktopbody.innerHTML = localStorage.getItem("savedesk");
+    if(savedtheme){
+        navbar.style.backgroundColor = localStorage.getItem('theme');
+        actioncenter.style.backgroundColor = localStorage.getItem('theme');
     }
 
     actioncenter.className = 'popuplist';
@@ -521,18 +524,19 @@ var classicMode = false
 function signIn(){
     desktopbody.removeChild(timetxt);
     //desktopbody.removeChild(loginbar);
-   
-    if(savednav){
-        navbar.innerHTML = '';
-        navbar.appendChild(actiondiv);
-        navbar.innerHTML += localStorage.getItem("savednav");
-    } else{    
-        navbar.appendChild(actiondiv);
-    }
-    desktopbody.appendChild(navbar);
+
+    navbar.appendChild(actiondiv);
+    navbar.appendChild(appdiv);
+    navbar.appendChild(pinneddiv);
     navbar.appendChild(minimized);
+    desktopbody.appendChild(navbar);
     desktopbody.appendChild(rightnav);
     desktopbody.appendChild(conmenu1);
+   
+    if(savednav){
+        pinneddiv.innerHTML = '';
+        pinneddiv.innerHTML = localStorage.getItem("savednav");
+    }
 }
 
 var un = localStorage.getItem("username");
@@ -764,7 +768,7 @@ function editMode(){
 
 function normMode(){
     location.reload();
-    localStorage.setItem("savednav", appdiv.innerHTML);
+    localStorage.setItem("savednav", pinneddiv.innerHTML);
 }
 
 var currentTasks = 0;
@@ -825,6 +829,11 @@ function vidPlay(vidtitle){
     headbuttdiv.append(close);
     app.appendChild(apphead);
     app.appendChild(appbody);
+    if(savedtheme){
+        app.style.backgroundColor = localStorage.getItem('theme');
+    } else{
+        app.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    }
     desktopbody.appendChild(app);
     app.id = appsname + "(" + appnumber + ")";
     apphead.id = app.id + "header";
@@ -833,11 +842,23 @@ function vidPlay(vidtitle){
     close.onclick = function () { desktopbody.removeChild(app); tasks--;};
     fullscreen.onclick = function () {
         if (isfull == false){
-            app.style = 'width: 100%; height: calc(100% - 50px); top: 0px; left: 0%'; 
+            app.style.width = '100%';
+            app.style.height = 'calc(100% - 50px)'; 
+            app.style.top = '0px'; 
+            app.style.left = '0%';
+            if(savedtheme){
+                app.style.backgroundColor = localStorage.getItem('theme');
+            }
             isfull = true;
         } else if (isfull == true){
-            app.style = 'width: 50%; height: 50%; top: 25%; left: 25%';
+            app.style.width = '50%'; 
+            app.style.height = '50%';
+            app.style.top = '25%'; 
+            app.style.left = '25%';
             isfull = false;
+            if(savedtheme){
+                app.style.backgroundColor = localStorage.getItem('theme');
+            }
         }
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
@@ -908,6 +929,11 @@ function betaApp(appsname){
     headbuttdiv.append(close);
     app.appendChild(apphead);
     app.appendChild(appbody);
+    if(savedtheme){
+        app.style.backgroundColor = localStorage.getItem('theme');
+    } else{
+        app.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    }
     desktopbody.appendChild(app);
     app.id = appsname + "(" + appnumber + ")";
     apphead.id = app.id + "header";
@@ -917,11 +943,23 @@ function betaApp(appsname){
     close.onclick = function () { desktopbody.removeChild(app); tasks--;};
     fullscreen.onclick = function () {
         if (isfull == false){
-            app.style = 'width: 100%; height: calc(100% - 50px); top: 0px; left: 0%'; 
+            app.style.width = '100%';
+            app.style.height = 'calc(100% - 50px)'; 
+            app.style.top = '0px'; 
+            app.style.left = '0%';
+            if(savedtheme){
+                app.style.backgroundColor = localStorage.getItem('theme');
+            }
             isfull = true;
         } else if (isfull == true){
-            app.style = 'width: 50%; height: 50%; top: 25%; left: 25%';
+            app.style.width = '50%'; 
+            app.style.height = '50%';
+            app.style.top = '25%'; 
+            app.style.left = '25%';
             isfull = false;
+            if(savedtheme){
+                app.style.backgroundColor = localStorage.getItem('theme');
+            }
         }
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
@@ -1022,7 +1060,6 @@ function betaApp(appsname){
             ntab.className = 'ntab';
             pagebutt.className = 'ntablinks';
             pagebutt.innerHTML = pages[i];
-            var pageid = pages[i] + appnumber;
             ntab.appendChild(pagebutt);
             pagebutt.onclick = function(){
                 openNvTab(event, pages[i]);
@@ -1039,100 +1076,39 @@ function betaApp(appsname){
             
     } else if (appsname === "Settings") {
         var tab = document.createElement('div');
+        var generalsettings = document.createElement('div');
         var backgroundsettings = document.createElement('div');
-        var bgsbutt = document.createElement('button');
         var widgets = document.createElement('div');
-        var wdgtsbutt = document.createElement('button');
         var about = document.createElement('div');
-        var aboutbutt = document.createElement('button');
         var shortcuts = document.createElement('div');
-        var scbutt = document.createElement('button');
         var usersett = document.createElement('div');
-        var userbutt = document.createElement('button');
         var changelogsett = document.createElement('div');
-        var clbutt = document.createElement('button');
+
+        var sett = ['General', 'Personalization', 'About', 'Shortcuts', 'User', 'Changelog'];
+
+        for(let i = 0; i < sett.length; i++){
+            var settbutt = document.createElement('button');
+            tab.className = 'tab';
+            settbutt.className = 'tablinks';
+            settbutt.innerHTML = sett[i];
+            tab.appendChild(settbutt);
+            settbutt.onclick = function(){
+                openSett(event, sett[i]);
+            };
+        }
+
         appbody.scroll = false;
         appbody.style.overflow = 'hidden';
         tab.className = 'tab';
-        bgsbutt.className = 'tablinks';
-        bgsbutt.onclick = function(){openSett(event, backgroundsettings.id);};
-        bgsbutt.innerHTML = "Personalization";
-        wdgtsbutt.className = 'tablinks';
-        wdgtsbutt.onclick = function(){openSett(event, widgets.id);};
-        wdgtsbutt.innerHTML = "Widgets";
-        aboutbutt.className = 'tablinks';
-        aboutbutt.onclick = function(){openSett(event, about.id);};
-        aboutbutt.innerHTML = "About"
-        scbutt.className = 'tablinks';
-        scbutt.onclick = function(){openSett(event, shortcuts.id);};
-        scbutt.innerHTML = "Shortcuts";
-        userbutt.className = "tablinks";
-        userbutt.onclick = function(){
-            var userdiv = document.createElement("div");
-            var usernamein = document.createElement('input');
-            var passinput = document.createElement('input');
-            var loginbutt = document.createElement('button');
-            var cancelbutt = document.createElement('button');
-            userdiv.className = 'soalert';
-            usernamein.className = 'logininput';
-            usernamein.placeholder = 'Username';
-            passinput.className = 'logininput';
-            passinput.placeholder = 'Password';
-            passinput.type = "password";
-            loginbutt.className = 'loginbutt';
-            loginbutt.innerHTML = "Sign In";
-            cancelbutt.className = 'loginbutt';
-            cancelbutt.innerHTML = "Cancel";
-            if(un){
-                if(pw){
-                    userdiv.appendChild(usernamein);
-                    userdiv.appendChild(passinput);
-                    userdiv.appendChild(loginbutt);
-                    userdiv.appendChild(cancelbutt);
-                    desktopbody.appendChild(userdiv);  
-                } 
-            } else {
-                openSett(event, usersett.id);
-            }
-            loginbutt.onclick = function(){
-                var username = usernamein.value;
-                var password = passinput.value;
-                if(username === un){
-                    if(password === pw){
-                        userdiv.removeChild(usernamein);
-                        userdiv.removeChild(passinput);
-                        userdiv.removeChild(loginbutt);
-                        userdiv.removeChild(cancelbutt);
-                        desktopbody.removeChild(userdiv);
-                        openSett(event, usersett.id);
-                    } else {
-                        pushNotification("System", "Username or password is incorrect");
-                    }
-                } else {
-                    pushNotification("System", "Username or password is incorrect");
-                }
-            };
-            cancelbutt.onclick = function(){
-                userdiv.removeChild(usernamein);
-                userdiv.removeChild(passinput);
-                userdiv.removeChild(loginbutt);
-                userdiv.removeChild(cancelbutt);
-                desktopbody.removeChild(userdiv);
-            };
-        };
-        userbutt.innerHTML = "User";
+        generalsettings.className = 'tabcontent';
+        generalsettings.id = 'General';
+        generalsettings.style.display = 'inline';
+        generalsettings.innerHTML = "<h1> General </h1><p>General settings will be available in future updates.</p>";
+        
         backgroundsettings.className = 'tabcontent';
-        clbutt.className = "tablinks";
-        clbutt.onclick = function(){openSett(event, changelogsett.id);};
-        clbutt.innerHTML = "Changelog";
         appbody.appendChild(tab);
-        tab.appendChild(bgsbutt);
-        tab.appendChild(wdgtsbutt);
-        tab.appendChild(aboutbutt);
-        tab.appendChild(scbutt);
-        tab.appendChild(userbutt);
-        tab.appendChild(clbutt);
         appbody.appendChild(usersett);
+        appbody.appendChild(generalsettings);
         usersett.id = 'User';
         usersett.className = 'tabcontent';
 
@@ -1165,7 +1141,7 @@ function betaApp(appsname){
         backgroundsettings.style.overflow = 'scroll';
 
         appbody.appendChild(backgroundsettings);
-        backgroundsettings.style.display = 'inline';
+        backgroundsettings.style.display = 'none';
         backgroundsettings.id = 'Personalization';
 
         var backgroundtxt = document.createElement("h1");
@@ -1200,7 +1176,7 @@ function betaApp(appsname){
             {name: 'Purple', color: 'rgba(128, 0, 128, 0.5)'}, 
             {name: 'Pink', color: 'rgba(255, 192, 203, 0.5)'}, 
             {name: 'Dark', color: 'rgba(0, 0, 0, 0.5)'}, 
-            {name: 'Light', color: 'rgba(255, 255, 255, 0.5)'}
+            {name: 'Light', color: 'rgba(149, 149, 149, 0.5)'}
         ];
 
         /*tchoices.forEach(function(choice){
@@ -1226,8 +1202,8 @@ function betaApp(appsname){
             tchoice.className = 'backgroundoption';
             tchoice.onclick = function () { 
                 document.getElementById('navbar').style.backgroundColor = this.style.backgroundColor;
-                document.getElementsByClassName('appheader').style.backgroundColor = this.style.backgroundColor;
-                document.getElementsByClassName('popuplist').style.backgroundColor = this.style.backgroundColor;
+                app.style.backgroundColor = this.style.backgroundColor;
+                actioncenter.style.backgroundColor = this.style.backgroundColor;
                 localStorage.setItem('theme', this.style.backgroundColor);
             };
             backgroundsettings.appendChild(tchoice);
@@ -1315,8 +1291,8 @@ function betaApp(appsname){
             } else if(appnameshort.value = "Shortcuts"){
                 newshortcut.setAttribute("onclick", "betaApp('Settings'); openSett(event, 'Shortcuts');");
             }
-            appdiv.appendChild(newshortcut);
-            localStorage.setItem("savednav", appdiv.innerHTML);
+            pinneddiv.appendChild(newshortcut);
+            localStorage.setItem("savednav", pinneddiv.innerHTML);
             desktopbody.removeChild(app);
         };
 
@@ -1370,7 +1346,7 @@ function betaApp(appsname){
         resetbutton.onclick = function(){
             timeleft.innerHTML = "";
             clearInterval(timerint);
-            alarm.pause();
+            alarm.stop();
             app.style.backgroundColor = "rgba(0, 0, 0, .25)";
             app.removeChild(timesuptext);
             app.removeChild(resetbutton);
@@ -1380,7 +1356,7 @@ function betaApp(appsname){
         stopbutton.className = 'tbutton';
         stopbutton.onclick = function(){
             clearInterval(timerint);
-            alarm.pause();
+            alarm.stop();
             app.style.backgroundColor = "rgba(0, 0, 0, .25)";
         };
         appbody.appendChild(stopbutton);
@@ -1574,7 +1550,14 @@ function betaApp(appsname){
         edtxt.innerHTML = e343;
         headbuttdiv.removeChild(fullscreen);
         headbuttdiv.removeChild(minimize);
-        app.style = 'height: 25%; width: 25%; top: 40%; left: 40%; resize: none;';
+        app.style.width = '25%'; 
+        app.style.height = '25%';
+        app.style.top = '35%'; 
+        app.style.left = '35%';
+        isfull = false;
+        if(savedtheme){
+            app.style.backgroundColor = localStorage.getItem('theme');
+        }
         appbody.appendChild(ehtxt);
         appbody.appendChild(edtxt);
         console.error(e343);

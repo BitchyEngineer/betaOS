@@ -145,6 +145,12 @@ body {
     display: inline;
 }
 
+#pinneddiv{
+    width: fit-content;
+    height: 50px;
+    display: inline;
+}
+
 #minimized{
     width: fit-content;
     height: 50px;
@@ -280,7 +286,6 @@ body {
     border-radius: 15px;
     animation: slidenavbar;
     animation-duration: 2s;
-    background-color: rgba(0, 0, 0, 0.5);  
     backdrop-filter: blur(5px);
     right: 50% - width/2;
     left: 50% - width/2;
@@ -736,7 +741,6 @@ body {
     overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
     background: inherit;
-    background-color: rgba(50, 50, 50, 0.15);  
     backdrop-filter: blur(25px);
 }
 
@@ -848,7 +852,7 @@ textarea{
     max-height: 80vh;
     border-style: none;
     box-shadow: rgba(0, 0, 0, .5) 0 0 5px 5px;
-    background-color: rgba(50, 50, 50, 0.15);  
+    /*background-color: rgba(50, 50, 50, 0.15);*/
     backdrop-filter: blur(25px);
     color: white;
     overflow: hidden;
@@ -1091,7 +1095,7 @@ button{
     overflow-y: scroll;
     height: 90%;
     overflow-x: hidden;
-    width: calc(100% - 10px);
+    width: 100%;
     color: white;
   }
 
@@ -1246,28 +1250,40 @@ iframe{
   }
 
 .appheadbutt{
-    background-color: grey;
     opacity: 40%;
     width: 30px;
     height: 30px;
     margin: 2.5px;
 }
 
+#close{
+    background-color: rgba(255, 0, 0, .5);
+}
+
 #close:hover{
     text-shadow: red 5px 5px 5px;
     color: red;
-    background-color: red;
+    background-color: rgba(255, 0, 0, 1);
+}
+
+#fullscreen{
+    background-color: rgba(0, 0, 255, .5);
 }
 
 #fullscreen:hover{
     text-shadow: blue 5px 5px 5px;
     color: blue;
-    background-color: blue;
+    background-color: rgba(0,0,255,1);
 }
+
+#minimize{
+    background-color: rgba(255, 255, 0, .5);
+}
+
 #minimize:hover{
     text-shadow: yellow 5px 5px 5px;
     color: yellow;
-    background-color: yellow;
+    background-color: rgba(255, 255, 0, 1);
 }
 
 #apphistory{
