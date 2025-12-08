@@ -348,9 +348,9 @@ input[type='text']{
 .appicon {
     width: 150px;
     height: 150px;
+    background-size: 150px 150px;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
     margin-bottom: 10px;
     z-index: 10;
     animation: zoomfade;
@@ -378,11 +378,11 @@ input[type='text']{
 }
 
 .deskgrid .appicon {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
+    background-size: 150px 150px;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
     /*background-color: rgba(0,0,0,0.5);*/
     box-shadow: rgba(0, 0, 0, .2) 0 0 2.5px 2.5px;
     margin-bottom: 30px;
