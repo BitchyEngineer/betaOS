@@ -35,10 +35,8 @@
                     // Toggle between light.css and dark.css
                 if (isDesktop = true) {
                     theme.setAttribute('href', 'css/default.css');
-                    systemb.setAttribute('src', 'main.js');
                 } else if (isMobile = true) {
                     theme.setAttribute('href', 'css/mobile.css');
-                    systemb.setAttribute('src', 'mobile.js');
                 }
             }
 
@@ -57,7 +55,8 @@
                 -o-background-size: cover;
             }
         </style>
-        <script id="javascript" src="main.js"></script>
+        <script src="main.js"></script>
+        <script src="mobile.js"></script>
         <script src="contextmenus.js"></script>
     </body>
 </html>

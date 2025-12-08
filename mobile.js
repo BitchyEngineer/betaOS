@@ -169,7 +169,7 @@ function dropped(evt){
 
 //Notifications System
 var notificationStack = [];
-function pushNotification(appname, message){
+function mobileNotif(appname, message){
     var notifbody = document.createElement('div');
     var notifname = document.createElement('h1');
     var notifmessage = document.createElement('p');
@@ -192,7 +192,7 @@ function pushNotification(appname, message){
     };
     openbutt.innerHTML = "Open";
     openbutt.onclick = function(){
-        betaApp(appname);
+        mobileApp(appname);
         desktopbody.removeChild(notifbody);
         notificationStack = notificationStack.filter(n => n !== notifbody);
         repositionNotifications();
@@ -245,7 +245,7 @@ function startUp(){
     //setTimeout(function(){desktopbody.appendChild(startupbar);},3000);
     setTimeout(function(){
         desktopbody.innerHTML = '';
-        loadDesktop();
+        loadHomeScreen();
         desktopbody.removeChild(so4icon);
         //desktopbody.removeChild(startupbar);
     }, 10000);
@@ -300,7 +300,7 @@ function minimizer(appname){
 }
 
 //Desktop Loading Sequence
-function loadDesktop(){
+function loadHomeScreen(){
 
     if(savedbackground){
         document.body.style.backgroundImage = localStorage.getItem('background');
@@ -340,7 +340,7 @@ function loadDesktop(){
     appicon1.style = 'background: url("images/Settings.png"); background-size: 50px 50px;';
     appicon1.className = 'appicon';
     appicon1.title = 'Settings';
-    appicon1.setAttribute("onclick", "betaApp('Settings')");
+    appicon1.setAttribute("onclick", "mobileApp('Settings')");
     appdiv.appendChild(appicon1);
     
     var appicon2 = document.createElement('button');
@@ -348,7 +348,7 @@ function loadDesktop(){
     appicon2.style = 'background: url("images/Files.png"); background-size: 50px 50px;';
     appicon2.className = 'appicon';
     appicon2.title = 'Files';
-    appicon2.setAttribute("onclick", "betaApp('Files')");
+    appicon2.setAttribute("onclick", "mobileApp('Files')");
     appdiv.appendChild(appicon2);
 
     var appicon3 = document.createElement('button');
@@ -356,7 +356,7 @@ function loadDesktop(){
     appicon3.style = 'background: url("images/Nononopmv.png"); background-size: 50px 50px;';
     appicon3.className = 'appicon';
     appicon3.title = 'Nononopmv';
-    appicon3.setAttribute("onclick", "betaApp('Nononopmv');");
+    appicon3.setAttribute("onclick", "mobileApp('Nononopmv');");
     appdiv.appendChild(appicon3);
 
     var clockb = document.createElement('button');
@@ -426,7 +426,7 @@ function loadDesktop(){
 
     signoutbutt.style = 'background-image: url("images/lock.png"); background-size: 50px 50px';
     signoutbutt.title = 'Sign Out';
-    signoutbutt.onclick = function(){signOut();};
+    signoutbutt.onclick = function(){unlock();};
     signoutbutt.className = 'appicon';
 
     restartbutt.style = 'background-image: url("images/restart.png"); background-size: 50px 50px';
@@ -436,12 +436,12 @@ function loadDesktop(){
 
     testnotif.style = 'background-image: url("images/notiftest.png"); background-size: 50px 50px';
     testnotif.title = 'Test Notif';
-    testnotif.onclick = function(){pushNotification("testing", "TESTING TESTING 294184")};
+    testnotif.onclick = function(){mobileNotif("testing", "TESTING TESTING 294184")};
     testnotif.className = 'appicon';
     
     testerror.style = 'background-image: url("images/errortest.png"); background-size: 50px 50px';
     testerror.title = 'Test Error';
-    testerror.onclick = function(){betaApp("Error");};
+    testerror.onclick = function(){mobileApp("Error");};
     testerror.className = 'appicon';
 
     controlcenter.className = 'controlcenter';
@@ -455,7 +455,7 @@ function loadDesktop(){
         { name: 'Timer', icon: 'Timer.png' },
         { name: 'Hypnotube', icon: 'Hypnotube.png' },
         { name: 'ScriptInjector', icon: 'ScriptInjector.png' },
-        { name: 'Shortcuts', icon: 'Shortcuts.png', onclick: "betaApp('Settings'); openSett(event, 'Shortcuts'); desktopbody.removeChild(actioncenter);" },
+        { name: 'Shortcuts', icon: 'Shortcuts.png', onclick: "mobileApp('Settings'); openSett(event, 'Shortcuts'); desktopbody.removeChild(actioncenter);" },
         { name: 'betaAssist', icon: 'BetaAssist.png' },
         { name: 'ScriptEdit', icon: 'ScriptEdit.png' }
     ];
@@ -468,7 +468,7 @@ function loadDesktop(){
         if(app.onclick){
             appButton.setAttribute("onclick", app.onclick);
         } else {
-            appButton.setAttribute("onclick", "betaApp('" + app.name + "'); desktopbody.removeChild(actioncenter);");
+            appButton.setAttribute("onclick", "mobileApp('" + app.name + "'); desktopbody.removeChild(actioncenter);");
         }
         appcenter.appendChild(appButton);
     });
@@ -500,13 +500,13 @@ function loadDesktop(){
     
     desktopbody.appendChild(conmenu1);
 
-    //pushNotification("Settings", "Check changelog for updates and changes");
+    //mobileNotif("Settings", "Check changelog for updates and changes");
     if(un){
         if(pw){
             return;
         }
     } else {
-        pushNotification("Settings", "Setup your account credentials before using betaOS");
+        mobileNotif("Settings", "Setup your account credentials before using betaOS");
     }
 }
 
@@ -525,7 +525,7 @@ function RSOD(message){
 var classicMode = false
 
 //Sign In
-function signIn(){
+function unlock(){
     desktopbody.removeChild(timetxt);
     //desktopbody.removeChild(loginbar);
     navbar.appendChild(actiondiv);
@@ -556,7 +556,7 @@ var timetxt = document.createElement('h1');
 var loginbar = document.createElement('div');
 
 //Sign Out
-function signOut(){
+function lock(){
     var usernamein = document.createElement('input');
     var passinput = document.createElement('input');
     var loginbutt = document.createElement('button');
@@ -574,7 +574,7 @@ function signOut(){
         var password = passinput.value;
         if(username === un){
             if(password === pw){
-                signIn();
+                unlock();
                 userdiv.removeChild(sotxt);
                 userdiv.removeChild(usernamein);
                 userdiv.removeChild(passinput);
@@ -582,10 +582,10 @@ function signOut(){
                 userdiv.removeChild(vnum);
                 desktopbody.removeChild(userdiv);
             } else {
-                pushNotification("System", "Username or password is incorrect");
+                mobileNotif("System", "Username or password is incorrect");
             }
         } else {
-            pushNotification("System", "Username or password is incorrect");
+            mobileNotif("System", "Username or password is incorrect");
         }
     };
     vnum.innerHTML = "betaOS " + betaOSversion;
@@ -606,7 +606,7 @@ function signOut(){
     loginbar.className = 'logbar';
     desktopbody.style.color = 'white';
     desktopbody.style.textAlign = 'center';
-    loginbar.onclick = function () {signIn();};
+    loginbar.onclick = function () {unlock();};
     desktopbody.innerHTML = '';
     userdiv.appendChild(sotxt);
     userdiv.appendChild(usernamein);
@@ -652,7 +652,7 @@ function sleepMode(){
     desktopbody.style.color = 'white';
     desktopbody.style.textAlign = 'center';
     desktopbody.onkeypress = function(){
-        signIn();
+        unlock();
     };
     desktopbody.innerHTML = '';
     desktopbody.appendChild(timetxt);
@@ -692,10 +692,10 @@ if(savedtheme){
 conmenu1.className = 'menu';
 conmenu1.id = 'menu';
 conmenu1butt1.innerHTML = 'Personalization';
-conmenu1butt1.onclick = function () { betaApp('Settings'); openSett(event, 'Personalization'); };
+conmenu1butt1.onclick = function () { mobileApp('Settings'); openSett(event, 'Personalization'); };
 conmenu1butt1.className = "menubutton";
 conmenu1butt4.innerHTML = 'Create Shortcut';
-conmenu1butt4.onclick = function () { betaApp('Settings'); openSett(event, 'Shortcuts'); };
+conmenu1butt4.onclick = function () { mobileApp('Settings'); openSett(event, 'Shortcuts'); };
 conmenu1butt4.className = "menubutton";
 conmenu1butt6.innerHTML = 'EditMode';
 conmenu1butt6.onclick = function () {
@@ -716,7 +716,7 @@ conmenu1butt8.onclick = function () {
 conmenu1butt9.className = "menubutton";
 conmenu1butt9.innerHTML = 'Tasks';
 conmenu1butt9.onclick = function () {
-    betaApp("Tasks");
+    mobileApp("Tasks");
 };
 conmenu1butt7.className = "menubutton";
 desktopbody.appendChild(conmenu1);
@@ -771,7 +771,7 @@ var nb = document.querySelector('.navbar');
 
 function editMode(){
     var iconedit = document.getElementsByClassName('appicon');
-    pushNotification("EditMode", "Any icon you click on the desktop or doc will be deleted. Open the context menu and click 'Exit EditMode' when you're done.")
+    mobileNotif("EditMode", "Any icon you click on the desktop or doc will be deleted. Open the context menu and click 'Exit EditMode' when you're done.")
     for(var i = 0; i < iconedit.length; i++){
         iconedit[i].onclick = function(){
             if(this.className === 'appicon'){
@@ -894,7 +894,7 @@ function vidPlay(vidtitle){
 
 
 //Stock apps in betaOS
-function betaApp(appsname){
+function mobileApp(appsname){
     var app = document.createElement('div');
     var apphead = document.createElement('div');
     var appheadtext = document.createElement('ui');
@@ -1278,7 +1278,7 @@ function betaApp(appsname){
                 fileButton.onclick = function() {
                     if (fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')) {
                         currentAudioContent = fileData.content; // Set current audio content globally
-                        betaApp("AudioPlayer"); // Open the AudioPlayer (implement this function separately)
+                        mobileApp("AudioPlayer"); // Open the AudioPlayer (implement this function separately)
                     } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.mov')) {
                         vidPlay(fileData.name); // Function to play video files
                     } else {
@@ -1616,9 +1616,9 @@ function betaApp(appsname){
             navshort.style = 'background-image: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
             navshort.className = 'appicon';
             if(appnameshort.value != "Shortcuts"){
-                navshort.setAttribute("onclick", "betaApp('" + appnameshort.value + "')");
+                navshort.setAttribute("onclick", "mobileApp('" + appnameshort.value + "')");
             } else if(appnameshort.value = "Shortcuts"){
-                navshort.setAttribute("onclick", "betaApp('Settings'); openSett(event, 'Shortcuts');");
+                navshort.setAttribute("onclick", "mobileApp('Settings'); openSett(event, 'Shortcuts');");
             }
             pinneddiv.appendChild(navshort);
             localStorage.setItem("savednav", pinneddiv.innerHTML);
@@ -1631,9 +1631,9 @@ function betaApp(appsname){
             newshortcut.style = 'background-image: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
             newshortcut.className = 'appicon';
             if(appnameshort.value != "Shortcuts"){
-                newshortcut.setAttribute("onclick", "betaApp('" + appnameshort.value + "')");
+                newshortcut.setAttribute("onclick", "mobileApp('" + appnameshort.value + "')");
             } else if(appnameshort.value = "Shortcuts"){
-                newshortcut.setAttribute("onclick", "betaApp('Settings'); openSett(event, 'Shortcuts');");
+                newshortcut.setAttribute("onclick", "mobileApp('Settings'); openSett(event, 'Shortcuts');");
             }
             deskgrid.appendChild(newshortcut);
             desktopbody.removeChild(app);
@@ -1687,7 +1687,7 @@ function betaApp(appsname){
                     app.style.backgroundColor = "red";
                     appbody.appendChild(timesuptext);
                     alarm.play();
-                    pushNotification("Timer","Time's up!!!");
+                    mobileNotif("Timer","Time's up!!!");
                 }
             }, 1000);
         };
@@ -1811,7 +1811,7 @@ function betaApp(appsname){
                 runscript.innerHTML = codetxt.value;
                 desktopbody.appendChild(runscript);
             } else if(f1.value.includes('.html')){
-                betaApp("Browser");
+                mobileApp("Browser");
                 browserview.srcdoc = codetxt.value;
             }
                 
@@ -1954,14 +1954,14 @@ document.onkeyup = function (e){
     document.onkeyup=function(e){
         var e = e || window.event;
         if(e.which == 9) {
-                betaApp("betaAssist");
+                mobileApp("betaAssist");
         }
         if(e.which == 27){
             desktopbody.appendChild(actioncenter);
         }
       }
     //if(e.keyCode == 83 && e.keyCode == 32){
-    //      betaApp("BetaAssist");
+    //      mobileApp("BetaAssist");
     //}
 }
 
