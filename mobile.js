@@ -255,12 +255,6 @@ function loadHomeScreen(){
 
     mobilebody.appendChild(deskgrid);
 
-    if(saveddesk){
-        deskgrid.innerHTML = saveddesk;
-    } else {
-        deskgrid.innerHTML = '';
-    }
-
     navbar.className = 'navbar';
     navbar.id = 'navbar';
     mobilebody.appendChild(navbar);
