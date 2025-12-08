@@ -125,26 +125,30 @@ function bootMobile(){
     document.body.style.backgroundColor = 'black';
     document.body.style.color = 'white';
 
-    /*if ((objOffsetVersion=objAgent.indexOf("Chrome"))!=-1) { 
-        objbrowserName = "Chrome"; 
-        objfullVersion = objAgent.substring(objOffsetVersion+7);
-    }else if ((objOffsetVersion=objAgent.indexOf("MSIE"))!=-1) { 
-        objbrowserName = "Microsoft Internet Explorer"; 
-        objfullVersion = objAgent.substring(objOffsetVersion+5); 
-        //console.error(e344);
-        //RSOD(e344);
-    }else if ((objOffsetVersion=objAgent.indexOf("Firefox"))!=-1) { 
-        objbrowserName = "Firefox"; 
-        //console.error(e344);
-        //RSOD(e344);
-    }else if ((objOffsetVersion=objAgent.indexOf("Safari"))!=-1) { 
-        objbrowserName = "Safari"; 
-        objfullVersion = objAgent.substring(objOffsetVersion+7); 
-        if ((objOffsetVersion=objAgent.indexOf("Version"))!=-1) objfullVersion = objAgent.substring(objOffsetVersion+8); 
-        //console.error(e344);
-        //RSOD(e344);
-    }*/
-    startUp();
+    setTimeout(function(){deviceDetection()}, 250);
+    setTimeout(function(){desktopbody.innerText+="\n" + objbrowserName + objfullVersion}, 500);
+    console.log(objbrowserName + objfullVersion);
+    setTimeout(function(){desktopbody.innerText+="\n betaOS " + betaOSversion}, 750);
+    console.log("betaOS " + betaOSversion);
+    setTimeout(function(){desktopbody.innerText+="\n Copyright nononopmv 2025"; console.log("opyright nononopmv 2025")}, 1000);
+    setTimeout(function(){desktopbody.innerText+="\n betaOS Mobile Copyright (C) 2025 nononopmv"; console.log("betaOS Mobile Copyright (C) 2025 nononopmv")}, 1250);
+    setTimeout(function(){desktopbody.innerText+="\n Resdistribution is allowed under certain conditions"; console.log("Redistribution is allowed under certain conditions")}, 1500);
+    setTimeout(function(){desktopbody.innerText+="\n See LICENSE file for details"; console.log("See LICENSE file for details")}, 1750);
+    setTimeout(function(){desktopbody.innerText+="\n System dependencies loaded successfully"; console.log("System dependencies loaded successfully")}, 2000);
+    setTimeout(function(){desktopbody.innerText+="\n Loading JavaScript"; console.log("Loading JavaScript")}, 2500);
+    setTimeout(function(){desktopbody.innerText+="\n Loading programs"; console.log("Loading programs")}, 2750);
+    setTimeout(function(){desktopbody.innerText+="\n JavaScript loaded successfully"; console.log("JavaScript loaded successfully")}, 3000);
+    setTimeout(function(){desktopbody.innerText+="\n Programs loaded successfully"; console.log("Programs loaded successfully")}, 3250);
+    setTimeout(function(){desktopbody.innerText+="\n Loading betaAssist"; console.log("Loading betaAssist")}, 3500);
+    setTimeout(function(){desktopbody.innerText+="\n betaAssist loaded successfully"; console.log("betaAssist loaded successfully")}, 3750);
+    setTimeout(function(){desktopbody.innerText+="\n Loading app icons"; console.log("Loading app icons")}, 4250);
+    setTimeout(function(){desktopbody.innerText+="\n Loading background images"; console.log("Loading background images")}, 4500);
+    setTimeout(function(){desktopbody.innerText+="\n App icons loaded successfully"; console.log("App icons loaded successfully")}, 4750);
+    setTimeout(function(){desktopbody.innerText+="\n Background images loaded successfully"}, 5000);
+    setTimeout(function(){desktopbody.innerText+="\n See the changelog in the About section of Settings"}, 5250);
+    setTimeout(function(){desktopbody.innerText+="\n Starting up betaOS..."; console.log("Starting up betaOS...")}, 5500);
+
+    setTimeout(startUp, 7000);
 }
 
 //Drag & Rearrange Icons
@@ -251,24 +255,6 @@ function startUp(){
         mobilebody.removeChild(so4icon);
         //mobilebody.removeChild(startupbar);
     }, 10000);
-}
-
-var devicesupported = true;
-
-function deviceDetection() {
-    if (navigator.userAgent.match(/mobile/i)) {
-        console.log('MOBILE DEVICE = NOT SUPPORTED');
-        mobilebody.innerHTML = "MOBILE DEVICE = NOT SUPPORTED";
-        devicesupported = false;
-    } else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
-        console.log('TABLET = NOT SUPPORTED');
-        mobilebody.innerText += "\n TABLET = NOT SUPPORTED";
-        devicesupported = false;
-    } else {
-        mobilebody.innerText += "\n DESKTOP DEVICE = SUPPORTED";
-        console.log('DESKTOP DEVICE = SUPPORTED');
-        devicesupported = true;
-    }
 }
 
 var actiondiv = document.createElement('div');

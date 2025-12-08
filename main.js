@@ -67,10 +67,6 @@ var changelog = `betaOS Changelog:
 
 var savedbackground = localStorage.getItem('background');
 
-if(savedbackground){
-    document.body.style.backgroundImage = localStorage.getItem('background');
-}
-
 
 function dragWindow(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
