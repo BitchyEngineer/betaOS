@@ -564,7 +564,7 @@ input[type='text']{
     }
     100%{
         opacity: 100%;
-        bottom: 80px;
+        bottom: 200px;
     }
 }
 
