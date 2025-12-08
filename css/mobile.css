@@ -300,6 +300,11 @@ body {
 
 }
 
+input[type='text']{
+    font-size: 75px;
+    height: 100px;
+}
+
 .logbar {
     text-align: center;
     overflow: hidden;
@@ -1143,7 +1148,7 @@ button{
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 75px;
     background: rgba(0, 0, 0, 0);
     color: white;
   }
