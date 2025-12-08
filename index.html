@@ -27,9 +27,6 @@
                 }
 
                 toggleSystem();
-                var newScript = document.createElement('script');
-                newScript.src = systemb.src;
-                document.body.appendChild(newScript);
             }
 
             function toggleSystem(){
@@ -45,6 +42,10 @@
                     theme.setAttribute('href', 'css/mobile.css');
                     systemb.src = 'mobile.js';
                 }
+                
+                var newScript = document.createElement('script');
+                newScript.src = systemb.src;
+                document.body.appendChild(newScript);
             }
 
         </script>
