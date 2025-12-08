@@ -140,31 +140,30 @@ function bootDesktop(){
         //console.error(e344);
         //RSOD(e344);
     }*/
- 
-    setTimeout(function(){deviceDetection()}, 250);
-    setTimeout(function(){desktopbody.innerText+="\n" + objbrowserName + objfullVersion}, 500);
-    console.log(objbrowserName + objfullVersion);
-    setTimeout(function(){desktopbody.innerText+="\n betaOS " + betaOSversion}, 750);
-    console.log("betaOS " + betaOSversion);
-    setTimeout(function(){desktopbody.innerText+="\n Copyright nononopmv 2025"; console.log("opyright nononopmv 2025")}, 1000);
-    setTimeout(function(){desktopbody.innerText+="\n betaOS  Copyright (C) 2025 nononopmv"; console.log("betaOS  Copyright (C) 2025 nononopmv")}, 1250);
-    setTimeout(function(){desktopbody.innerText+="\n Resdistribution is allowed under certain conditions"; console.log("Redistribution is allowed under certain conditions")}, 1500);
-    setTimeout(function(){desktopbody.innerText+="\n See LICENSE file for details"; console.log("See LICENSE file for details")}, 1750);
-    setTimeout(function(){desktopbody.innerText+="\n System dependencies loaded successfully"; console.log("System dependencies loaded successfully")}, 2000);
-    setTimeout(function(){desktopbody.innerText+="\n Loading JavaScript"; console.log("Loading JavaScript")}, 2500);
-    setTimeout(function(){desktopbody.innerText+="\n Loading programs"; console.log("Loading programs")}, 2750);
-    setTimeout(function(){desktopbody.innerText+="\n JavaScript loaded successfully"; console.log("JavaScript loaded successfully")}, 3000);
-    setTimeout(function(){desktopbody.innerText+="\n Programs loaded successfully"; console.log("Programs loaded successfully")}, 3250);
-    setTimeout(function(){desktopbody.innerText+="\n Loading betaAssist"; console.log("Loading betaAssist")}, 3500);
-    setTimeout(function(){desktopbody.innerText+="\n betaAssist loaded successfully"; console.log("betaAssist loaded successfully")}, 3750);
-    setTimeout(function(){desktopbody.innerText+="\n Loading app icons"; console.log("Loading app icons")}, 4250);
-    setTimeout(function(){desktopbody.innerText+="\n Loading background images"; console.log("Loading background images")}, 4500);
-    setTimeout(function(){desktopbody.innerText+="\n App icons loaded successfully"; console.log("App icons loaded successfully")}, 4750);
-    setTimeout(function(){desktopbody.innerText+="\n Background images loaded successfully"}, 5000);
-    setTimeout(function(){desktopbody.innerText+="\n See the changelog in the About section of Settings"}, 5250);
-    setTimeout(function(){desktopbody.innerText+="\n Starting up betaOS..."; console.log("Starting up betaOS...")}, 5500);
 
-    setTimeout(startUp, 7000);
+    setTimeout(function(){desktopbody.innerText+="\n" + objbrowserName + objfullVersion}, 250);
+    console.log(objbrowserName + objfullVersion);
+    setTimeout(function(){desktopbody.innerText+="\n betaOS " + betaOSversion}, 350);
+    console.log("betaOS " + betaOSversion);
+    setTimeout(function(){desktopbody.innerText+="\n Copyright nononopmv 2025"; console.log("copyright nononopmv 2025")}, 500);
+    setTimeout(function(){desktopbody.innerText+="\n betaOS Mobile Copyright (C) 2025 nononopmv"; console.log("betaOS Mobile Copyright (C) 2025 nononopmv")}, 650);
+    setTimeout(function(){desktopbody.innerText+="\n Resdistribution is allowed under certain conditions"; console.log("Redistribution is allowed under certain conditions")}, 750);
+    setTimeout(function(){desktopbody.innerText+="\n See LICENSE file for details"; console.log("See LICENSE file for details")}, 850);
+    setTimeout(function(){desktopbody.innerText+="\n System dependencies loaded successfully"; console.log("System dependencies loaded successfully")}, 1000);
+    setTimeout(function(){desktopbody.innerText+="\n Loading JavaScript"; console.log("Loading JavaScript")}, 1150);
+    setTimeout(function(){desktopbody.innerText+="\n Loading programs"; console.log("Loading programs")}, 1250);
+    setTimeout(function(){desktopbody.innerText+="\n JavaScript loaded successfully"; console.log("JavaScript loaded successfully")}, 1350);
+    setTimeout(function(){desktopbody.innerText+="\n Programs loaded successfully"; console.log("Programs loaded successfully")}, 1500);
+    setTimeout(function(){desktopbody.innerText+="\n Loading betaAssist"; console.log("Loading betaAssist")}, 1600);
+    setTimeout(function(){desktopbody.innerText+="\n betaAssist loaded successfully"; console.log("betaAssist loaded successfully")}, 1700);
+    setTimeout(function(){desktopbody.innerText+="\n Loading app icons"; console.log("Loading app icons")}, 1850);
+    setTimeout(function(){desktopbody.innerText+="\n Loading background images"; console.log("Loading background images")}, 1950);
+    setTimeout(function(){desktopbody.innerText+="\n App icons loaded successfully"; console.log("App icons loaded successfully")}, 2100);
+    setTimeout(function(){desktopbody.innerText+="\n Background images loaded successfully"}, 2200);
+    setTimeout(function(){desktopbody.innerText+="\n See the changelog in the About section of Settings"}, 2450);
+    setTimeout(function(){desktopbody.innerText+="\n Starting up betaOS..."; console.log("Starting up betaOS...")}, 2550);
+
+    setTimeout(startUp, 2900);
 }
 
 //Drag & Rearrange Icons
