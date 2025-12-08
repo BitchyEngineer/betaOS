@@ -862,13 +862,11 @@ textarea{
     z-index: 99;
     animation: slidetopam;
     animation-duration: 2s;
-    bottom: 80px;
-    left: 50%;
+    bottom: 250px;
     transform: translateX(-50%);
     border-radius: 25px;
-    width: 525px;
-    height: auto;
-    max-height: 80vh;
+    width: 100%;
+    height: calc(100% - 250px);
     border-style: none;
     box-shadow: rgba(0, 0, 0, .5) 0 2.5px 2.5px 2.5px;
     /*background-color: rgba(50, 50, 50, 0.15);*/
@@ -905,8 +903,8 @@ textarea{
 }
 
 .appcenter .appicon {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background-size: 150px 150px;
     background-repeat: no-repeat;
     background-position: center;
