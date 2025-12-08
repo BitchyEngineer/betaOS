@@ -379,6 +379,7 @@ function loadHomeScreen(){
         } else {
             appButton.setAttribute("onclick", "mobileApp('" + app.name + "'); mobilebody.removeChild(actioncenter);");
         }
+        deskgrid.appendChild(appButton);
         appcenter.appendChild(appButton);
     });
 
