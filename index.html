@@ -43,14 +43,17 @@
                     // Select the <link> element
                 let theme = document.getElementById('css');
                 let systemb = document.getElementById('javascript');
+                let environment = document.getElementById('desktopbody');
                 var newScript = document.createElement('script');
                     // Toggle between light.css and dark.css
                 if (isDesktop === true) {
                     theme.setAttribute('href', 'css/default.css');
+                    environment.id = 'desktopbody';
                     newScript.src = 'main.js';
                     document.body.appendChild(newScript);
                 } else if (isMobile === true) {
                     theme.setAttribute('href', 'css/mobile.css');
+                    environment.id = 'mobilebody';
                     newScript.src = 'mobile.js';
                     document.body.appendChild(newScript);
                 }
