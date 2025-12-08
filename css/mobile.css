@@ -362,9 +362,11 @@ body {
 }
 
 .appicon {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     margin-bottom: 10px;
     z-index: 100;
     animation: zoomfade;
