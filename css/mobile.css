@@ -295,8 +295,6 @@ body {
     animation: slidenavbar;
     animation-duration: 2s;
     backdrop-filter: blur(25px);
-    right: 50% - width/2;
-    left: 50% - width/2;
 
 }
 
