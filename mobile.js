@@ -268,8 +268,6 @@ function loadHomeScreen(){
     appdiv.id = 'appdiv';
     navbar.appendChild(actiondiv);
     navbar.appendChild(appdiv);
-    navbar.appendChild(pinneddiv);
-    navbar.appendChild(minimized);
 
     var actionmenuicon = document.createElement('button');
     actionmenuicon.type = 'image';
