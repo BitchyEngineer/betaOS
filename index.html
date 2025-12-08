@@ -8,7 +8,45 @@
         <link id="css" href="css/default.css" rel="stylesheet" />
         <link rel="shortcut icon" type="image" href="images/betaOS.png" />
     </head>
-    <body onload="boot();" scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
+    <body onload="if(isDesktop = true){bootDesktop();} else if (isMobile = true){bootMobile();}" scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
+        <script>
+            var isDesktop = false;
+            var isMobile = false;
+
+            function deviceDetection(funct1, funct2) {
+
+                if (navigator.userAgent.match(/mobile/i)) {
+                    isMobile = true;
+                    isDesktop = false;
+                } else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
+                    isMobile = true;
+                    isDesktop = false;
+                } else {
+                    isDesktop = true;
+                    isMobile = false;
+                }
+            }
+
+            function toggleSystem(){
+                    // Select the <link> element
+                let theme = document.getElementById('css');
+                let systemb = document.getElementById('javascript');
+
+                    // Toggle between light.css and dark.css
+                if (isDesktop = true) {
+                    theme.setAttribute('href', 'css/default.css');
+                    systemb.setAttribute('src', 'main.js');
+                } else if (isMobile = true) {
+                    theme.setAttribute('href', 'css/mobile.css');
+                    systemb.setAttribute('src', 'mobile.js');
+                }
+            }
+
+            deviceDetection();
+            toggleSystem();
+
+        </script>
+        
         <div id="desktopbody">
             
         </div>
@@ -19,7 +57,7 @@
                 -o-background-size: cover;
             }
         </style>
-        <script src="main.js"></script>
+        <script id="javascript" src="main.js"></script>
         <script src="contextmenus.js"></script>
     </body>
 </html>

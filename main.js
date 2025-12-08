@@ -3,7 +3,7 @@
     Resdistribution is allowed under certain conditions,
     See LICENSE file for details.
 */
-var betaOSversion = "1.0.0 [development]";
+var betaOSversion = "1.0.2";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
 var savedtheme = localStorage.getItem("theme");
@@ -40,17 +40,28 @@ var rsod = false;
   //startTime();
 
 var savednav = localStorage.getItem("savednav");
-var savedesk = localStorage.getItem("savedesk");
+var saveddesk = localStorage.getItem("saveddesk");
 
 var changelog = `betaOS Changelog:
 .betaOS 1.0.0
-    - Hypnotube app added
     - betaAssist added
     - Nononopmv app added
     - NudVista app added
     - Settings app added (some features still missing)
     - New backgrounds added
-    - Themes added`;
+    - Themes added
+.betaOS 1.0.1
+    - Theme names changed
+    - More themes added
+    - More backgrounds added
+    - Hypnotube app added (certain site features may not work correctly)
+    - NudeVista updated to make links work, but websites still don't fully show up correctly due to security features they use like cross-origin blocking.
+    - Desktop shortcuts added
+    - New prompts & responses added to betaAssist
+.betaOS 1.0.2
+    - Files app added
+    - AudioPlayer added
+    - Mobile support added`;
 
 var savedbackground = localStorage.getItem('background');
 
@@ -103,12 +114,11 @@ var desktopbody = document.getElementById('desktopbody');
 var startupscreen = document.createElement('img');
 startupscreen.style.width = '100%';
 startupscreen.style.height = '100%';
-startupscreen.src = 'images/scriptos4startup.gif';
 var actioncenter = document.createElement('div');
 var appcenter = document.createElement('div');
 appcenter.className = 'appcenter';
 
-function boot(){
+function bootDesktop(){
     document.body.style.backgroundImage = '';
     document.body.style.backgroundColor = 'black';
     document.body.style.color = 'white';
@@ -246,18 +256,19 @@ var so4icon = document.createElement('img');
 var startupbar = document.createElement('div');
 
 function startUp(){
-    desktopbody.innerHTML = "";
+    desktopbody.innerHTML = '';
     document.body.style.backgroundImage = '';
     document.body.style.backgroundColor = 'black';
     startupbar.className = 'sloadbar';
     so4icon.src = 'images/betaOS full.png';
     so4icon.className = 'so4icon';
-    var startsound = new Audio('sounds/startsound.mp3');
+    var startsound = new Audio('sounds/startupsound.mp3');
     startsound.autoplay = true;
     desktopbody.appendChild(startsound);
     desktopbody.appendChild(so4icon);
     //setTimeout(function(){desktopbody.appendChild(startupbar);},3000);
     setTimeout(function(){
+        desktopbody.innerHTML = '';
         loadDesktop();
         desktopbody.removeChild(so4icon);
         //desktopbody.removeChild(startupbar);
@@ -285,6 +296,8 @@ function deviceDetection() {
 var actiondiv = document.createElement('div');
 var appdiv = document.createElement('div');
 var pinneddiv = document.createElement('div');
+var deskgrid = document.createElement('div');
+deskgrid.className = 'deskgrid';
 pinneddiv.className = 'pinneddiv';
 var minimized = document.createElement("div");
 minimized.className = "miniapps";
@@ -319,6 +332,14 @@ function loadDesktop(){
         document.body.style.backgroundImage = 'url("images/Nonono.png")';
     }
 
+    desktopbody.appendChild(deskgrid);
+
+    if(saveddesk){
+        deskgrid.innerHTML = saveddesk;
+    } else {
+        deskgrid.innerHTML = '';
+    }
+
     navbar.className = 'navbar';
     navbar.id = 'navbar';
     desktopbody.appendChild(navbar);
@@ -348,10 +369,10 @@ function loadDesktop(){
     
     var appicon2 = document.createElement('button');
     appicon2.type = 'image';
-    appicon2.style = 'background: url("images/NudeVista.png"); background-size: 50px 50px;';
+    appicon2.style = 'background: url("images/Files.png"); background-size: 50px 50px;';
     appicon2.className = 'appicon';
-    appicon2.title = 'NudeVista';
-    appicon2.setAttribute("onclick", "betaApp('NudeVista')");
+    appicon2.title = 'Files';
+    appicon2.setAttribute("onclick", "betaApp('Files')");
     appdiv.appendChild(appicon2);
 
     var appicon3 = document.createElement('button');
@@ -364,10 +385,16 @@ function loadDesktop(){
 
     var clockb = document.createElement('button');
     clockb.id = 'datetime';
+    if(savedtheme){
+        clockb.style.backgroundColor = localStorage.getItem('theme');
+    }
     rightnav.appendChild(clockb);
     startTime();
     function startTime() {
         var date = new Date();
+        var day = date.getDay();
+        var month = date.getMonth()+1;
+        var year = date.getFullYear();
         var hour = date.getHours();
         var min = date.getMinutes();
         var sec = date.getSeconds();
@@ -377,7 +404,7 @@ function loadDesktop(){
         hour = updateTime(hour);
         min = updateTime(min);
         sec = updateTime(sec);
-        clockb.innerHTML = hour + ":" + min + ":" + sec + " " + midday;
+        clockb.innerHTML = month + "/" + day + "/" + year + " | " + hour + ":" + min + ":" + sec + " " + midday;
           var t = setTimeout(startTime, 1000);
     }
       
@@ -445,11 +472,12 @@ function loadDesktop(){
 
     // Create app buttons using a loop
     var apps = [
+        { name: 'Files', icon: 'Files.png'},
         { name: 'Settings', icon: 'Settings.png' },
         { name: 'NudeVista', icon: 'Nudevista.png' },
         { name: 'Nononopmv', icon: 'Nononopmv.png' },
         { name: 'Timer', icon: 'Timer.png' },
-        //{ name: 'Discord', icon: 'Discord.png' },
+        { name: 'Hypnotube', icon: 'Hypnotube.png' },
         { name: 'ScriptInjector', icon: 'ScriptInjector.png' },
         { name: 'Shortcuts', icon: 'Shortcuts.png', onclick: "betaApp('Settings'); openSett(event, 'Shortcuts'); desktopbody.removeChild(actioncenter);" },
         { name: 'betaAssist', icon: 'BetaAssist.png' },
@@ -524,14 +552,18 @@ var classicMode = false
 function signIn(){
     desktopbody.removeChild(timetxt);
     //desktopbody.removeChild(loginbar);
-
     navbar.appendChild(actiondiv);
     navbar.appendChild(appdiv);
     navbar.appendChild(pinneddiv);
     navbar.appendChild(minimized);
+    desktopbody.appendChild(deskgrid);
     desktopbody.appendChild(navbar);
     desktopbody.appendChild(rightnav);
     desktopbody.appendChild(conmenu1);
+
+    if(saveddesk){
+        deskgrid.innerHTML = localStorage.getItem("saveddesk");
+    }
    
     if(savednav){
         pinneddiv.innerHTML = '';
@@ -667,15 +699,20 @@ function sleepMode(){
 
 //Context Menu 1
 var conmenu1 = document.createElement('div');
-var conmenu1butt1 = document.createElement('li');
-var conmenu1butt2 = document.createElement('li');
-var conmenu1butt3 = document.createElement('li');
-var conmenu1butt4 = document.createElement('li');
-var conmenu1butt5 = document.createElement('li');
-var conmenu1butt8 = document.createElement('li');
-var conmenu1butt6 = document.createElement('li');
-var conmenu1butt7 = document.createElement('li');
-var conmenu1butt9 = document.createElement('li');
+var conmenu1butt1 = document.createElement('button');
+var conmenu1butt2 = document.createElement('button');
+var conmenu1butt3 = document.createElement('button');
+var conmenu1butt4 = document.createElement('button');
+var conmenu1butt5 = document.createElement('button');
+var conmenu1butt8 = document.createElement('button');
+var conmenu1butt6 = document.createElement('button');
+var conmenu1butt7 = document.createElement('button');
+var conmenu1butt9 = document.createElement('button');
+
+if(savedtheme){
+    conmenu1.style.backgroundColor = localStorage.getItem('theme');
+}
+
 conmenu1.className = 'menu';
 conmenu1.id = 'menu';
 conmenu1butt1.innerHTML = 'Personalization';
@@ -707,6 +744,8 @@ conmenu1butt9.onclick = function () {
 };
 conmenu1butt7.className = "menubutton";
 desktopbody.appendChild(conmenu1);
+
+
 conmenu1.appendChild(conmenu1butt1);
 conmenu1.appendChild(conmenu1butt4);
 conmenu1.appendChild(conmenu1butt8);
@@ -759,8 +798,10 @@ function editMode(){
     pushNotification("EditMode", "Any icon you click on the desktop or doc will be deleted. Open the context menu and click 'Exit EditMode' when you're done.")
     for(var i = 0; i < iconedit.length; i++){
         iconedit[i].onclick = function(){
-            if(this.className = 'appicon'){
+            if(this.className === 'appicon'){
                 this.remove();
+                localStorage.setItem('saveddesk', deskgrid.innerHTML);
+                localStorage.setItem('savednav', pinneddiv.innerHTML)
             }
         };
     }
@@ -774,6 +815,9 @@ function normMode(){
 var currentTasks = 0;
 var tasks = 0;
 var numTasks = document.getElementById('numtasks');
+
+var currentAudioContent = ''; // Global variable to hold the audio data
+
 
 function vidPlay(vidtitle){
     var app = document.createElement('div');
@@ -864,13 +908,11 @@ function vidPlay(vidtitle){
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
     var vidplayer = document.createElement("video");
-    var videoname = document.createElement("h1");
     vidplayer.className = "vidplay";
-    vidplayer.src = "videos/" + vidtitle + ".mp4";
+    vidplayer.src = "videos/" + vidtitle;
     vidplayer.controls = true;
-    videoname.innerHTML = vidtitle + "|" + vidplayer.duration;
+    appheadtext.innerHTML = vidtitle;
     appbody.appendChild(vidplayer);
-    appbody.appendChild(videoname);
     bringToFront(app.id);
 }
 
@@ -944,7 +986,7 @@ function betaApp(appsname){
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
-            app.style.height = 'calc(100% - 50px)'; 
+            app.style.height = 'calc(100% - 80px)'; 
             app.style.top = '0px'; 
             app.style.left = '0%';
             if(savedtheme){
@@ -964,41 +1006,152 @@ function betaApp(appsname){
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
+    var webbox = document.createElement('div');
+    webbox.style = document.getElementsByTagName('iframe');
+
+    function fetchContent(url) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text().then(html => ({
+                        currentUrl: response.url, // Get the final URL after redirects
+                        html: html // The fetched HTML content
+                    }));
+                })
+                .then(({ currentUrl, html }) => {
+                    // Create a shadow host to prevent CSS interference
+                    const shadowHost = document.createElement('div');
+                    const shadow = shadowHost.attachShadow({ mode: 'open' });
+
+                    // Set the HTML content in the shadow DOM
+                    shadow.innerHTML = html;
+
+                    // Modify links to ensure they use the correct URL structure
+                    const links = shadow.querySelectorAll('a');
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        // Adjust relative links to use the full current URL
+                        if (href && !href.startsWith('http')) {
+                            link.setAttribute('href', new URL(href, currentUrl).href);
+                        }
+
+                        // Handle link clicks for dynamic loading
+                        link.addEventListener('click', function(event) {
+                            event.preventDefault(); // Prevent default navigation
+                            fetchContent(link.href); // Fetch new content into the same div
+                        });
+                    });
+
+                    // Handle form submissions for search
+                    const forms = shadow.querySelectorAll('form');
+                    forms.forEach(form => {
+                        form.addEventListener('submit', function(event) {
+                            event.preventDefault(); // Prevent default form submission
+                            
+                            // Prepare the search URL
+                            const formAction = form.getAttribute('action');
+                            const formMethod = form.getAttribute('method') || 'GET';
+                            const formData = new URLSearchParams(new FormData(form)).toString();
+
+                            // Construct the search URL based on method
+                            const searchUrl = formMethod.toUpperCase() === 'POST' 
+                                ? formAction 
+                                : `${formAction}?${formData}`;
+                            
+                            fetchContent(searchUrl); // Fetch results for the search
+                        });
+                    });
+
+                    // Clear existing content and append the new shadow host
+                    webbox.innerHTML = ''; // Clear previous content
+                    webbox.appendChild(shadowHost); // Add the shadow DOM
+
+                    // Ensure dropdowns are functional
+                    const dropdownButtons = shadow.querySelectorAll('button'); // Adjust if not buttons
+                    dropdownButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const dropdownContent = button.nextElementSibling; // Adjust based on structure
+                            if (dropdownContent) {
+                                dropdownContent.classList.toggle('visible'); // Use your CSS class for dropdown visibility
+                            }
+                    });
+                });
+            })
+        .catch(error => console.error('Error fetching content:', error));
+    }
+
     if (appsname === "NudeVista") {
-        browserview = document.createElement('iframe');
-        browserview.id = "browserview" + appnumber;
-        browserview.src = "https://nudevista.com";
-        appbody.appendChild(browserview);
+        var vistbox = document.createElement('iframe');
+        appbody.appendChild(vistbox);
+        vistbox.src = 'https://nudevista.com';
+    }else if(appsname === "Hypnotube"){
+        appbody.appendChild(webbox);
+        // Load the initial content
+        fetchContent('https://hypnotube.com'); // Replace with the desired initial URL
+
+
+
+    } else if(appsname === "betaNet"){
+        var urlinput = document.createElement('input');
+        var fbutt = document.createElement('button');
+        var bbutt = document.createElement('button');
+        var sbutt = document.createElement('button');
+        
+        appbody.appendChild(urlinput);
+        appbody.appendChild(sbutt);
+        appbody.appendChild(webbox);
+
+        urlinput.type = 'text';
+        urlinput.placeholder = 'Search or type url';
+        sbutt.innerHTML = 'Go';
+        sbutt.onclick = function(){   
+            var geturl = urlinput.value;
+            fetchContent(geturl);
+        };
+
     }else if(appsname === "Tasks"){
         var tasknum = document.createElement('h1');
         var closeall = document.createElement('button');
         var refreshb = document.createElement('button');
-        var taskh = document.createElement('textarea');
-        taskh.style = "background: rgba(0, 0, 0, 0); width: 100%; height: 90%; resize: none; color: white; border: none; outline: none;";
-        taskh.readOnly = true;
         refreshb.innerHTML = "Refresh";
         refreshb.onclick = function(){
             taskManage();
         };
         appbody.appendChild(tasknum);
-        appbody.appendChild(taskh);
         appbody.appendChild(refreshb);
         //app.appendChild(closeall);
         function taskManage(){
-            currentTasks = document.getElementsByClassName('app').length;
-            tasknum.innerHTML = currentTasks;
+            appbody.innerHTML = "";
+            appbody.appendChild(tasknum);
+            appbody.appendChild(refreshb);
             var task = document.getElementsByClassName('app');
             var taska = [];
+            currentTasks = document.getElementsByClassName('app').length;
+            tasknum.innerHTML = "Current Tasks: " + currentTasks;
+            
             for(var i = 0; i < currentTasks; i++){
                 taska.push(task[i].id + '\n');
                 if(taska.length > currentTasks){
-                    if(task[i].id = taska[i]){
+                if(task[i].id = taska[i]){
                         taska[i].pop();
                     }
-                }
-                taskh.value = taska;
+                } 
+            }
+
+            for (var i = 0; i < taska.length; i++){
+                var taskbutt = document.createElement('button');
+                taskbutt.innerHTML = taska[i];
+                taskbutt.id = 'task-' + task.id;
+                taskbutt.onclick = function(){
+                    desktopbody.remove(document.getElementById(taska[i].value));
+                    tasks--;
+                };
+                appbody.appendChild(taskbutt);
+                console.log(taska[i] + " - running");
             }
         }
+        appbody.appendChild(tasknum);
+        appbody.appendChild(refreshb);
     } else if(appsname === "Nononopmv"){
         var ntab = document.createElement('div');
         var videos = ['BCIT1','BCIT2','BCIT3','BCIT4','BCIT5'];
@@ -1024,7 +1177,7 @@ function betaApp(appsname){
             thumbnail.id = "thumbnail" + videos[i];
             thumbnail.title = videos[i];
             thumbnail.onclick = function(){
-                vidPlay(videos[i]);
+                vidPlay(videos[i] + ".mp4");
             };
             bcitlist.appendChild(thumbnail);
         }
@@ -1074,17 +1227,202 @@ function betaApp(appsname){
 
         }*/
             
+    } else if(appsname === "Files") {
+        var fileInput = document.createElement('input');
+        var uploadButton = document.createElement('button');
+        var searchInput = document.createElement('input');
+        var searchButton = document.createElement('button');
+        var fileList = document.createElement('div');
+
+        // Initialize IndexedDB
+        var db;
+        var request = indexedDB.open("FileStorage", 3); // Incremented version to 2
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+
+            if (!db.objectStoreNames.contains("videos")) {
+                db.createObjectStore("videos", { keyPath: "name" }); // Create object store if it doesn't exist
+            }
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            displayFiles(); // Display files if any
+
+            // Set up file input and buttons inside `onsuccess`
+            fileInput.type = 'file';
+            fileInput.className = 'uploadbutt';
+            fileInput.text = 'Choose a file';
+            uploadButton.innerText = 'Upload File';
+            searchInput.type = 'text';
+            searchInput.placeholder = 'Search Files...';
+            searchButton.innerText = 'Search';
+
+            // Append elements to app body
+            appbody.appendChild(fileInput);
+            appbody.appendChild(uploadButton);
+            appbody.appendChild(searchInput);
+            appbody.appendChild(searchButton);
+            appbody.appendChild(fileList);
+
+            // Upload file handler
+            // Notify the user where the file will be saved
+
+            uploadButton.onclick = function() {
+                var file = fileInput.files[0];
+                if (!file) { alert('Please select a file to upload.'); return; }
+
+                var isVideo = file.name.endsWith('.mp4') || file.name.endsWith('.avi') || file.name.endsWith('.mov');
+                var isAudio = file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.ogg');
+                if (!(isVideo || isAudio)) { alert('The uploaded file is not an audio or video file.'); return; }
+
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var transaction = db.transaction([ isVideo ? "videos" : "sounds" ], "readwrite");
+                    var store = transaction.objectStore("videos");
+                    store.put({ name: file.name, content: event.target.result });
+
+                    var blob = new Blob([event.target.result], { type: file.type || 'application/octet-stream' });
+                    var url = URL.createObjectURL(blob);
+
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = file.name; // download hint (Safari uses its setting to decide dialog)
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    var folder = isVideo ? "videos" : "sounds";
+                    alert(`Your ${isVideo ? 'video' : 'audio'} is ready. Please save it into the "betaOS/${folder}" folder.`);
+                    displayFiles();
+                    fileInput.value = '';
+                };
+                reader.readAsArrayBuffer(file);
+            };
+            // Display uploaded files
+            function displayFiles() {
+                var transaction = db.transaction(["videos"]); // Use "videos" store
+                var store = transaction.objectStore("videos");
+                var request = store.getAll();
+
+                request.onsuccess = function(event) {
+                    var files = event.target.result;
+                    fileList.innerHTML = ''; // Clear previous entries
+                    files.forEach(createFileButton); // Create a button for each file
+                };
+            }
+
+            function createFileButton(fileData) {
+                var fileButton = document.createElement('button');
+                fileButton.className = 'backgroundoption'; 
+                fileButton.innerText = fileData.name;
+
+                if(fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')){
+                    fileButton.style.backgroundColor = 'rgba(0,255,0,0.25)';
+                } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.avi') || fileData.name.endsWith('.mov')) {
+                    fileButton.style.backgroundColor = 'rgba(255, 0, 0, 0.25)';
+                }
+
+                // Determine file type and set behavior
+                fileButton.onclick = function() {
+                    if (fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')) {
+                        currentAudioContent = fileData.content; // Set current audio content globally
+                        betaApp("AudioPlayer"); // Open the AudioPlayer (implement this function separately)
+                    } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.mov')) {
+                        vidPlay(fileData.name); // Function to play video files
+                    } else {
+                        alert('File type not supported for playback.'); // Alert for unsupported file types
+                    }
+                };
+                
+                fileList.appendChild(fileButton);
+            }
+
+            // Search file handler
+            searchButton.onclick = function() {
+                var query = searchInput.value.toLowerCase();
+                var transaction = db.transaction(["videos"]); // Use "videos" store
+                var store = transaction.objectStore("videos");
+                var request = store.getAll();
+
+                request.onsuccess = function(event) {
+                    var files = event.target.result;
+                    fileList.innerHTML = ''; // Clear previous search results
+                    files.forEach(function(fileData) {
+                        if (fileData.name.toLowerCase().includes(query)) {
+                            createFileButton(fileData); // Create button for matching files
+                        }
+                    });
+                };
+            };
+        };
+
+        request.onerror = function(event) {
+            console.error("Error opening IndexedDB:", event.target.error);
+        };
+    } else if(appsname === "AudioPlayer") {
+        var audioPlayer = document.createElement('audio');
+        var playButton = document.createElement('button');
+        var stopButton = document.createElement('button');
+        var fileNameDisplay = document.createElement('div'); // Element to display the audio filename
+
+        // Set up playback buttons
+        fileNameDisplay.innerText = 'Not Playing';
+        playButton.innerText = 'Play';
+        stopButton.innerText = 'Stop';
+
+        // Append elements to app body
+        appbody.appendChild(fileNameDisplay); // Append filename display first
+        appbody.appendChild(audioPlayer);
+        appbody.appendChild(playButton);
+        appbody.appendChild(stopButton);
+
+        // Function to handle playing the audio
+        playButton.onclick = function() {
+            if (currentAudioContent) {
+                audioPlayer.src = currentAudioContent; // Set the source to the global variable
+                
+                // Get the filename
+                let fileName;
+                if (typeof currentAudioContent === 'string') {
+                    // If it's a URL or string path
+                    fileName = currentAudioContent.split('/').pop();
+                } else if (currentAudioContent instanceof File) {
+                    // If currentAudioContent is a File object
+                    fileName = currentAudioContent.name;
+                } else {
+                    fileName = 'Unknown file'; // Default fallback
+                }
+                
+                fileNameDisplay.innerText = fileName; // Display the filename
+                audioPlayer.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                });
+            } else {
+                alert('No audio file selected.');
+            }
+        };
+
+        // Stop audio button handler
+        stopButton.onclick = function() {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0; // Reset to the start
+            fileNameDisplay.innerText = ''; // Clear the displayed filename
+        };
     } else if (appsname === "Settings") {
         var tab = document.createElement('div');
         var generalsettings = document.createElement('div');
         var backgroundsettings = document.createElement('div');
         var widgets = document.createElement('div');
         var about = document.createElement('div');
+        var basssett = document.createElement('div');
         var shortcuts = document.createElement('div');
         var usersett = document.createElement('div');
         var changelogsett = document.createElement('div');
 
-        var sett = ['General', 'Personalization', 'About', 'Shortcuts', 'User', 'Changelog'];
+        var sett = ['General', 'Personalization', 'About', /*'betaAssist',*/ 'Shortcuts', 'User', 'Changelog'];
 
         for(let i = 0; i < sett.length; i++){
             var settbutt = document.createElement('button');
@@ -1105,10 +1443,39 @@ function betaApp(appsname){
         generalsettings.style.display = 'inline';
         generalsettings.innerHTML = "<h1> General </h1><p>General settings will be available in future updates.</p>";
         
-        backgroundsettings.className = 'tabcontent';
         appbody.appendChild(tab);
+        //appbody.appendChild(basssett);
         appbody.appendChild(usersett);
         appbody.appendChild(generalsettings);
+
+        basssett.className = 'tabcontent';
+        basssett.id = 'betaAssist';
+        var basstext = document.createElement("h1");
+        var voiceopttxt = document.createElement('h2');
+        var voiceoptbox = document.createElement('label');
+        var voiceopt = document.createElement('input');
+        var voptslide = document.createElement('span');
+        basstext.innerHTML = 'betaAssist Settings';
+        voiceopttxt.innerHTML = 'Voice Over: ';
+        voiceoptbox.class = 'switch';
+        voiceopt.type = 'checkbox';
+        voptslide.class = 'slider';
+
+        voiceopt.checked = false;
+
+        if(voiceopt.checked == true){
+            voiceActive = true;
+        } else if (voiceopt.checked == false){
+            voiceActive = false;
+        }
+
+        basssett.appendChild(basstext);
+        basssett.appendChild(voiceopttxt);
+        voiceoptbox.appendChild(voiceopt);
+        voiceoptbox.appendChild(voptslide);
+        basssett.appendChild(voiceoptbox);
+        appbody.appendChild(basssett);
+
         usersett.id = 'User';
         usersett.className = 'tabcontent';
 
@@ -1139,6 +1506,7 @@ function betaApp(appsname){
 
         backgroundsettings.scroll = true;
         backgroundsettings.style.overflow = 'scroll';
+        backgroundsettings.className = 'tabcontent';
 
         appbody.appendChild(backgroundsettings);
         backgroundsettings.style.display = 'none';
@@ -1149,7 +1517,9 @@ function betaApp(appsname){
         backgroundsettings.appendChild(backgroundtxt);
         
         var bchoices = ['Nonono', 'HiddenGooner', 'Backside', 'Exposed', 'GettinDirty', 
-            'Pineapple', 'WindowShopper', 'Anime1', 'Hermoine'];
+            'Pineapple', 'WindowShopper', 'Anime1', 'Hermoine', 'Boobs', 'AssInTheWoods', 
+            'CarShot', 'InTheField', 'OnTheTracks', 'BlackLatex', 'LoveHer', 'BlackLace', 
+            'BeachTime', 'GuitarGirl', 'ShoesOffFeetUp'];
         for (var i = 0; i < bchoices.length; i++){
             var bchoice = document.createElement('button');
             bchoice.id = bchoices[i] + appnumber;
@@ -1169,14 +1539,18 @@ function betaApp(appsname){
         backgroundsettings.appendChild(themetxt);
 
         var tchoices = [
-            {name: 'Red', color: 'rgba(255, 0, 0, 0.5)'},
-            {name: 'Blue', color: 'rgba(0, 0, 255, 0.5)'}, 
-            {name: 'Green', color: 'rgba(0, 255, 0, 0.5)'},
-            {name: 'Orange', color: 'rgba(255, 165, 0, 0.5)'}, 
-            {name: 'Purple', color: 'rgba(128, 0, 128, 0.5)'}, 
-            {name: 'Pink', color: 'rgba(255, 192, 203, 0.5)'}, 
-            {name: 'Dark', color: 'rgba(0, 0, 0, 0.5)'}, 
-            {name: 'Light', color: 'rgba(149, 149, 149, 0.5)'}
+            {name: 'One In The Pink', color: 'rgba(238, 39, 149, 0.65)'}, 
+            {name: 'Red Sea', color: 'rgba(255, 0, 0, 0.65)'},
+            {name: 'Mars', color: 'rgba(234, 95, 3, 0.65)'},
+            {name: 'Orange Soda', color: 'rgba(255, 165, 0, 0.65)'}, 
+            {name: 'Sunrays', color: 'rgba(254, 224, 3, 0.65)'},
+            {name: 'Green Apple', color: 'rgba(0, 255, 0, 0.65)'},
+            {name: 'Aquarium', color: 'rgba(12, 224, 178, 0.65)'},
+            {name: 'Ocean Water', color: 'rgba(0, 0, 255, 0.65)'},
+            {name: 'Midnight Light', color: 'rgba(117, 14, 227, 0.65)'},
+            {name: 'Violet Vision', color: 'rgba(128, 0, 128, 0.65)'}, 
+            {name: 'Dark Mode', color: 'rgba(0, 0, 0, 0.65)'}, 
+            {name: 'Light Mode', color: 'rgba(149, 149, 149, 0.65)'}
         ];
 
         /*tchoices.forEach(function(choice){
@@ -1204,6 +1578,8 @@ function betaApp(appsname){
                 document.getElementById('navbar').style.backgroundColor = this.style.backgroundColor;
                 app.style.backgroundColor = this.style.backgroundColor;
                 actioncenter.style.backgroundColor = this.style.backgroundColor;
+                document.getElementById('datetime').style.backgroundColor = this.style.backgroundColor;
+                conmenu1.style.backgroundColor = this.style.backgroundColor;
                 localStorage.setItem('theme', this.style.backgroundColor);
             };
             backgroundsettings.appendChild(tchoice);
@@ -1258,7 +1634,9 @@ function betaApp(appsname){
 
         var appnameshort = document.createElement('input');
         var shortaddnav = document.createElement('button');
+        var shortadddesk = document.createElement('button');
         var newshortcut = document.createElement('button');
+        var navshort = document.createElement('button');
         var appdiv = document.getElementById("appdiv");
         var noticetxt = document.createElement("h3");
         var resetsc = document.createElement("button");
@@ -1269,31 +1647,48 @@ function betaApp(appsname){
         newshortcut.style.textAlign = 'center';
         appnameshort.type = 'text';
         appnameshort.placeholder = "App name";
-        shortaddnav.innerHTML = 'Add to Navbar';
+        shortaddnav.innerHTML = 'Navbar';
+        shortadddesk.innerHTML = 'Desktop';
         noticetxt.innerHTML = "***NAMES ARE CASE SENSITIVE***"
         resetsc.innerHTML = "Reset Shortcuts";
         resetsc.title = "This will remove all added shortcuts";
         resetsc.onclick = function () {localStorage.removeItem("savednav"); window.location.reload();};
-        setInterval(function(){iconpreview.src = "images/" + appnameshort.value + ".png"}, 500);
         iconpreview.style.width = '20%';
         iconpreview.style.width = '20%';
         shortcuts.appendChild(appnameshort);
         shortcuts.appendChild(shortaddnav);
+        shortcuts.appendChild(shortadddesk);
         shortcuts.appendChild(resetsc);
         shortcuts.appendChild(noticetxt);
         shortcuts.appendChild(iconpreview);
         shortaddnav.onclick = function () {
+            iconpreview.src = "images/" + appnameshort.value + ".png";
+            navshort.title = appnameshort.value;
+            navshort.style = 'background-image: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
+            navshort.className = 'appicon';
+            if(appnameshort.value != "Shortcuts"){
+                navshort.setAttribute("onclick", "betaApp('" + appnameshort.value + "')");
+            } else if(appnameshort.value = "Shortcuts"){
+                navshort.setAttribute("onclick", "betaApp('Settings'); openSett(event, 'Shortcuts');");
+            }
+            pinneddiv.appendChild(navshort);
+            localStorage.setItem("savednav", pinneddiv.innerHTML);
+            desktopbody.removeChild(app);
+        };
+
+        shortadddesk.onclick = function () {
+            iconpreview.src = "images/" + appnameshort.value + ".png";
             newshortcut.title = appnameshort.value;
-            newshortcut.style = 'background: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
+            newshortcut.style = 'background-image: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
             newshortcut.className = 'appicon';
             if(appnameshort.value != "Shortcuts"){
                 newshortcut.setAttribute("onclick", "betaApp('" + appnameshort.value + "')");
             } else if(appnameshort.value = "Shortcuts"){
                 newshortcut.setAttribute("onclick", "betaApp('Settings'); openSett(event, 'Shortcuts');");
             }
-            pinneddiv.appendChild(newshortcut);
-            localStorage.setItem("savednav", pinneddiv.innerHTML);
+            deskgrid.appendChild(newshortcut);
             desktopbody.removeChild(app);
+            localStorage.setItem("saveddesk", deskgrid.innerHTML);
         };
 
         appbody.appendChild(changelogsett);
@@ -1323,9 +1718,15 @@ function betaApp(appsname){
         var timesuptext = document.createElement('h1');
         var timing;
         var alarm = new Audio('sounds/analog-watch-alarm_daniel-simion.mp3');
+        app.style.width = '300px';
+        app.style.height = '300px';
+        app.style.resize = 'none';
+        headbuttdiv.removeChild(minimize);
+        headbuttdiv.removeChild(fullscreen);
         timesuptext.innerHTML = "TIMES UP!!!";
         timeset.placeholder = "Time(in seconds)";
         timeset.type = "number";
+        timeset.className = 'betainput';
         setbutton.innerHTML = "Set & Start Timer";
         setbutton.className = 'tbutton';
         setbutton.onclick = function () {
@@ -1421,24 +1822,21 @@ function betaApp(appsname){
         var sendbutt = document.createElement("button");
         apphead.style.background = "rgba(0,0,0,0)";
         commandinput.placeholder = 'Type a message';
-        commandinput.style = 'height:15%; border-style: none;  width:75%; font-size: 75px; border-radius: 15px; color: white; outline: none;';
+        commandinput.style = 'height: 75px; border-style: none;  width:75%; font-size: 50px; border-radius: 15px; color: white; outline: none;';
         commandinput.type = "text";
-        commandoutput.style = 'height:75%; text-shadow: 2.5px 2.5px 2.5px black; width:100%; font-size: 65px; border-style: none; resize: none; color:white; background: rgba(0,0,0,0)';
+        commandoutput.style = 'height:75%; text-shadow: 2.5px 2.5px 2.5px black; width:100%; font-size: 50px; border-style: none; resize: none; color:white; background: rgba(0,0,0,0)';
         commandoutput.readOnly = true;
         sendbutt.innerHTML = "Send";
         sendbutt.className = "appchoice";
         micbutton.style = "background-Image: url(images/mic.png); width: 75px; height: 75px; background-size: 75px 75px;";
         micbutton.onclick = function () {
-            startDictation();
+            betaAssist();
         };
         commandinput.onkeydown = function (e){
             if(e.keyCode == 13){
                 betaAssist();
             }
         };
-        //micbutton.onclick = function () {
-            //recognizer.start();
-        //};
         appbody.appendChild(commandoutput);
         appbody.appendChild(commandinput);
         appbody.appendChild(micbutton);
@@ -1479,6 +1877,7 @@ function betaApp(appsname){
         codetxt.style.height = '97.5%';
         codetxt.style.backgroundColor = 'black';
         codetxt.style.color = 'white';
+        codetxt.value = ``;
         f1.value = 'Untitled.js';
         runbutt.innerHTML = 'Run';
         resetbutt.innerHTML = 'Reset(Stop)';
@@ -1606,7 +2005,7 @@ document.onkeyup = function (e){
     document.onkeyup=function(e){
         var e = e || window.event;
         if(e.which == 9) {
-                betaApp("BetaAssist");
+                betaApp("betaAssist");
         }
         if(e.which == 27){
             desktopbody.appendChild(actioncenter);
@@ -1668,10 +2067,40 @@ function bringToFront(appname){
     }
 }
 
+var voiceActive = false;
+
 function betaAssist(){
+
+    var taskinputs = [
+        "give me a task",
+        "tell me what to do",
+        "dominate me",
+        "i want to goon",
+        "what should i do"
+    ];
+    
+    var greetings = [
+        "hi",
+        "hello",
+        "whats up",
+        "yo",
+        "hey",
+        "greetings"
+    ];
+
+    var qwords = [
+        "who",
+        "what",
+        "where",
+        "why",
+        "how"
+    ];
+    
     var tasks = [
         "You should start watching chastity hypno videos. It'll make you more submissive.",
         "Open the Nononopmv app that's in the dock at the bottom of the screen and watch every video. No stopping early. No cumming.",
+        "Open Hypnotube and goon your fucking brains out to girlcock videos, beta. No cumming. If you cum, you get locked in chastity.",
+        "Lock yourself in chastity until midnight, then unlock and cum quickly to non-nude content."
     ];
     
     var greetingreplies = [
@@ -1679,108 +2108,80 @@ function betaAssist(){
         "Hello",
         "What's up",
         "Hi there",
-        "Hello, friend",
+        "Hello, beta",
         "What's up my diggity dogs?",
         "What's up, " + un,
         "Hi, " + un,
         "Hello, " + un
     ];
 
+    var hruquestions = [
+        'how are you',
+        'hows it going',
+        'how are you doing',
+        'are you okay',
+        'are you doing okay',
+        'is everything alright'
+    ];
+
     var hrureplies = [
-        "I'm doing pretty good",
-        "I'm great",
-        "Amazing",
-        "Fantastic",
-        "Not too bad",
-        "I'm alright",
-        "I'm doing alright",
-        "Not great, but I'm okay"
+        "I'm doing okay.",
+        "I'm okay",
+        "I'm doing okay",
+        "Fucking terrible.",
+        "Amazing, today's going great.",
+        "I'm great, and horny. Haha",
+        "I'm okay, I guess.",
     ];
 
-    var swearreplies = [
-        "Fuck you",
-        "Fuck off",
-        "Shut the fuck up",
-        "Don't say that to me",
-        un + ", I'm telling your mother",
-        "That isn't very nice",
-        "Shut up",
-        "Okay",
-        "...",
-        "I thought we were friends",
-        "What the fuck",
-        "You're a bitch",
-        "You cunt",
-        "Motherfucker",
-        "No",
-        "You're a cunt"
+    var yesses = [
+        "yes",
+        "yes maam",
+        "yes ma'am",
+        "absolutely",
+        "yes mistress",
+        "yes master",
+        "yeah",
+        "i will",
+        "ill do it"
     ];
 
-    repliestoyes = [
-        "Okay",
-        "Yes received",
-        "Yes",
-        "Alright",
-        "No"
+    var nos = [
+        "no",
+        "i dont want to",
+        "no i dont want to",
+        "im not in the mood",
+        "stop"
     ];
 
-    if(commandinput.value == "hey"){
+    var noresponse = [
+        "You will do what you're told.",
+        "Betas need to follow orders. You're using betaOS, so you're obviously a little beta bitch.",
+        "Do what I said. Now!",
+        "You're not allowed to say no. Betas always obey.",
+        "You will obey."
+    ];
+
+    var yesresponse = [
+        "Good beta. Go complete your task",
+
+    ];
+
+    if(taskinputs.includes(commandinput.value)){
+        commandoutput.value = tasks[Math.floor(Math.random() * tasks.length)];
+    } else if(greetings.includes(commandinput.value)){
         commandoutput.value = greetingreplies[Math.floor(Math.random() * greetingreplies.length)];
-    }else if(commandinput.value == "hi"){
-        commandoutput.value = greetingreplies[Math.floor(Math.random() * greetingreplies.length)];
-    } else if(commandinput.value == "whats up"){
-        commandoutput.value = greetingreplies[Math.floor(Math.random() * greetingreplies.length)];
-    } else if(commandinput.value == "what's up"){
-        commandoutput.value = greetingreplies[Math.floor(Math.random() * greetingreplies.length)];
-    } else if(commandinput.value == "how are you"){
+    } else if(hruquestions.includes(commandinput.value)){
         commandoutput.value = hrureplies[Math.floor(Math.random() * hrureplies.length)];
-    } else if(commandinput.value == "fuck you"){
-        commandoutput.value = swearreplies[Math.floor(Math.random() * swearreplies.length)];
-    } else if(commandinput.value == "you're stupid"){
-        commandoutput.value = swearreplies[Math.floor(Math.random() * swearreplies.length)];
-    } else if(commandinput.value == "fuck"){
-        commandoutput.value = swearreplies[Math.floor(Math.random() * swearreplies.length)];
-    } else if(commandinput.value == "bitch"){
-        commandoutput.value = swearreplies[Math.floor(Math.random() * swearreplies.length)];
-    } else if(commandinput.value == "you're a bitch"){
-        commandoutput.value = swearreplies[Math.floor(Math.random() * swearreplies.length)];
-    } else if(commandinput.value == "you cunt"){
-        commandoutput.value = swearreplies[Math.floor(Math.random() * swearreplies.length)];
-    } else if(commandinput.value == "give me a task"){
-        commandoutput.value = tasks[Math.floor(Math.random() * tasks.length)];
-    } else if (commandinput.value == "what should i do"){
-        commandoutput.value = tasks[Math.floor(Math.random() * tasks.length)];
-    } else if(commandinput.value == "do you work on macs"){
-        commandoutput.value = "Yes, as long as you don't use Safari.";
-    } else if(commandinput.value == "donate"){
-        commandoutput.value = "...";
-        betaApp("Browser");
-        browserview.src = "https://paypal.me/nononopmv";
-    } else if(commandinput.value == ""){
-        commandoutput.value = "";
-    } else if(commandinput.value == "yes"){
-        commandoutput.value = repliestoyes[Math.floor(Math.random() * repliestoyes.length)];
-    } else if(commandinput.value == "no"){
-        commandoutput.value = "Okay.";
-    } else if(commandinput.value == "lock my computer"){
-        commandoutput.value = "Locking your computer.";
-        signOut();
-    } else if(commandinput.value == "what is your name"){
-        commandoutput.value = "My name is Script AI, I'm here to help!";
-    } else if(commandinput.value.includes("random number")){
-        commandoutput.value = Math.floor(Math.random() * Math.floor(commandinput.value.match(/\d+/)));
-    } else if(commandinput.value == "new sticky note"){
-        commandoutput.value = "Creating new StickyNote";
-        newSticky();
-    } else if(commandinput.value == "new sticky"){
-        commandoutput.value = "Creating new StickyNote";
-        newSticky();
-    }else if(commandinput.value == "new note"){
-        commandoutput.value = "Creating new StickyNote";
-        newSticky();
-    } else{
-        commandoutput.value = "Sorry, I didn't get that.";
+    } else if(yesses.includes(commandinput.value)){
+        commandoutput.value = yesresponse[Math.floor(Math.random() * yesresponse.length)];
+    } else if(nos.includes(commandinput.value)){
+        commandoutput.value = noresponse[Math.floor(Math.random() * noresponse.length)];
+    } else {
+        commandoutput.value = "Sorry, I didn't get that";
     }
+
+    commandinput.value = '';
 
     var available_voices = window.speechSynthesis.getVoices();
     
@@ -1793,7 +2194,7 @@ function betaAssist(){
         }
     }
     if(english_voice === ''){
-        english_voice = available_voices[0];
+        english_voice = available_voices[3];
     }
     var utter = new SpeechSynthesisUtterance();
     utter.rate = 1;
@@ -1801,7 +2202,10 @@ function betaAssist(){
     utter.text = commandoutput.value;
     utter.voice = english_voice;
 
-    window.speechSynthesis.speak(utter);
+    if (voiceActive = true){
+        window.speechSynthesis.speak(utter);
+    }
+        
 }
 
 var apps = document.getElementsByClassName("app");
