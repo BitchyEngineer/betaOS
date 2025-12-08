@@ -11,7 +11,14 @@
     <body scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
         
         <div id="desktopbody">
-            
+            <div id="menu" class="menu" style="display: none;">
+                <button class="menubutton" id="conbutt1">Personalize</button>
+                <button class="menubutton" id="conbutt2">New Shortcut</button>
+                <button class="menubutton" id="conbutt3">New StickyNote</button>
+                <button class="menubutton" id="conbutt4">Show Tasks</button>
+                <button class="menubutton" id="conbutt5">Edit Mode</button>
+                <button class="menubutton" id="conbutt6" style="display: none;">Exit Edit Mode</button>
+            </div>
         </div>
         <style>
             body {
@@ -20,7 +27,6 @@
                 -o-background-size: cover;
             }
         </style>
-        <script src="contextmenus.js"></script>
         <script>
             var isDesktop = false;
             var isMobile = false;
@@ -63,6 +69,6 @@
             toggleSystem();
 
         </script>
+        <script src="contextmenus.js"></script>
     </body>
-    <script src="contextmenus.js"></script>
 </html>

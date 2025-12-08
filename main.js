@@ -3,7 +3,6 @@
     Resdistribution is allowed under certain conditions,
     See LICENSE file for details.
 */
-
 bootDesktop();
 var betaOSversion = "1.0.2";
 var defaultengine;
@@ -141,29 +140,35 @@ function bootDesktop(){
         //RSOD(e344);
     }*/
 
-    setTimeout(function(){desktopbody.innerText+="\n" + objbrowserName + objfullVersion}, 250);
-    console.log(objbrowserName + objfullVersion);
-    setTimeout(function(){desktopbody.innerText+="\n betaOS " + betaOSversion}, 350);
-    console.log("betaOS " + betaOSversion);
-    setTimeout(function(){desktopbody.innerText+="\n Copyright nononopmv 2025"; console.log("copyright nononopmv 2025")}, 500);
-    setTimeout(function(){desktopbody.innerText+="\n betaOS Copyright (C) 2025 nononopmv"; console.log("betaOS Copyright (C) 2025 nononopmv")}, 650);
-    setTimeout(function(){desktopbody.innerText+="\n Resdistribution is allowed under certain conditions"; console.log("Redistribution is allowed under certain conditions")}, 750);
-    setTimeout(function(){desktopbody.innerText+="\n See LICENSE file for details"; console.log("See LICENSE file for details")}, 850);
-    setTimeout(function(){desktopbody.innerText+="\n System dependencies loaded successfully"; console.log("System dependencies loaded successfully")}, 1000);
-    setTimeout(function(){desktopbody.innerText+="\n Loading JavaScript"; console.log("Loading JavaScript")}, 1150);
-    setTimeout(function(){desktopbody.innerText+="\n Loading programs"; console.log("Loading programs")}, 1250);
-    setTimeout(function(){desktopbody.innerText+="\n JavaScript loaded successfully"; console.log("JavaScript loaded successfully")}, 1350);
-    setTimeout(function(){desktopbody.innerText+="\n Programs loaded successfully"; console.log("Programs loaded successfully")}, 1500);
-    setTimeout(function(){desktopbody.innerText+="\n Loading betaAssist"; console.log("Loading betaAssist")}, 1600);
-    setTimeout(function(){desktopbody.innerText+="\n betaAssist loaded successfully"; console.log("betaAssist loaded successfully")}, 1700);
-    setTimeout(function(){desktopbody.innerText+="\n Loading app icons"; console.log("Loading app icons")}, 1850);
-    setTimeout(function(){desktopbody.innerText+="\n Loading background images"; console.log("Loading background images")}, 1950);
-    setTimeout(function(){desktopbody.innerText+="\n App icons loaded successfully"; console.log("App icons loaded successfully")}, 2100);
-    setTimeout(function(){desktopbody.innerText+="\n Background images loaded successfully"}, 2200);
-    setTimeout(function(){desktopbody.innerText+="\n See the changelog in the About section of Settings"}, 2450);
-    setTimeout(function(){desktopbody.innerText+="\n Starting up betaOS..."; console.log("Starting up betaOS...")}, 2550);
+    var boottxt = document.createElement('div');
+    var desktopbody = document.getElementById('desktopbody');
+    boottxt.style.color = 'white';
+    boottxt.style = 'width: 100%; height: 100%';
+    desktopbody.appendChild(boottxt);
 
-    setTimeout(startUp, 2900);
+    setTimeout(function(){boottxt.innerText+="\n" + objbrowserName + objfullVersion}, 250);
+    console.log(objbrowserName + objfullVersion);
+    setTimeout(function(){boottxt.innerText+="\n betaOS " + betaOSversion}, 350);
+    console.log("betaOS " + betaOSversion);
+    setTimeout(function(){boottxt.innerText+="\n Copyright nononopmv 2025"; console.log("copyright nononopmv 2025")}, 500);
+    setTimeout(function(){boottxt.innerText+="\n betaOS Copyright (C) 2025 nononopmv"; console.log("betaOS Copyright (C) 2025 nononopmv")}, 650);
+    setTimeout(function(){boottxt.innerText+="\n Resdistribution is allowed under certain conditions"; console.log("Redistribution is allowed under certain conditions")}, 750);
+    setTimeout(function(){boottxt.innerText+="\n See LICENSE file for details"; console.log("See LICENSE file for details")}, 850);
+    setTimeout(function(){boottxt.innerText+="\n System dependencies loaded successfully"; console.log("System dependencies loaded successfully")}, 1000);
+    setTimeout(function(){boottxt.innerText+="\n Loading JavaScript"; console.log("Loading JavaScript")}, 1150);
+    setTimeout(function(){boottxt.innerText+="\n Loading programs"; console.log("Loading programs")}, 1250);
+    setTimeout(function(){boottxt.innerText+="\n JavaScript loaded successfully"; console.log("JavaScript loaded successfully")}, 1350);
+    setTimeout(function(){boottxt.innerText+="\n Programs loaded successfully"; console.log("Programs loaded successfully")}, 1500);
+    setTimeout(function(){boottxt.innerText+="\n Loading betaAssist"; console.log("Loading betaAssist")}, 1600);
+    setTimeout(function(){boottxt.innerText+="\n betaAssist loaded successfully"; console.log("betaAssist loaded successfully")}, 1700);
+    setTimeout(function(){boottxt.innerText+="\n Loading app icons"; console.log("Loading app icons")}, 1850);
+    setTimeout(function(){boottxt.innerText+="\n Loading background images"; console.log("Loading background images")}, 1950);
+    setTimeout(function(){boottxt.innerText+="\n App icons loaded successfully"; console.log("App icons loaded successfully")}, 2100);
+    setTimeout(function(){boottxt.innerText+="\n Background images loaded successfully"}, 2200);
+    setTimeout(function(){boottxt.innerText+="\n See the changelog in the About section of Settings"}, 2450);
+    setTimeout(function(){boottxt.innerText+="\n Starting up betaOS..."; console.log("Starting up betaOS...")}, 2550);
+    
+    setTimeout(function(){desktopbody.removeChild(boottxt); startUp();}, 2900);
 }
 
 //Drag & Rearrange Icons
@@ -253,7 +258,6 @@ var so4icon = document.createElement('img');
 var startupbar = document.createElement('div');
 
 function startUp(){
-    desktopbody.innerHTML = '';
     document.body.style.backgroundImage = '';
     document.body.style.backgroundColor = 'black';
     startupbar.className = 'sloadbar';
@@ -265,30 +269,14 @@ function startUp(){
     desktopbody.appendChild(so4icon);
     //setTimeout(function(){desktopbody.appendChild(startupbar);},3000);
     setTimeout(function(){
-        desktopbody.innerHTML = '';
         loadDesktop();
         desktopbody.removeChild(so4icon);
-        //desktopbody.removeChild(startupbar);
-    }, 10000);
+        desktopbody.removeChild(startsound);
+    }, 4000);
 }
 
 var devicesupported = true;
 
-function deviceDetection() {
-    if (navigator.userAgent.match(/mobile/i)) {
-        console.log('MOBILE DEVICE = NOT SUPPORTED');
-        desktopbody.innerHTML = "MOBILE DEVICE = NOT SUPPORTED";
-        devicesupported = false;
-    } else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
-        console.log('TABLET = NOT SUPPORTED');
-        desktopbody.innerText += "\n TABLET = NOT SUPPORTED";
-        devicesupported = false;
-    } else {
-        desktopbody.innerText += "\n DESKTOP DEVICE = SUPPORTED";
-        console.log('DESKTOP DEVICE = SUPPORTED');
-        devicesupported = true;
-    }
-}
 
 var actiondiv = document.createElement('div');
 var appdiv = document.createElement('div');
@@ -389,7 +377,7 @@ function loadDesktop(){
     startTime();
     function startTime() {
         var date = new Date();
-        var day = date.getDay();
+        var day = date.getDay()+7;
         var month = date.getMonth()+1;
         var year = date.getFullYear();
         var hour = date.getHours();
@@ -518,8 +506,6 @@ function loadDesktop(){
     controlcenter.appendChild(restartbutt);
     controlcenter.appendChild(testnotif);
     controlcenter.appendChild(testerror);
-    
-    desktopbody.appendChild(conmenu1);
 
     //pushNotification("Settings", "Check changelog for updates and changes");
     if(un){
@@ -695,61 +681,41 @@ function sleepMode(){
 
 
 //Context Menu 1
-var conmenu1 = document.createElement('div');
-var conmenu1butt1 = document.createElement('button');
-var conmenu1butt2 = document.createElement('button');
-var conmenu1butt3 = document.createElement('button');
-var conmenu1butt4 = document.createElement('button');
-var conmenu1butt5 = document.createElement('button');
-var conmenu1butt8 = document.createElement('button');
-var conmenu1butt6 = document.createElement('button');
-var conmenu1butt7 = document.createElement('button');
-var conmenu1butt9 = document.createElement('button');
+var conmenu1 = document.getElementById('menu');
+var conmenu1butt1 = document.getElementById('conbutt1');
+var conmenu1butt2 = document.getElementById('conbutt2');
+var conmenu1butt3 = document.getElementById('conbutt3');
+var conmenu1butt4 = document.getElementById('conbutt4');
+var conmenu1butt5 = document.getElementById('conbutt5');
+var conmenu1butt6 = document.getElementById('conbutt6');
 
 if(savedtheme){
     conmenu1.style.backgroundColor = localStorage.getItem('theme');
 }
-
-conmenu1.className = 'menu';
-conmenu1.id = 'menu';
-conmenu1butt1.innerHTML = 'Personalization';
 conmenu1butt1.onclick = function () { betaApp('Settings'); openSett(event, 'Personalization'); };
-conmenu1butt1.className = "menubutton";
-conmenu1butt4.innerHTML = 'Create Shortcut';
-conmenu1butt4.onclick = function () { betaApp('Settings'); openSett(event, 'Shortcuts'); };
-conmenu1butt4.className = "menubutton";
-conmenu1butt6.innerHTML = 'EditMode';
-conmenu1butt6.onclick = function () {
-    editMode();
-    this.remove();
-    conmenu1.appendChild(conmenu1butt7);
-};
-conmenu1butt6.className = "menubutton";
-conmenu1butt7.innerHTML = 'Exit EditMode';
-conmenu1butt7.onclick = function () {
-    normMode();
-};
-conmenu1butt8.className = "menubutton";
-conmenu1butt8.innerHTML = 'Create StickyNote';
-conmenu1butt8.onclick = function () {
+conmenu1butt2.onclick = function () { betaApp('Settings'); openSett(event, 'Shortcuts'); };
+conmenu1butt3.onclick = function () {
     newSticky();
 };
-conmenu1butt9.className = "menubutton";
-conmenu1butt9.innerHTML = 'Tasks';
-conmenu1butt9.onclick = function () {
+conmenu1butt4.onclick = function () {
     betaApp("Tasks");
 };
-conmenu1butt7.className = "menubutton";
-desktopbody.appendChild(conmenu1);
+conmenu1butt5.onclick = function () {
+    editMode();
+    this.remove();
+    conmenu1butt6.style.display = 'flex';
+};
+conmenu1butt6.onclick = function () {
+    normMode();
+};
 
 
-conmenu1.appendChild(conmenu1butt1);
+/*conmenu1.appendChild(conmenu1butt1);
 conmenu1.appendChild(conmenu1butt4);
 conmenu1.appendChild(conmenu1butt8);
 conmenu1.appendChild(conmenu1butt6);
 conmenu1.appendChild(conmenu1butt9);
-
-
+document.body.appendChild(conmenu1);*/
 
 //StickyNotes
 function newSticky(){
@@ -1277,7 +1243,7 @@ function betaApp(appsname){
 
                 var reader = new FileReader();
                 reader.onload = function(event) {
-                    var transaction = db.transaction([ isVideo ? "videos" : "sounds" ], "readwrite");
+                    var transaction = db.transaction(["videos"], "readwrite");
                     var store = transaction.objectStore("videos");
                     store.put({ name: file.name, content: event.target.result });
 
@@ -1293,8 +1259,7 @@ function betaApp(appsname){
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
 
-                    var folder = isVideo ? "videos" : "sounds";
-                    alert(`Your ${isVideo ? 'video' : 'audio'} is ready. Please save it into the "betaOS/${folder}" folder.`);
+                    alert(`Your ${isVideo ? 'video' : 'audio'} is ready. Please save it into the "betaOS/videos" folder.`);
                     displayFiles();
                     fileInput.value = '';
                 };
@@ -1317,6 +1282,8 @@ function betaApp(appsname){
                 var fileButton = document.createElement('button');
                 fileButton.className = 'backgroundoption'; 
                 fileButton.innerText = fileData.name;
+                fileButton.style.width = '400px';
+                fileButton.style.height = '60px';
 
                 if(fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')){
                     fileButton.style.backgroundColor = 'rgba(0,255,0,0.25)';
