@@ -375,10 +375,10 @@ input[type='text']{
     z-index: 10;
     animation: zoomfade;
     animation-duration: 2s;
-    margin-left: 5px;
-    margin-right: 5px;
-    top: 5px;
-    bottom: 5px;
+    margin-left: 50px;
+    margin-right: 50px;
+    top: 50px;
+    bottom: 50px;
 }
 
 .appicon:active{
