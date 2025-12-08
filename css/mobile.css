@@ -287,8 +287,8 @@ body {
     display: flex;
     bottom: 0;
     z-index: 10;
-    width: calc(fit-content + 10px);
-    margin: 10px;
+    width: calc(fit-content + 50px);
+    margin: 50px;
     height: 300px;
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     border-radius: 25px;
