@@ -29,7 +29,7 @@ body {
     width: fit-content;
     height: 200px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
+    border-radius: 25px;
     animation: slidenavbar;
     animation-duration: 2s;
     background-color: rgba(255, 255, 255, .15);  
@@ -68,7 +68,7 @@ body {
     width: 30%;
     height: 30%;
     background-size: cover;
-    border-radius: 15px;
+    border-radius: 25px;
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -86,7 +86,7 @@ body {
     z-index: 10;
     box-shadow: 5px;
     background: rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
+    border-radius: 25px;
     color: white;
 }
 
@@ -99,7 +99,7 @@ body {
 .desktopicon{
     width: 150px;
     height : 150px;
-    border-radius: 15px;
+    border-radius: 25px;
     background-repeat: no-repeat;
     position: absolute;
     box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
@@ -208,7 +208,7 @@ body {
     animation-duration: .5s;
     z-index: 10;
     border: 1px solid #d3d3d3;
-    border-radius: 15px;
+    border-radius: 25px;
     border-style: none;
     display: flex;
     flex-direction: column;
@@ -291,7 +291,7 @@ body {
     margin: 10px;
     height: 300px;
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
-    border-radius: 15px;
+    border-radius: 25px;
     animation: slidenavbar;
     animation-duration: 2s;
     backdrop-filter: blur(25px);
@@ -309,7 +309,7 @@ body {
     width: 100%;
     height: 25px;
     background: rgba(255, 255, 255, 0.5);
-    border-radius: 15px;
+    border-radius: 25px;
     animation: slidelogbar;
     animation-duration: 2s;
 }
@@ -428,7 +428,7 @@ body {
 .uesricon {
     width: 100px;
     height: 100px;
-    border-radius: 15px;
+    border-radius: 25px;
     box-shadow: rgba(0, 0, 0, .5)2.5px 2.5px 2.5px;
     background: rgba(0, 0, 0, .25);
     animation: zoomfade;
@@ -452,7 +452,7 @@ body {
 .backgroundoption {
     width: 20%;
     height: 20%;
-    border-radius: 15px;
+    border-radius: 25px;
     margin: 10px;
     box-shadow: rgba(0, 0, 0, 0.5) 0 2.5px 2.5px 2.5px;
     background-size: cover;
@@ -460,7 +460,7 @@ body {
 .backgroundoption:active{
     box-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px; 
     transform: scale(1.25);
-    border-radius: 15px;
+    border-radius: 25px;
     backdrop-filter: blur(25px);
 }
 
@@ -549,7 +549,7 @@ body {
 .usercard{
     width: 100%;
     height: 150px;
-    border-radius: 15px;
+    border-radius: 25px;
     margin-left: 5px;
     margin-right: 5px;
     color: white;
@@ -567,7 +567,7 @@ body {
     height: 60px;
     float: left;
     margin: 5px;
-    border-radius: 15px;
+    border-radius: 25px;
     background:rgba(0, 0, 0, .5);
     box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 5px;
 
@@ -778,7 +778,7 @@ body {
     animation-duration: .5s;
     z-index: 100;
     border: 1px solid #d3d3d3;
-    border-radius: 15px;
+    border-radius: 25px;
     border-style: none;
     display: inline;
     flex-direction: column;
@@ -836,7 +836,7 @@ body {
 }
 
 input[type=text]{
-    border-radius: 15px;
+    border-radius: 25px;
     width: 75%;
     height: 30px;
     box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
@@ -862,7 +862,7 @@ textarea{
     bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: 15px;
+    border-radius: 25px;
     width: 525px;
     height: auto;
     max-height: 80vh;
@@ -988,7 +988,7 @@ textarea{
    
   ::-webkit-scrollbar-thumb {
     background: #888; 
-    border-radius: 15px;
+    border-radius: 25px;
   }
   
   ::-webkit-scrollbar-thumb:active {
@@ -1001,7 +1001,7 @@ textarea{
 }
 
 .bslider{
-    border-radius: 15px;
+    border-radius: 25px;
     box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
     background: rgba(0, 0, 0, .25);
     width: 100px;
@@ -1012,7 +1012,7 @@ textarea{
     transform: translateX(-140%);
     width: 150px;
     height : 150px;
-    border-radius: 15px;
+    border-radius: 25px;
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     background: rgba(0, 0, 0, .25);
 }
@@ -1020,7 +1020,7 @@ textarea{
 .appbutt{
     width: 2150px;
     height : 150px;
-    border-radius: 15px;
+    border-radius: 25px;
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     background: rgba(0, 0, 0, .25);
     text-shadow: rgba(0, 0, 0, .5) 3px 3px 3px;
@@ -1046,7 +1046,7 @@ tbutton{
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-    border-radius: 15px;
+    border-radius: 25px;
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 5px 5px 5px;
@@ -1054,7 +1054,7 @@ tbutton{
   } tbutton:active {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
     transform: scale(1.25);
-    border-radius: 15px;
+    border-radius: 25px;
   }
 
 button{
@@ -1063,7 +1063,7 @@ button{
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-    border-radius: 15px;
+    border-radius: 25px;
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
@@ -1071,7 +1071,7 @@ button{
   } button:active {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
-    border-radius: 15px;
+    border-radius: 25px;
   }
 
 .uploadbutt{
@@ -1080,7 +1080,7 @@ button{
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-    border-radius: 15px;
+    border-radius: 25px;
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
@@ -1088,7 +1088,7 @@ button{
 } .uploadbutt:active {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
-    border-radius: 15px;
+    border-radius: 25px;
   }
 
 .tab {
@@ -1115,11 +1115,7 @@ button{
     background: rgba(255, 0, 0, 0.5);
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
-    border-radius: 15px;
-  }
-  
-  .tab button.active {
-    background: rgba(50, 50, 50, 0.5);
+    border-radius: 25px;
   }
   
   .tabcontent {
@@ -1156,11 +1152,7 @@ button{
     background: rgba(255, 0, 0, 0.5);
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     transform: scale(1.25);
-    border-radius: 15px;
-  }
-  
-  .ntab button.active {
-    background: rgba(50, 50, 50, 0.5);
+    border-radius: 25px;
   }
   
   .ntabcontent {
@@ -1199,7 +1191,7 @@ iframe{
     transition: 0.3s;
     font-size: 20px;
     background: rgba(0, 0, 0, 0);
-    border-radius: 15px;
+    border-radius: 25px;
     color: white;
   }
   
@@ -1207,7 +1199,7 @@ iframe{
     background: rgba(255, 0, 0, 0.5);
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
     transform: scale(1.25);
-    border-radius: 15px;
+    border-radius: 25px;
   }
 
 #mobilebody{
@@ -1328,7 +1320,7 @@ input:checked + .slider:before {
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-    border-radius: 15px;
+    border-radius: 25px;
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
@@ -1409,7 +1401,7 @@ input:checked + .slider:before {
     width: 15%;
     height: 10%;
     background-color: #333;
-    border-radius: 15px;
+    border-radius: 25px;
 }
 
 /* Navbar icon visual overflow and active lift
@@ -1453,7 +1445,7 @@ input:checked + .slider:before {
     animation-duration: .5s;
     z-index: 100;
     border: 1px solid #d3d3d3;
-    border-radius: 15px;
+    border-radius: 25px;
     border-style: none;
     display: block;
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
