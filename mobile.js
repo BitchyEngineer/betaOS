@@ -378,7 +378,7 @@ function loadHomeScreen(){
 
     signoutbutt.style = 'background-image: url("images/lock.png"); background-size: 50px 50px';
     signoutbutt.title = 'Sign Out';
-    signoutbutt.onclick = function(){unlock();};
+    signoutbutt.onclick = function(){lock();};
     signoutbutt.className = 'appicon';
 
     restartbutt.style = 'background-image: url("images/restart.png"); background-size: 50px 50px';
