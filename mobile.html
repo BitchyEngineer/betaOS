@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>betaOS</title>
+        <meta name="author" content="created by nononopmv"/>
+        <meta name="description" content="betaOS is a web operating system environment designed specifically for gooners and betas." />
+        <link id="css" href="css/mobile.css" rel="stylesheet" />
+        <link rel="shortcut icon" type="image" href="images/betaOS.png" />
+    </head>
+    <body scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
+        
+        <div id="mobilebody">
+            <div id="menu" class="menu" style="display: none;">
+                <button class="menubutton" id="conbutt1">Personalize</button>
+                <button class="menubutton" id="conbutt2">New Shortcut</button>
+                <button class="menubutton" id="conbutt3">New StickyNote</button>
+                <button class="menubutton" id="conbutt4">Show Tasks</button>
+                <button class="menubutton" id="conbutt5">Edit Mode</button>
+                <button class="menubutton" id="conbutt6" style="display: none;">Exit Edit Mode</button>
+            </div>
+        </div>
+        <style>
+            body {
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+            }
+        </style>
+        <script>
+           /* var isDesktop = false;
+            var isMobile = false;
+
+            function deviceDetection() {
+
+                if (navigator.userAgent.match(/mobile/i)) {
+                    isMobile = true;
+                    isDesktop = false;
+                } else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
+                    isMobile = true;
+                    isDesktop = false;
+                } else {
+                    isDesktop = true;
+                    isMobile = false;
+                }
+            }
+
+            function toggleSystem(){
+                    // Select the <link> element
+                let theme = document.getElementById('css');
+                let systemb = document.getElementById('javascript');
+                let environment = document.getElementById('desktopbody');
+                var newScript = document.createElement('script');
+                    // Toggle between light.css and dark.css
+                if (isDesktop === true) {
+                    theme.setAttribute('href', 'css/default.css');
+                    environment.id = 'desktopbody';
+                    newScript.src = 'main.js';
+                    document.body.appendChild(newScript);
+                } else if (isMobile === true) {
+                    theme.setAttribute('href', 'css/mobile.css');
+                    environment.id = 'mobilebody';
+                    newScript.src = 'mobile.js';
+                    document.body.appendChild(newScript);
+                }
+            }
+
+            deviceDetection();
+            toggleSystem();*/
+
+        </script>
+        <script src="mobile.js"></script>
+        <script src="contextmenus.js"></script>
+    </body>
+</html>

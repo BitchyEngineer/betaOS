@@ -1179,7 +1179,7 @@ function mobileApp(appsname){
         var usersett = document.createElement('div');
         var changelogsett = document.createElement('div');
 
-        var sett = ['General', 'Personalization', 'About', /*'betaAssist',*/ 'Shortcuts', 'User', 'Changelog'];
+        var sett = ['General', 'Personalization', 'About', 'Changelog'];
 
         for(let i = 0; i < sett.length; i++){
             var settbutt = document.createElement('button');
@@ -1202,7 +1202,7 @@ function mobileApp(appsname){
         
         appbody.appendChild(tab);
         //appbody.appendChild(basssett);
-        appbody.appendChild(usersett);
+        //appbody.appendChild(usersett);
         appbody.appendChild(generalsettings);
 
         basssett.className = 'tabcontent';
