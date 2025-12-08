@@ -8,7 +8,19 @@
         <link id="css" href="css/default.css" rel="stylesheet" />
         <link rel="shortcut icon" type="image" href="images/betaOS.png" />
     </head>
-    <body onload="deviceDetection(); if(isDesktop = true){bootDesktop();} else if (isMobile = true){bootMobile();}" scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
+    <body scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
+        
+        <div id="desktopbody">
+            
+        </div>
+        <style>
+            body {
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+            }
+        </style>
+        <script src="contextmenus.js"></script>
         <script>
             var isDesktop = false;
             var isMobile = false;
@@ -25,42 +37,28 @@
                     isDesktop = true;
                     isMobile = false;
                 }
-
-                toggleSystem();
             }
 
             function toggleSystem(){
                     // Select the <link> element
                 let theme = document.getElementById('css');
                 let systemb = document.getElementById('javascript');
-
+                var newScript = document.createElement('script');
                     // Toggle between light.css and dark.css
                 if (isDesktop === true) {
                     theme.setAttribute('href', 'css/default.css');
-                    systemb.src = 'main.js';
+                    newScript.src = 'main.js';
+                    document.body.appendChild(newScript);
                 } else if (isMobile === true) {
                     theme.setAttribute('href', 'css/mobile.css');
-                    systemb.src = 'mobile.js';
+                    newScript.src = 'mobile.js';
+                    document.body.appendChild(newScript);
                 }
-                
-                var newScript = document.createElement('script');
-                newScript.src = systemb.src;
-                document.body.appendChild(newScript);
             }
 
+            deviceDetection();
+            toggleSystem();
+
         </script>
-        
-        <div id="desktopbody">
-            
-        </div>
-        <style>
-            body {
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-            }
-        </style>
-        <script id="javascript" src="main.js"></script>
-        <script src="contextmenus.js"></script>
     </body>
 </html>

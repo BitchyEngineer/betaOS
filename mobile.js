@@ -3,6 +3,8 @@
     Resdistribution is allowed under certain conditions,
     See LICENSE file for details.
 */
+
+bootMobile();
 var betaOSversion = "1.0.2";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
@@ -123,7 +125,7 @@ function bootMobile(){
     document.body.style.backgroundColor = 'black';
     document.body.style.color = 'white';
 
-    if ((objOffsetVersion=objAgent.indexOf("Chrome"))!=-1) { 
+    /*if ((objOffsetVersion=objAgent.indexOf("Chrome"))!=-1) { 
         objbrowserName = "Chrome"; 
         objfullVersion = objAgent.substring(objOffsetVersion+7);
     }else if ((objOffsetVersion=objAgent.indexOf("MSIE"))!=-1) { 
@@ -141,7 +143,7 @@ function bootMobile(){
         if ((objOffsetVersion=objAgent.indexOf("Version"))!=-1) objfullVersion = objAgent.substring(objOffsetVersion+8); 
         //console.error(e344);
         //RSOD(e344);
-    }
+    }*/
     startUp();
 }
 
