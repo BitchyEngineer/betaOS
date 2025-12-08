@@ -70,9 +70,6 @@ var savedbackground = localStorage.getItem('background');
 //Start Up UI and Functionality
 var textarea = document.createElement("textarea");
 var navbar = document.createElement('div');
-var rightnav = document.createElement('div');
-rightnav.className = 'rightdiv';
-rightnav.id = 'rightdiv';
 var mobilebody = document.getElementById('mobilebody');
 var startupscreen = document.createElement('img');
 startupscreen.style.width = '100%';
@@ -267,7 +264,6 @@ function loadHomeScreen(){
     navbar.className = 'navbar';
     navbar.id = 'navbar';
     mobilebody.appendChild(navbar);
-    mobilebody.appendChild(rightnav);
     actiondiv.id = 'actiondiv';
     appdiv.id = 'appdiv';
     navbar.appendChild(actiondiv);
@@ -307,39 +303,6 @@ function loadHomeScreen(){
     appicon3.setAttribute("onclick", "mobileApp('Nononopmv');");
     appdiv.appendChild(appicon3);
 
-    var clockb = document.createElement('button');
-    clockb.id = 'datetime';
-    if(savedtheme){
-        clockb.style.backgroundColor = localStorage.getItem('theme');
-    }
-    rightnav.appendChild(clockb);
-    startTime();
-    function startTime() {
-        var date = new Date();
-        var day = date.getDay();
-        var month = date.getMonth()+1;
-        var year = date.getFullYear();
-        var hour = date.getHours();
-        var min = date.getMinutes();
-        var sec = date.getSeconds();
-        var midday = "AM";
-        midday = (hour >= 12) ? "PM" : "AM";
-        hour = (hour == 0) ? 12 : ((hour > 12) ? (hour - 12): hour);
-        hour = updateTime(hour);
-        min = updateTime(min);
-        sec = updateTime(sec);
-        clockb.innerHTML = month + "/" + day + "/" + year + " | " + hour + ":" + min + ":" + sec + " " + midday;
-          var t = setTimeout(startTime, 1000);
-    }
-      
-    function updateTime(k) {
-        if (k < 10) {
-          return "0" + k;
-        }
-        else {
-          return k;
-        }
-    }
     
     if(savednav){
         pinneddiv.innerHTML = localStorage.getItem("savednav");
@@ -480,7 +443,6 @@ function unlock(){
     navbar.appendChild(minimized);
     mobilebody.appendChild(deskgrid);
     mobilebody.appendChild(navbar);
-    mobilebody.appendChild(rightnav);
 
     if(saveddesk){
         deskgrid.innerHTML = localStorage.getItem("saveddesk");
