@@ -373,9 +373,22 @@ function loadHomeScreen(){
         } else {
             appButton.setAttribute("onclick", "mobileApp('" + app.name + "'); mobilebody.removeChild(actioncenter);");
         }
-        deskgrid.appendChild(appButton);
         appcenter.appendChild(appButton);
     });
+
+    apps.forEach(function(app){
+        var homeAppButton = document.createElement('button');
+        homeAppButton.className = 'appicon';
+        homeAppButton.style.backgroundImage = 'url(images/' + app.icon + ')';
+        homeAppButton.title = app.name;
+        if(app.onclick){
+            homeAppButton.setAttribute("onclick", app.onclick);
+        } else {
+            homeAppButton.setAttribute("onclick", "mobileApp('" + app.name + "'); mobilebody.removeChild(actioncenter);");
+        }
+        deskgrid.appendChild(homeAppButton);
+    });
+
 
     var actionarea = document.createElement('div');
     actionarea.id = 'actionarea';
