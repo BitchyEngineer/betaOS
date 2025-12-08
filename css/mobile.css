@@ -1416,7 +1416,7 @@ input:checked + .slider:before {
 
 .soalert{
     margin: 1;
-    width: 20%;
+    width: 100%;
     height: 50%;
     resize: none;
     position: absolute;

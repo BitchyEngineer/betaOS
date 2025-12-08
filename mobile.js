@@ -449,10 +449,6 @@ function unlock(){
     navbar.appendChild(minimized);
     mobilebody.appendChild(deskgrid);
     mobilebody.appendChild(navbar);
-
-    if(saveddesk){
-        deskgrid.innerHTML = localStorage.getItem("saveddesk");
-    }
    
     if(savednav){
         pinneddiv.innerHTML = '';
