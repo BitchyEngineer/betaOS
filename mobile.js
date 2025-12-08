@@ -67,10 +67,6 @@ var changelog = `betaOS Changelog:
 
 var savedbackground = localStorage.getItem('background');
 
-if(savedbackground){
-    document.body.style.backgroundImage = localStorage.getItem('background');
-}
-
 //Start Up UI and Functionality
 var textarea = document.createElement("textarea");
 var navbar = document.createElement('div');
