@@ -128,19 +128,19 @@ body {
 
 #appdiv{
     width: fit-content;
-    height: 100px;
+    height: 200px;
     display: inline;
 }
 
 #pinneddiv{
     width: fit-content;
-    height: 100px;
+    height: 200px;
     display: inline;
 }
 
 #minimized{
     width: fit-content;
-    height: 100px;
+    height: 200px;
 }
 
 .miniicon {
@@ -801,7 +801,7 @@ body {
     /*top: 40px;*/
     /* leave space at bottom for resize handle */
     padding: 2.5px;
-    height: calc(100% - 70px);
+    height: calc(100% - 160px);
     box-sizing: border-box;
     color: white;
     font-size: 20px;
