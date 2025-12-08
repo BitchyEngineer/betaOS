@@ -497,8 +497,6 @@ function loadHomeScreen(){
     controlcenter.appendChild(restartbutt);
     controlcenter.appendChild(testnotif);
     controlcenter.appendChild(testerror);
-    
-    desktopbody.appendChild(conmenu1);
 
     //mobileNotif("Settings", "Check changelog for updates and changes");
     if(un){
@@ -535,7 +533,6 @@ function unlock(){
     desktopbody.appendChild(deskgrid);
     desktopbody.appendChild(navbar);
     desktopbody.appendChild(rightnav);
-    desktopbody.appendChild(conmenu1);
 
     if(saveddesk){
         deskgrid.innerHTML = localStorage.getItem("saveddesk");
@@ -672,61 +669,6 @@ function sleepMode(){
     }
 }
 
-
-//Context Menu 1
-var conmenu1 = document.createElement('div');
-var conmenu1butt1 = document.createElement('button');
-var conmenu1butt2 = document.createElement('button');
-var conmenu1butt3 = document.createElement('button');
-var conmenu1butt4 = document.createElement('button');
-var conmenu1butt5 = document.createElement('button');
-var conmenu1butt8 = document.createElement('button');
-var conmenu1butt6 = document.createElement('button');
-var conmenu1butt7 = document.createElement('button');
-var conmenu1butt9 = document.createElement('button');
-
-if(savedtheme){
-    conmenu1.style.backgroundColor = localStorage.getItem('theme');
-}
-
-conmenu1.className = 'menu';
-conmenu1.id = 'menu';
-conmenu1butt1.innerHTML = 'Personalization';
-conmenu1butt1.onclick = function () { mobileApp('Settings'); openSett(event, 'Personalization'); };
-conmenu1butt1.className = "menubutton";
-conmenu1butt4.innerHTML = 'Create Shortcut';
-conmenu1butt4.onclick = function () { mobileApp('Settings'); openSett(event, 'Shortcuts'); };
-conmenu1butt4.className = "menubutton";
-conmenu1butt6.innerHTML = 'EditMode';
-conmenu1butt6.onclick = function () {
-    editMode();
-    this.remove();
-    conmenu1.appendChild(conmenu1butt7);
-};
-conmenu1butt6.className = "menubutton";
-conmenu1butt7.innerHTML = 'Exit EditMode';
-conmenu1butt7.onclick = function () {
-    normMode();
-};
-conmenu1butt8.className = "menubutton";
-conmenu1butt8.innerHTML = 'Create StickyNote';
-conmenu1butt8.onclick = function () {
-    newSticky();
-};
-conmenu1butt9.className = "menubutton";
-conmenu1butt9.innerHTML = 'Tasks';
-conmenu1butt9.onclick = function () {
-    mobileApp("Tasks");
-};
-conmenu1butt7.className = "menubutton";
-desktopbody.appendChild(conmenu1);
-
-
-conmenu1.appendChild(conmenu1butt1);
-conmenu1.appendChild(conmenu1butt4);
-conmenu1.appendChild(conmenu1butt8);
-conmenu1.appendChild(conmenu1butt6);
-conmenu1.appendChild(conmenu1butt9);
 
 //StickyNotes
 function newSticky(){
@@ -1528,7 +1470,6 @@ function mobileApp(appsname){
                 app.style.backgroundColor = this.style.backgroundColor;
                 actioncenter.style.backgroundColor = this.style.backgroundColor;
                 document.getElementById('datetime').style.backgroundColor = this.style.backgroundColor;
-                conmenu1.style.backgroundColor = this.style.backgroundColor;
                 localStorage.setItem('theme', this.style.backgroundColor);
             };
             backgroundsettings.appendChild(tchoice);
