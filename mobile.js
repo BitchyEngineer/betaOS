@@ -710,7 +710,7 @@ function vidPlay(vidtitle){
     app.className = 'app';
     apphead.className = 'appheader';
     appheadtext.className = 'appheadtxt';
-    appheadtext.innerText = appsname;
+    appheadtext.innerText = vidtitle;
     close.type = 'image';
     close.id = "close"
     close.title = 'Close';
@@ -730,7 +730,7 @@ function vidPlay(vidtitle){
         app.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     }
     mobilebody.appendChild(app);
-    app.id = appsname + "(" + appnumber + ")";
+    app.id = "VidPlay(" + appnumber + ")";
     apphead.id = app.id + "header";
     app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
