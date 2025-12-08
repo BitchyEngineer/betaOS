@@ -775,8 +775,6 @@ body {
     animation-duration: .5s;
     z-index: 10;
     border: 1px solid #d3d3d3;
-    left: 25%;
-    top: 25%;
     border-radius: 15px;
     border-style: none;
     display: inline;
