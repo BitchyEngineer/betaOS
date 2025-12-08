@@ -812,8 +812,8 @@ input[type='text']{
 }
 
 .appcenter{
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: 50%;
     resize: none;
     overflow-y:scroll;
     position: relative;
