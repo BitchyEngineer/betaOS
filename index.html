@@ -8,12 +8,12 @@
         <link id="css" href="css/default.css" rel="stylesheet" />
         <link rel="shortcut icon" type="image" href="images/betaOS.png" />
     </head>
-    <body onload="if(isDesktop = true){bootDesktop();} else if (isMobile = true){bootMobile();}" scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
+    <body onload="deviceDetection(); if(isDesktop = true){bootDesktop();} else if (isMobile = true){bootMobile();}" scroll="no" style="overflow: hidden; font: Helvetica;" content="width=device-width, height=device-height, initial-scale=1.0" >
         <script>
             var isDesktop = false;
             var isMobile = false;
 
-            function deviceDetection(funct1, funct2) {
+            function deviceDetection() {
 
                 if (navigator.userAgent.match(/mobile/i)) {
                     isMobile = true;
@@ -25,6 +25,11 @@
                     isDesktop = true;
                     isMobile = false;
                 }
+
+                toggleSystem();
+                var newScript = document.createElement('script');
+                newScript.src = systemb.src;
+                document.body.appendChild(newScript);
             }
 
             function toggleSystem(){
@@ -33,15 +38,14 @@
                 let systemb = document.getElementById('javascript');
 
                     // Toggle between light.css and dark.css
-                if (isDesktop = true) {
+                if (isDesktop === true) {
                     theme.setAttribute('href', 'css/default.css');
-                } else if (isMobile = true) {
+                    systemb.src = 'main.js';
+                } else if (isMobile === true) {
                     theme.setAttribute('href', 'css/mobile.css');
+                    systemb.src = 'mobile.js';
                 }
             }
-
-            deviceDetection();
-            toggleSystem();
 
         </script>
         
@@ -55,8 +59,7 @@
                 -o-background-size: cover;
             }
         </style>
-        <script src="main.js"></script>
-        <script src="mobile.js"></script>
+        <script id="javascript" src="main.js"></script>
         <script src="contextmenus.js"></script>
     </body>
 </html>
