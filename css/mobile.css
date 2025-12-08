@@ -45,15 +45,15 @@ body {
     animation-duration: 3s;
 }
 
-#close:hover{
+#close:active{
     cursor: pointer;
 }
 
-#fullscreen:hover{
+#fullscreen:active{
     cursor: pointer;
 }
 
-#minimizebutt:hover{
+#minimizebutt:active{
     cursor: pointer;
 }
 
@@ -75,7 +75,7 @@ body {
     margin-left: 10px;
     margin-right: 10px;
 }
-.vthumb:hover{
+.vthumb:active{
     box-shadow: rgba(0, 0, 0, 0.75) 7.5px 7.5px 7.5px;
     transform: scale(1.25);
 }
@@ -105,7 +105,7 @@ body {
     box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
     background: rgba(0, 0, 0, .25);
 }
-.desktopicon:hover{
+.desktopicon:active{
     background: rgba(255, 0, 0, 0.25);
 }
 
@@ -157,7 +157,7 @@ body {
     bottom: 5px;
     box-shadow: rgba(255, 0, 0, .5) 0 0 7px;
 }
-.miniicon:hover{
+.miniicon:active{
     z-index: 100;
     transform: scale(1.25);
     background-color: inherit;
@@ -191,7 +191,7 @@ body {
     background-size: cover;
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     backdrop-filter: blur(15px);
-} #datetime:hover{
+} #datetime:active{
     backdrop-filter: blur(25px);
     transform: translateX(-20px);
 
@@ -275,7 +275,7 @@ body {
     align-items: center;
     justify-content: center;
 }
-.menubutton:hover{
+.menubutton:active{
     background: inherit;
     border-radius: 20px;
     transform: scale(1.15);
@@ -329,7 +329,7 @@ body {
     color: white;
     position: relative;
 }
-.logininput:hover{
+.logininput:active{
     box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
     background-color: rgba(255, 0, 0, 0.5);
 }
@@ -356,7 +356,7 @@ body {
     align-items: center;
     justify-content: center;
 }
-.loginbutt:hover{
+.loginbutt:active{
     box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
     background-color: rgba(255, 0, 0, 0.5);
 }
@@ -377,7 +377,7 @@ body {
     bottom: 5px;
 }
 
-.appicon:hover{
+.appicon:active{
     z-index: 100;
     transform: scale(1.25);
     box-shadow: rgba(0,0,0,0.6) 0 5px 5px 5px;
@@ -412,7 +412,7 @@ body {
     bottom: 5px;
 }
 
-.deskicon:hover{
+.deskicon:active{
     z-index: 100;
     transform: scale(1.25);
     box-shadow: rgba(0,0,0,0.6) 0 5px 5px 5px;
@@ -457,7 +457,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.5) 0 2.5px 2.5px 2.5px;
     background-size: cover;
 }
-.backgroundoption:hover{
+.backgroundoption:active{
     box-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px; 
     transform: scale(1.25);
     border-radius: 15px;
@@ -496,7 +496,7 @@ body {
     height: 40px;
     text-shadow: rgba(0, 0, 0, 0.5) 2.5px 2.5px 2.5px;
     display: block;
-}.noteheader:hover{
+}.noteheader:active{
     cursor: grab;
 }.noteheader:active{
     cursor:grabbing;
@@ -884,7 +884,7 @@ textarea{
     will-change: transform;
 }
 
-.popuplist .appicon:hover{
+.popuplist .appicon:active{
     transform: translateY(-10px) scale(1.25);
     box-shadow: rgba(0,0,0,0.6) 0 5px 5px 5px;
 }
@@ -920,7 +920,7 @@ textarea{
     will-change: transform;
 }
 
-.appcenter .appicon:hover {
+.appcenter .appicon:active {
     transform: scale(1.25);
     box-shadow: rgba(0,0,0,0.6) 0 8px 8px 8px;
     backdrop-filter: blur(15px);
@@ -948,7 +948,7 @@ textarea{
     font-size: 14px;
 }
 
-.appbutt:hover {
+.appbutt:active {
     background-color: rgba(255, 255, 255, 0.15);
     transform: scale(1.05);
     background-color: rgba(106, 0, 0, 0.15);
@@ -990,7 +990,7 @@ textarea{
     border-radius: 15px;
   }
   
-  ::-webkit-scrollbar-thumb:hover {
+  ::-webkit-scrollbar-thumb:active {
     background: #555; 
   }
 
@@ -1030,7 +1030,7 @@ textarea{
     backdrop-filter: blur(10px);
 }
 
-.appbutt:hover{
+.appbutt:active{
     background: rgba(255, 0, 0, 0.25);
     box-shadow: rgba(0, 0, 0, .5)5px 5px 5px;
     backdrop-filter: blur(25px);
@@ -1050,7 +1050,7 @@ tbutton{
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 5px 5px 5px;
     color: white;
-  } tbutton:hover {
+  } tbutton:active {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
     transform: scale(1.25);
     border-radius: 15px;
@@ -1067,7 +1067,7 @@ button{
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
     color: white;
-  } button:hover {
+  } button:active {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
     border-radius: 15px;
@@ -1084,7 +1084,7 @@ button{
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
     color: white;
-} .uploadbutt:hover {
+} .uploadbutt:active {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
     border-radius: 15px;
@@ -1110,7 +1110,7 @@ button{
     color: white;
   }
   
-  .tab button:hover {
+  .tab button:active {
     background: rgba(255, 0, 0, 0.5);
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
@@ -1151,7 +1151,7 @@ button{
     color: white;
   }
   
-  .ntab button:hover {
+  .ntab button:active {
     background: rgba(255, 0, 0, 0.5);
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     transform: scale(1.25);
@@ -1202,7 +1202,7 @@ iframe{
     color: white;
   }
   
-  .injectbutt:hover {
+  .injectbutt:active {
     background: rgba(255, 0, 0, 0.5);
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px; 
     transform: scale(1.25);
@@ -1363,7 +1363,7 @@ input:checked + .slider:before {
     background-color: rgba(255, 0, 0, .5);
 }
 
-#close:hover{
+#close:active{
     text-shadow: red 5px 5px 5px;
     color: red;
     background-color: rgba(255, 0, 0, 1);
@@ -1373,7 +1373,7 @@ input:checked + .slider:before {
     background-color: rgba(0, 0, 255, .5);
 }
 
-#fullscreen:hover{
+#fullscreen:active{
     text-shadow: blue 5px 5px 5px;
     color: blue;
     background-color: rgba(0,0,255,1);
@@ -1383,7 +1383,7 @@ input:checked + .slider:before {
     background-color: rgba(255, 255, 0, .5);
 }
 
-#minimize:hover{
+#minimize:active{
     text-shadow: yellow 5px 5px 5px;
     color: yellow;
     background-color: rgba(255, 255, 0, 1);
@@ -1411,9 +1411,9 @@ input:checked + .slider:before {
     border-radius: 15px;
 }
 
-/* Navbar icon visual overflow and hover lift
+/* Navbar icon visual overflow and active lift
    Keeps icons as children of .navbar but allows them to visually
-   extend and appear above the bar on hover. */
+   extend and appear above the bar on active. */
 .navbar {
     overflow: visible; /* allow visual overflow from children */
 }
@@ -1423,7 +1423,7 @@ input:checked + .slider:before {
     transition: transform .12s ease, box-shadow .12s ease;
     will-change: transform;
 }
-.navbar .appicon:hover {
+.navbar .appicon:active {
     transform: translateY(-10px) scale(1.25);
     box-shadow: rgba(0,0,0,0.6) 0 5px 5px 5px;
 }
@@ -1434,7 +1434,7 @@ input:checked + .slider:before {
     transition: transform .12s ease, box-shadow .12s ease;
     will-change: transform;
 }
-.navbar .miniicon:hover {
+.navbar .miniicon:active {
     transform: translateY(-10px) scale(1.25);
     box-shadow: rgba(255, 0, 0, .5) 0 5px 5px 5px;
     backdrop-filter: blur(25px);
