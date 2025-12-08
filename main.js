@@ -146,7 +146,7 @@ function bootDesktop(){
     setTimeout(function(){desktopbody.innerText+="\n betaOS " + betaOSversion}, 350);
     console.log("betaOS " + betaOSversion);
     setTimeout(function(){desktopbody.innerText+="\n Copyright nononopmv 2025"; console.log("copyright nononopmv 2025")}, 500);
-    setTimeout(function(){desktopbody.innerText+="\n betaOS Mobile Copyright (C) 2025 nononopmv"; console.log("betaOS Mobile Copyright (C) 2025 nononopmv")}, 650);
+    setTimeout(function(){desktopbody.innerText+="\n betaOS Copyright (C) 2025 nononopmv"; console.log("betaOS Copyright (C) 2025 nononopmv")}, 650);
     setTimeout(function(){desktopbody.innerText+="\n Resdistribution is allowed under certain conditions"; console.log("Redistribution is allowed under certain conditions")}, 750);
     setTimeout(function(){desktopbody.innerText+="\n See LICENSE file for details"; console.log("See LICENSE file for details")}, 850);
     setTimeout(function(){desktopbody.innerText+="\n System dependencies loaded successfully"; console.log("System dependencies loaded successfully")}, 1000);
