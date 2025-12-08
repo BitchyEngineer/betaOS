@@ -374,13 +374,13 @@ input[type='text']{
     height: 100%;
     z-index: 10;
     display: grid;
-    grid-auto-rows: 50;
+    grid-auto-rows: 12;
 }
 
 .deskgrid .appicon {
-    width: 150px;
-    height: 150px;
-    background-size: 150px 150px;
+    width: 175px;
+    height: 175px;
+    background-size: 175px 175px;
     background-repeat: no-repeat;
     background-position: center;
     /*background-color: rgba(0,0,0,0.5);*/
