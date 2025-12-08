@@ -736,7 +736,6 @@ function vidPlay(vidtitle){
     var headbuttdiv = document.createElement('div');
     var headtextdiv = document.createElement('div');
     var appnumber = Math.random();
-    var appsname = "VidPlay";
     app.scroll = false;
     appbody.scroll = true;
     tasks++;
@@ -751,31 +750,18 @@ function vidPlay(vidtitle){
     app.className = 'app';
     apphead.className = 'appheader';
     appheadtext.className = 'appheadtxt';
-    appheadtext.innerText = vidtitle;
+    appheadtext.innerText = appsname;
     close.type = 'image';
     close.id = "close"
     close.title = 'Close';
     close.src = "images/close.png";
     close.style.fontFamily = "Arial";
     close.className = "appheadbutt";
-    fullscreen.title = 'Fullscreen';
-    fullscreen.id = "fullscreen";
-    fullscreen.type = 'image';
-    fullscreen.src = "images/fullscreen.png";
-    fullscreen.style.textAlign = 'right';
-    fullscreen.className = "appheadbutt";
+    appnumber++;
+    app.className = 'app';
     appbody.className = 'appbody';
-    minimize.type = 'image';
-    minimize.title = 'Minimize';
-    minimize.id = "minimize";
-    minimize.className = "appheadbutt";
-    minimize.backgroundImage = "images/minimize.png";
-    headtextdiv.append(appheadtext);
-    apphead.append(headtextdiv);
-    apphead.append(headbuttdiv);
-    headbuttdiv.append(minimize);
-    headbuttdiv.append(fullscreen);
-    headbuttdiv.append(close);
+    apphead.appendChild(headbuttdiv);
+    headbuttdiv.appendChild(close);
     app.appendChild(apphead);
     app.appendChild(appbody);
     if(savedtheme){
@@ -787,30 +773,9 @@ function vidPlay(vidtitle){
     app.id = appsname + "(" + appnumber + ")";
     apphead.id = app.id + "header";
     dragWindow(document.getElementById(app.id));
+    app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
     close.onclick = function () { mobilebody.removeChild(app); tasks--;};
-    fullscreen.onclick = function () {
-        if (isfull == false){
-            app.style.width = '100%';
-            app.style.height = 'calc(100% - 50px)'; 
-            app.style.top = '0px'; 
-            app.style.left = '0%';
-            if(savedtheme){
-                app.style.backgroundColor = localStorage.getItem('theme');
-            }
-            isfull = true;
-        } else if (isfull == true){
-            app.style.width = '50%'; 
-            app.style.height = '50%';
-            app.style.top = '25%'; 
-            app.style.left = '25%';
-            isfull = false;
-            if(savedtheme){
-                app.style.backgroundColor = localStorage.getItem('theme');
-            }
-        }
-    };
-    minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
     var vidplayer = document.createElement("video");
     vidplayer.className = "vidplay";
@@ -847,7 +812,21 @@ function mobileApp(appsname){
     headbuttdiv.style.cssFloat = 'right';
     appnumber++;
     app.className = 'app';
+    apphead.className = 'appheader';
+    appheadtext.className = 'appheadtxt';
+    appheadtext.innerText = appsname;
+    close.type = 'image';
+    close.id = "close"
+    close.title = 'Close';
+    close.src = "images/close.png";
+    close.style.fontFamily = "Arial";
+    close.className = "appheadbutt";
+    appnumber++;
+    app.className = 'app';
     appbody.className = 'appbody';
+    apphead.appendChild(headbuttdiv);
+    headbuttdiv.appendChild(close);
+    app.appendChild(apphead);
     app.appendChild(appbody);
     if(savedtheme){
         app.style.backgroundColor = localStorage.getItem('theme');
@@ -861,28 +840,6 @@ function mobileApp(appsname){
     app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
     close.onclick = function () { mobilebody.removeChild(app); tasks--;};
-    fullscreen.onclick = function () {
-        if (isfull == false){
-            app.style.width = '100%';
-            app.style.height = 'calc(100% - 80px)'; 
-            app.style.top = '0px'; 
-            app.style.left = '0%';
-            if(savedtheme){
-                app.style.backgroundColor = localStorage.getItem('theme');
-            }
-            isfull = true;
-        } else if (isfull == true){
-            app.style.width = '50%'; 
-            app.style.height = '50%';
-            app.style.top = '25%'; 
-            app.style.left = '25%';
-            isfull = false;
-            if(savedtheme){
-                app.style.backgroundColor = localStorage.getItem('theme');
-            }
-        }
-    };
-    minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
     var webbox = document.createElement('div');
     webbox.style = document.getElementsByTagName('iframe');
