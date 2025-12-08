@@ -112,7 +112,7 @@ var navbar = document.createElement('div');
 var rightnav = document.createElement('div');
 rightnav.className = 'rightdiv';
 rightnav.id = 'rightdiv';
-var desktopbody = document.getElementById('desktopbody');
+var mobilebody = document.getElementById('mobilebody');
 var startupscreen = document.createElement('img');
 startupscreen.style.width = '100%';
 startupscreen.style.height = '100%';
@@ -188,14 +188,14 @@ function mobileNotif(appname, message){
     openbutt.className = "notifbutt";
     deletebutt.innerHTML = "Dismiss";
     deletebutt.onclick = function(){
-        desktopbody.removeChild(notifbody);
+        mobilebody.removeChild(notifbody);
         notificationStack = notificationStack.filter(n => n !== notifbody);
         repositionNotifications();
     };
     openbutt.innerHTML = "Open";
     openbutt.onclick = function(){
         mobileApp(appname);
-        desktopbody.removeChild(notifbody);
+        mobilebody.removeChild(notifbody);
         notificationStack = notificationStack.filter(n => n !== notifbody);
         repositionNotifications();
     };
@@ -208,7 +208,7 @@ function mobileNotif(appname, message){
 
     chargesound.play();
 
-    desktopbody.appendChild(notifbody);
+    mobilebody.appendChild(notifbody);
     notifbody.appendChild(notifname);
     notifbody.appendChild(notifmessage);
     notifcontrol.appendChild(openbutt);
@@ -234,7 +234,7 @@ var so4icon = document.createElement('img');
 var startupbar = document.createElement('div');
 
 function startUp(){
-    desktopbody.innerHTML = '';
+    mobilebody.innerHTML = '';
     document.body.style.backgroundImage = '';
     document.body.style.backgroundColor = 'black';
     startupbar.className = 'sloadbar';
@@ -242,14 +242,14 @@ function startUp(){
     so4icon.className = 'so4icon';
     var startsound = new Audio('sounds/startupsound.mp3');
     startsound.autoplay = true;
-    desktopbody.appendChild(startsound);
-    desktopbody.appendChild(so4icon);
-    //setTimeout(function(){desktopbody.appendChild(startupbar);},3000);
+    mobilebody.appendChild(startsound);
+    mobilebody.appendChild(so4icon);
+    //setTimeout(function(){mobilebody.appendChild(startupbar);},3000);
     setTimeout(function(){
-        desktopbody.innerHTML = '';
+        mobilebody.innerHTML = '';
         loadHomeScreen();
-        desktopbody.removeChild(so4icon);
-        //desktopbody.removeChild(startupbar);
+        mobilebody.removeChild(so4icon);
+        //mobilebody.removeChild(startupbar);
     }, 10000);
 }
 
@@ -258,14 +258,14 @@ var devicesupported = true;
 function deviceDetection() {
     if (navigator.userAgent.match(/mobile/i)) {
         console.log('MOBILE DEVICE = NOT SUPPORTED');
-        desktopbody.innerHTML = "MOBILE DEVICE = NOT SUPPORTED";
+        mobilebody.innerHTML = "MOBILE DEVICE = NOT SUPPORTED";
         devicesupported = false;
     } else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
         console.log('TABLET = NOT SUPPORTED');
-        desktopbody.innerText += "\n TABLET = NOT SUPPORTED";
+        mobilebody.innerText += "\n TABLET = NOT SUPPORTED";
         devicesupported = false;
     } else {
-        desktopbody.innerText += "\n DESKTOP DEVICE = SUPPORTED";
+        mobilebody.innerText += "\n DESKTOP DEVICE = SUPPORTED";
         console.log('DESKTOP DEVICE = SUPPORTED');
         devicesupported = true;
     }
@@ -310,7 +310,7 @@ function loadHomeScreen(){
         document.body.style.backgroundImage = 'url("images/Nonono.png")';
     }
 
-    desktopbody.appendChild(deskgrid);
+    mobilebody.appendChild(deskgrid);
 
     if(saveddesk){
         deskgrid.innerHTML = saveddesk;
@@ -320,8 +320,8 @@ function loadHomeScreen(){
 
     navbar.className = 'navbar';
     navbar.id = 'navbar';
-    desktopbody.appendChild(navbar);
-    desktopbody.appendChild(rightnav);
+    mobilebody.appendChild(navbar);
+    mobilebody.appendChild(rightnav);
     actiondiv.id = 'actiondiv';
     appdiv.id = 'appdiv';
     navbar.appendChild(actiondiv);
@@ -334,7 +334,7 @@ function loadHomeScreen(){
     actionmenuicon.style = 'background: url("images/beta no bg.png"); background-size: 50px 50px;';
     actionmenuicon.className = 'appicon';
     actionmenuicon.title = 'betaOS';
-    actionmenuicon.setAttribute("onclick", "desktopbody.appendChild(actioncenter);");
+    actionmenuicon.setAttribute("onclick", "mobilebody.appendChild(actioncenter);");
     actiondiv.appendChild(actionmenuicon);
 
     var appicon1 = document.createElement('button');
@@ -457,7 +457,7 @@ function loadHomeScreen(){
         { name: 'Timer', icon: 'Timer.png' },
         { name: 'Hypnotube', icon: 'Hypnotube.png' },
         { name: 'ScriptInjector', icon: 'ScriptInjector.png' },
-        { name: 'Shortcuts', icon: 'Shortcuts.png', onclick: "mobileApp('Settings'); openSett(event, 'Shortcuts'); desktopbody.removeChild(actioncenter);" },
+        { name: 'Shortcuts', icon: 'Shortcuts.png', onclick: "mobileApp('Settings'); openSett(event, 'Shortcuts'); mobilebody.removeChild(actioncenter);" },
         { name: 'betaAssist', icon: 'BetaAssist.png' },
         { name: 'ScriptEdit', icon: 'ScriptEdit.png' }
     ];
@@ -470,7 +470,7 @@ function loadHomeScreen(){
         if(app.onclick){
             appButton.setAttribute("onclick", app.onclick);
         } else {
-            appButton.setAttribute("onclick", "mobileApp('" + app.name + "'); desktopbody.removeChild(actioncenter);");
+            appButton.setAttribute("onclick", "mobileApp('" + app.name + "'); mobilebody.removeChild(actioncenter);");
         }
         appcenter.appendChild(appButton);
     });
@@ -487,7 +487,7 @@ function loadHomeScreen(){
     closebutt.className = "appheadbutt";
     closebutt.style.position = 'relative';
     closebutt.style.right = '0px';
-    closebutt.onclick = function () { desktopbody.removeChild(actioncenter); };
+    closebutt.onclick = function () { mobilebody.removeChild(actioncenter); };
 
     actioncenter.appendChild(closebutt);
     actioncenter.appendChild(appcenter);
@@ -526,15 +526,15 @@ var classicMode = false
 
 //Sign In
 function unlock(){
-    desktopbody.removeChild(timetxt);
-    //desktopbody.removeChild(loginbar);
+    mobilebody.removeChild(timetxt);
+    //mobilebody.removeChild(loginbar);
     navbar.appendChild(actiondiv);
     navbar.appendChild(appdiv);
     navbar.appendChild(pinneddiv);
     navbar.appendChild(minimized);
-    desktopbody.appendChild(deskgrid);
-    desktopbody.appendChild(navbar);
-    desktopbody.appendChild(rightnav);
+    mobilebody.appendChild(deskgrid);
+    mobilebody.appendChild(navbar);
+    mobilebody.appendChild(rightnav);
 
     if(saveddesk){
         deskgrid.innerHTML = localStorage.getItem("saveddesk");
@@ -579,7 +579,7 @@ function lock(){
                 userdiv.removeChild(passinput);
                 userdiv.removeChild(loginbutt);
                 userdiv.removeChild(vnum);
-                desktopbody.removeChild(userdiv);
+                mobilebody.removeChild(userdiv);
             } else {
                 mobileNotif("System", "Username or password is incorrect");
             }
@@ -603,18 +603,18 @@ function lock(){
     sotxt.style.fontFamily = "Arial";
     sotxt.style.opacity = '50%';
     loginbar.className = 'logbar';
-    desktopbody.style.color = 'white';
-    desktopbody.style.textAlign = 'center';
+    mobilebody.style.color = 'white';
+    mobilebody.style.textAlign = 'center';
     loginbar.onclick = function () {unlock();};
-    desktopbody.innerHTML = '';
+    mobilebody.innerHTML = '';
     userdiv.appendChild(sotxt);
     userdiv.appendChild(usernamein);
     userdiv.appendChild(passinput);
     userdiv.appendChild(loginbutt);
     userdiv.appendChild(vnum);
-    desktopbody.appendChild(userdiv);
-    desktopbody.appendChild(timetxt);
-    //desktopbody.appendChild(loginbar);
+    mobilebody.appendChild(userdiv);
+    mobilebody.appendChild(timetxt);
+    //mobilebody.appendChild(loginbar);
     startLockTime();
     function startLockTime() {
         var date = new Date(); /* creating object of Date class */
@@ -648,13 +648,13 @@ function sleepMode(){
     timetxt.style.fontFamily = "Arial";
     timetxt.style.fontSize = '100px';
     timetxt.style.opacity = '50%';
-    desktopbody.style.color = 'white';
-    desktopbody.style.textAlign = 'center';
-    desktopbody.onkeypress = function(){
+    mobilebody.style.color = 'white';
+    mobilebody.style.textAlign = 'center';
+    mobilebody.onkeypress = function(){
         unlock();
     };
-    desktopbody.innerHTML = '';
-    desktopbody.appendChild(timetxt);
+    mobilebody.innerHTML = '';
+    mobilebody.appendChild(timetxt);
     startLockTime();
     function startLockTime() {
         var today = new Date();
@@ -685,7 +685,7 @@ function newSticky(){
     closeb.src = "images/close.png";
     closeb.style.fontFamily = "Arial";
     closeb.className = "appheadbutt";
-    closeb.onclick = function(){desktopbody.removeChild(notebodydiv);};
+    closeb.onclick = function(){mobilebody.removeChild(notebodydiv);};
     notebodydiv.className = 'notebody';
     notenumber++;
     notebodydiv.id = "notebody" + notenumber;
@@ -693,7 +693,7 @@ function newSticky(){
     notehead.id = notebodydiv.id + "header";
     notebodydiv.onclick = function(){bringToFront(notebodydiv.id);};
     notetxt.className = 'notetxt';
-    desktopbody.appendChild(notebodydiv);
+    mobilebody.appendChild(notebodydiv);
     notebodydiv.appendChild(notehead);
     notehead.appendChild(closeb);
     notebodydiv.appendChild(notetxt);
@@ -798,12 +798,12 @@ function vidPlay(vidtitle){
     } else{
         app.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     }
-    desktopbody.appendChild(app);
+    mobilebody.appendChild(app);
     app.id = appsname + "(" + appnumber + ")";
     apphead.id = app.id + "header";
     dragWindow(document.getElementById(app.id));
     app.onclick = function () {bringToFront(app.id)};
-    close.onclick = function () { desktopbody.removeChild(app); tasks--;};
+    close.onclick = function () { mobilebody.removeChild(app); tasks--;};
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
@@ -869,13 +869,13 @@ function mobileApp(appsname){
     } else{
         app.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     }
-    desktopbody.appendChild(app);
+    mobilebody.appendChild(app);
     app.id = appsname + "(" + appnumber + ")";
     apphead.id = app.id + "header";
     dragWindow(document.getElementById(app.id));
     app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
-    close.onclick = function () { desktopbody.removeChild(app); tasks--;};
+    close.onclick = function () { mobilebody.removeChild(app); tasks--;};
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
@@ -1036,7 +1036,7 @@ function mobileApp(appsname){
                 taskbutt.innerHTML = taska[i];
                 taskbutt.id = 'task-' + task.id;
                 taskbutt.onclick = function(){
-                    desktopbody.remove(document.getElementById(taska[i].value));
+                    mobilebody.remove(document.getElementById(taska[i].value));
                     tasks--;
                 };
                 appbody.appendChild(taskbutt);
@@ -1565,7 +1565,7 @@ function mobileApp(appsname){
             }
             pinneddiv.appendChild(navshort);
             localStorage.setItem("savednav", pinneddiv.innerHTML);
-            desktopbody.removeChild(app);
+            mobilebody.removeChild(app);
         };
 
         shortadddesk.onclick = function () {
@@ -1579,7 +1579,7 @@ function mobileApp(appsname){
                 newshortcut.setAttribute("onclick", "mobileApp('Settings'); openSett(event, 'Shortcuts');");
             }
             deskgrid.appendChild(newshortcut);
-            desktopbody.removeChild(app);
+            mobilebody.removeChild(app);
             localStorage.setItem("saveddesk", deskgrid.innerHTML);
         };
 
@@ -1752,7 +1752,7 @@ function mobileApp(appsname){
         runbutt.onclick = function(){
             if(f1.value.includes('.js')){
                 runscript.innerHTML = codetxt.value;
-                desktopbody.appendChild(runscript);
+                mobilebody.appendChild(runscript);
             } else if(f1.value.includes('.html')){
                 mobileApp("Browser");
                 browserview.srcdoc = codetxt.value;
@@ -1811,7 +1811,7 @@ function mobileApp(appsname){
         injectbutt.onclick = function(){
             //Read and add new script
             var newscript = document.createElement("script");
-            desktopbody.appendChild(newscript);
+            mobilebody.appendChild(newscript);
             
             var reader = new FileReader();
 
@@ -1825,7 +1825,7 @@ function mobileApp(appsname){
         injectbutt2.class = 'injectbutt';
         injectbutt2.onclick = function(){
             var newscript = document.createElement("script");
-            desktopbody.appendChild(newscript);
+            mobilebody.appendChild(newscript);
             newscript.src = srcinputlink.value;
         };
         noticetext.innerHTML = "NOTE: This program is still in beta and could have issues, report any issues you experience on the betaOS website.";
@@ -1900,7 +1900,7 @@ document.onkeyup = function (e){
                 mobileApp("betaAssist");
         }
         if(e.which == 27){
-            desktopbody.appendChild(actioncenter);
+            mobilebody.appendChild(actioncenter);
         }
       }
     //if(e.keyCode == 83 && e.keyCode == 32){
