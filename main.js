@@ -1074,7 +1074,11 @@ function betaApp(appsname){
             fetchContent(geturl);
         };
 
-    }else if(appsname === "Tasks"){
+    } else if (appsname === "RemindMe"){ 
+        var rtime = document.createElement('input');
+        var createremind = document.createElement('button');
+
+    } else if(appsname === "Tasks"){
         var tasknum = document.createElement('h1');
         var closeall = document.createElement('button');
         var refreshb = document.createElement('button');
