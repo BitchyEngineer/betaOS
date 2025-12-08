@@ -365,8 +365,9 @@ input[type='text']{
 }
 
 .appicon {
-    width: 125px;
-    height: 125px;
+    width: 150px;
+    height: 150px;
+    background-size: 150px 150px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -399,6 +400,7 @@ input[type='text']{
 .deskgrid .appicon {
     width: 200px;
     height: 200px;
+    background-size: 200px 200px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
