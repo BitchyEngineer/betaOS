@@ -1,0 +1,645 @@
+function Settings(){
+    var app = document.createElement('div');
+    var apphead = document.createElement('div');
+    var appheadtext = document.createElement('ui');
+    var appbody = document.createElement('div');
+    var close = document.createElement('button');
+    var fullscreen = document.createElement('button');
+    var minimize = document.createElement('button');
+    var isfull = false;
+    var headbuttdiv = document.createElement('div');
+    var headtextdiv = document.createElement('div');
+    var appnumber = Math.random();
+    var appsname = 'Settings';
+    app.scroll = false;
+    appbody.scroll = true;
+    tasks++;
+
+    headtextdiv.style.textAlign = 'left';
+    headtextdiv.style.width = '50%';
+    headtextdiv.style.cssFloat = 'left';
+    headbuttdiv.style.textAlign = 'right';
+    headbuttdiv.style.width = '50%';
+    headbuttdiv.style.cssFloat = 'right';
+    appnumber++;
+
+    app.className = 'app';
+    apphead.className = 'appheader';
+    appheadtext.className = 'appheadtxt';
+    appheadtext.innerText = appsname;
+
+    close.type = 'image';
+    close.id = "close"
+    close.title = 'Close';
+    close.style.fontFamily = "Arial";
+    close.className = "appheadbutt";
+
+    fullscreen.title = 'Fullscreen';
+    fullscreen.id = "fullscreen";
+    fullscreen.type = 'image';
+    fullscreen.style.textAlign = 'right';
+    fullscreen.className = "appheadbutt";
+
+    minimize.type = 'image';
+    minimize.title = 'Small';
+    minimize.id = "minimize";
+    minimize.className = "appheadbutt";
+
+    appbody.className = 'appbody';
+
+    headtextdiv.append(appheadtext);
+    apphead.append(headtextdiv);
+    apphead.append(headbuttdiv);
+    headbuttdiv.append(minimize);
+    headbuttdiv.append(fullscreen);
+    headbuttdiv.append(close);
+
+    app.appendChild(apphead);
+    app.appendChild(appbody);
+
+    if(savedtheme){
+        app.style.backgroundColor = localStorage.getItem('theme');
+    } else{
+        app.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    }
+
+    desktopbody.appendChild(app);
+    app.id = appsname + "(" + appnumber + ")";
+    apphead.id = app.id + "header";
+    dragWindow(document.getElementById(app.id));
+    app.onclick = function () {bringToFront(app.id)};
+
+    // === REAL, IMMEDIATELY WORKING SETTINGS (all affect behavior right now) ===
+    // 1. Confirm before closing apps
+    var confirmCloseEnabled = (localStorage.getItem('confirmAppClose') !== 'false');
+
+    // 2. Error sound on/off
+    var errorSoundEnabled = (localStorage.getItem('errorSoundEnabled') !== 'false');
+    // Apply error sound setting immediately
+    app.onerror = function(){
+        if (errorSoundEnabled && typeof errorsound !== 'undefined') {
+            errorsound.play();
+        }
+    };
+
+    // 3. Default window size toggle (small or normal)
+    var defaultSmallWindow = (localStorage.getItem('defaultSmallWindow') === 'true');
+    // Apply default window size right now to this Settings window
+    if (defaultSmallWindow) {
+        app.style.width = '30%';
+        app.style.height = '30%';
+        app.style.top = '35%';
+        app.style.left = '35%';
+    } else {
+        app.style.width = '50%';
+        app.style.height = '50%';
+        app.style.top = '25%';
+        app.style.left = '25%';
+    }
+
+    // Fullscreen button now respects default size when exiting fullscreen
+    fullscreen.onclick = function () {
+        if (isfull == false){
+            app.style.width = '100%';
+            app.style.height = 'calc(100% - 80px)';
+            app.style.top = '0px';
+            app.style.left = '0%';
+            if(savedtheme){
+                app.style.backgroundColor = localStorage.getItem('theme');
+            }
+            isfull = true;
+        } else if (isfull == true){
+            if (defaultSmallWindow) {
+                app.style.width = '30%';
+                app.style.height = '30%';
+                app.style.top = '35%';
+                app.style.left = '35%';
+            } else {
+                app.style.width = '50%';
+                app.style.height = '50%';
+                app.style.top = '25%';
+                app.style.left = '25%';
+            }
+            if(savedtheme){
+                app.style.backgroundColor = localStorage.getItem('theme');
+            }
+            isfull = false;
+        }
+    };
+
+    // Close button with confirm
+    close.onclick = function () {
+        if (confirmCloseEnabled) {
+            if (confirm("Close Settings?")) {
+                desktopbody.removeChild(app);
+                tasks--;
+            }
+        } else {
+            desktopbody.removeChild(app);
+            tasks--;
+        }
+    };
+    minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
+
+    var tab = document.createElement('div');
+    var generalsettings = document.createElement('div');
+    var backgroundsettings = document.createElement('div');
+    var about = document.createElement('div');
+    var basssett = document.createElement('div');
+    var shortcuts = document.createElement('div');
+    var usersett = document.createElement('div');
+    var changelogsett = document.createElement('div');
+
+    var sett = ['General', 'Personalization', 'About', /*'betaAssist',*/ 'Shortcuts', 'User', 'Changelog'];
+    for(let i = 0; i < sett.length; i++){
+        var settbutt = document.createElement('button');
+        tab.className = 'tab';
+        settbutt.className = 'tablinks';
+        settbutt.innerHTML = sett[i];
+        tab.appendChild(settbutt);
+        settbutt.onclick = function(){
+            openSett(event, sett[i]);
+        };
+    }
+
+    appbody.scroll = false;
+    appbody.style.overflow = 'hidden';
+    tab.className = 'tab';
+
+    generalsettings.className = 'tabcontent';
+    generalsettings.id = 'General';
+    generalsettings.style.display = 'inline';
+
+    var genTitle = document.createElement('h1');
+    genTitle.innerText = 'General';
+    generalsettings.appendChild(genTitle);
+
+    // Confirm close toggle
+    var confirmH2 = document.createElement('h2');
+    confirmH2.innerText = 'Closing Apps';
+    generalsettings.appendChild(confirmH2);
+    var confirmLabel = document.createElement('label');
+    var confirmCheck = document.createElement('input');
+    
+    confirmCheck.type = 'checkbox';
+    confirmCheck.checked = confirmCloseEnabled;
+    confirmCheck.onchange = function() {
+        localStorage.setItem('confirmAppClose', this.checked);
+        confirmCloseEnabled = this.checked;
+    };
+    confirmLabel.appendChild(confirmCheck);
+    confirmLabel.appendChild(document.createTextNode(' Ask for confirmation before closing any app'));
+    generalsettings.appendChild(confirmLabel);
+
+    // Error sound toggle
+    var soundH2 = document.createElement('h2');
+    soundH2.innerText = 'Sound';
+    generalsettings.appendChild(soundH2);
+    var soundLabel = document.createElement('label');
+    var soundCheck = document.createElement('input');
+    soundCheck.type = 'checkbox';
+    soundCheck.checked = errorSoundEnabled;
+    soundCheck.onchange = function() {
+        localStorage.setItem('errorSoundEnabled', this.checked);
+        errorSoundEnabled = this.checked;
+    };
+    soundLabel.appendChild(soundCheck);
+    soundLabel.appendChild(document.createTextNode(' Play error sound when something goes wrong'));
+    generalsettings.appendChild(soundLabel);
+
+    // Default window size toggle
+    var sizeH2 = document.createElement('h2');
+    sizeH2.innerText = 'New Windows';
+    generalsettings.appendChild(sizeH2);
+    var sizeLabel = document.createElement('label');
+    var sizeCheck = document.createElement('input');
+    sizeCheck.type = 'checkbox';
+    sizeCheck.checked = defaultSmallWindow;
+    sizeCheck.onchange = function() {
+        localStorage.setItem('defaultSmallWindow', this.checked);
+        defaultSmallWindow = this.checked;
+        alert('New windows will open ' + (this.checked ? 'smaller' : 'normal') + ' next time. Current window not affected.');
+    };
+    sizeLabel.appendChild(sizeCheck);
+    sizeLabel.appendChild(document.createTextNode(' Open new apps in smaller window'));
+    generalsettings.appendChild(sizeLabel);
+
+    var resetH2 = document.createElement('h2');
+    resetH2.innerText = 'System';
+    generalsettings.appendChild(resetH2);
+
+    var bstorereset = document.createElement ("button");
+    bstorereset.innerHTML = "Reset betaStore";
+    bstorereset.onclick = function(){
+        localStorage.removeItem("savedApps");
+        window.location.reload();
+    };
+    generalsettings.appendChild(bstorereset);
+
+    var systemreset = document.createElement ("button");
+    systemreset.innerHTML = "Reset System";
+    systemreset.onclick = function(){
+        localStorage.clear();
+        location.reload();
+    };
+    generalsettings.appendChild(systemreset);
+
+    appbody.appendChild(tab);
+    appbody.appendChild(usersett);
+    appbody.appendChild(generalsettings);
+
+    basssett.className = 'tabcontent';
+    basssett.id = 'betaAssist';
+    var basstext = document.createElement("h1");
+    var voiceopttxt = document.createElement('h2');
+    var voiceoptbox = document.createElement('label');
+    var voiceopt = document.createElement('input');
+    var voptslide = document.createElement('span');
+    basstext.innerHTML = 'betaAssist Settings';
+    voiceopttxt.innerHTML = 'Voice Over: ';
+    voiceoptbox.class = 'switch';
+    voiceopt.type = 'checkbox';
+    voptslide.class = 'slider';
+    voiceopt.checked = false;
+    if(voiceopt.checked == true){
+        voiceActive = true;
+    } else if (voiceopt.checked == false){
+        voiceActive = false;
+    }
+    basssett.appendChild(basstext);
+    basssett.appendChild(voiceopttxt);
+    voiceoptbox.appendChild(voiceopt);
+    voiceoptbox.appendChild(voptslide);
+    basssett.appendChild(voiceoptbox);
+    appbody.appendChild(basssett);
+
+    usersett.id = 'User';
+    usersett.className = 'tabcontent';
+
+    var userTitle = document.createElement('h1');
+    userTitle.innerText = 'User Settings';
+    usersett.appendChild(userTitle);
+
+    // Profile picture
+    var savedIcon = localStorage.getItem('usericon');
+    var iconContainer = document.createElement('div');
+    iconContainer.style.textAlign = 'center';
+    iconContainer.style.margin = '30px 0';
+
+    var iconImg = document.createElement('img');
+    iconImg.style.width = '120px';
+    iconImg.style.height = '120px';
+    iconImg.style.borderRadius = '50%';
+    iconImg.style.objectFit = 'cover';
+    iconImg.style.border = '4px solid white';
+    if (savedIcon && savedIcon.trim() !== '') {
+        iconImg.src = savedIcon.trim();
+    } else {
+        iconImg.src = 'images/defaultuser.png';
+    }
+    iconImg.onerror = function() {
+        this.src = 'images/defaultuser.png';
+        localStorage.removeItem('usericon');
+    };
+    iconContainer.appendChild(iconImg);
+
+    var changeIconBtn = document.createElement('button');
+    changeIconBtn.innerText = 'Change Profile Picture';
+    changeIconBtn.style.padding = '12px 24px';
+    changeIconBtn.style.fontSize = '18px';
+    changeIconBtn.style.marginTop = '20px';
+    changeIconBtn.style.cursor = 'pointer';
+    changeIconBtn.style.display = 'block';
+    changeIconBtn.style.marginLeft = 'auto';
+    changeIconBtn.style.marginRight = 'auto';
+    changeIconBtn.onclick = function() {
+        var current = savedIcon && savedIcon.trim() !== '' ? savedIcon.trim() : '';
+        var url = prompt('Enter direct image URL (must be .png, .jpg, etc.):', current);
+        if (url && url.trim() !== '') {
+            var cleanUrl = url.trim();
+            localStorage.setItem('usericon', cleanUrl);
+            iconImg.src = cleanUrl;
+        }
+    };
+    iconContainer.appendChild(changeIconBtn);
+    usersett.appendChild(iconContainer);
+
+    // Change username
+    var nameTitle = document.createElement('h2');
+    nameTitle.innerText = 'Change Username';
+    nameTitle.style.textAlign = 'center';
+    nameTitle.style.margin = '30px 0 10px 0';
+    usersett.appendChild(nameTitle);
+
+    var currentUsername = localStorage.getItem('username') || 'User';
+
+    var newNameInput = document.createElement('input');
+    newNameInput.type = 'text';
+    newNameInput.placeholder = 'New Username';
+    newNameInput.value = currentUsername;
+    newNameInput.className = 'logininput';
+    newNameInput.style.width = '300px';
+    newNameInput.style.padding = '10px';
+    newNameInput.style.margin = '10px auto';
+    newNameInput.style.display = 'block';
+    usersett.appendChild(newNameInput);
+
+    var changeNameBtn = document.createElement('button');
+    changeNameBtn.innerText = 'Update Username';
+    changeNameBtn.className = 'loginbutt';
+    changeNameBtn.style.padding = '12px 30px';
+    changeNameBtn.style.fontSize = '18px';
+    changeNameBtn.style.display = 'block';
+    changeNameBtn.style.margin = '10px auto';
+    changeNameBtn.onclick = function() {
+        var newName = newNameInput.value.trim();
+        if (newName === '') {
+            alert('Username cannot be empty!');
+            return;
+        }
+        localStorage.setItem('username', newName);
+        alert('Username updated to "' + newName + '"!\nIt will show on next lock screen.');
+    };
+    usersett.appendChild(changeNameBtn);
+
+    // Change password
+    var passTitle = document.createElement('h2');
+    passTitle.innerText = 'Change Password';
+    passTitle.style.textAlign = 'center';
+    passTitle.style.margin = '40px 0 10px 0';
+    usersett.appendChild(passTitle);
+
+    var newPassInput = document.createElement('input');
+    newPassInput.type = 'password';
+    newPassInput.placeholder = 'New Password';
+    newPassInput.className = 'logininput';
+    newPassInput.style.width = '300px';
+    newPassInput.style.padding = '10px';
+    newPassInput.style.margin = '10px auto';
+    newPassInput.style.display = 'block';
+    usersett.appendChild(newPassInput);
+
+    var confirmPassInput = document.createElement('input');
+    confirmPassInput.type = 'password';
+    confirmPassInput.placeholder = 'Confirm New Password';
+    confirmPassInput.className = 'logininput';
+    confirmPassInput.style.width = '300px';
+    confirmPassInput.style.padding = '10px';
+    confirmPassInput.style.margin = '10px auto';
+    confirmPassInput.style.display = 'block';
+    usersett.appendChild(confirmPassInput);
+
+    var changePassBtn = document.createElement('button');
+    changePassBtn.innerText = 'Update Password';
+    changePassBtn.className = 'loginbutt';
+    changePassBtn.style.padding = '12px 30px';
+    changePassBtn.style.fontSize = '18px';
+    changePassBtn.style.display = 'block';
+    changePassBtn.style.margin = '10px auto';
+    changePassBtn.onclick = function() {
+        var newPass = newPassInput.value;
+        var confirmPass = confirmPassInput.value;
+        if (newPass === '') {
+            alert('Password cannot be empty!');
+            return;
+        }
+        if (newPass !== confirmPass) {
+            alert('Passwords do not match!');
+            return;
+        }
+        localStorage.setItem('password', newPass);
+        alert('Password updated successfully!');
+        newPassInput.value = '';
+        confirmPassInput.value = '';
+    };
+    usersett.appendChild(changePassBtn);
+
+    var passWarn = document.createElement('p');
+    passWarn.innerText = 'Note: Password only applies to lock screen.';
+    passWarn.style.fontSize = '14px';
+    passWarn.style.opacity = '0.8';
+    passWarn.style.margin = '30px auto 0 auto';
+    passWarn.style.textAlign = 'center';
+    passWarn.style.maxWidth = '300px';
+    usersett.appendChild(passWarn);
+
+    backgroundsettings.scroll = true;
+    backgroundsettings.style.overflow = 'scroll';
+    backgroundsettings.className = 'tabcontent';
+    appbody.appendChild(backgroundsettings);
+    backgroundsettings.style.display = 'none';
+    backgroundsettings.id = 'Personalization';
+
+    var backgroundtxt = document.createElement("h1");
+    backgroundtxt.innerHTML = "Background";
+    backgroundsettings.appendChild(backgroundtxt);
+
+    var bchoices = ['Nonono', 'HiddenGooner', 'Backside', 'Exposed', 'GettinDirty',
+    'Pineapple', 'WindowShopper', 'Anime1', 'Hermoine', 'Boobs', 'AssInTheWoods',
+    'CarShot', 'InTheField', 'OnTheTracks', 'BlackLatex', 'LoveHer', 'BlackLace',
+    'BeachTime', 'GuitarGirl', 'ShoesOffFeetUp', 'PurpleLights', 'MidnightDowntown',
+    'NeonRose', 'Nope', 'HurtMe', 'EnterSign', 'RacingDots', 'GoodVibesOnly',
+    'DownTheSpiral', 'GameOn', 'LongLiveBacon', 'NeonRainbow', 'NeonSign1',
+    'Open24Hours', 'OpenSign', 'RainbowDoors'];
+
+    for (var i = 0; i < bchoices.length; i++){
+        var bchoice = document.createElement('button');
+        bchoice.id = bchoices[i] + appnumber;
+        bchoice.type = 'image';
+        bchoice.style.backgroundImage = "url('images/" + bchoices[i] + ".png')";
+        bchoice.className = 'backgroundoption';
+        bchoice.choiceName = bchoices[i];
+        bchoice.onclick = function () {
+            document.body.style.backgroundImage = 'url(images/' + this.choiceName + '.png)';
+            localStorage.setItem('background','url(images/' + this.choiceName + '.png)');
+        };
+        backgroundsettings.appendChild(bchoice);
+    }
+
+    var themetxt = document.createElement("h1");
+    themetxt.innerHTML = "Themes";
+    backgroundsettings.appendChild(themetxt);
+
+    var tchoices = [
+        {name: 'One In The Pink', color: 'rgba(238, 39, 149, 0.65)'},
+        {name: 'Red Sea', color: 'rgba(255, 0, 0, 0.65)'},
+        {name: 'Mars', color: 'rgba(234, 95, 3, 0.65)'},
+        {name: 'Orange Soda', color: 'rgba(255, 165, 0, 0.65)'},
+        {name: 'Sunrays', color: 'rgba(254, 224, 3, 0.65)'},
+        {name: 'Green Apple', color: 'rgba(0, 255, 0, 0.65)'},
+        {name: 'Aquarium', color: 'rgba(12, 224, 178, 0.65)'},
+        {name: 'Ocean Water', color: 'rgba(0, 0, 255, 0.65)'},
+        {name: 'Midnight Light', color: 'rgba(117, 14, 227, 0.65)'},
+        {name: 'Violet Vision', color: 'rgba(128, 0, 128, 0.65)'},
+        {name: 'Dark Mode', color: 'rgba(0, 0, 0, 0.65)'},
+        {name: 'Light Mode', color: 'rgba(149, 149, 149, 0.65)'},
+        {name: 'Clear Mode', color: 'rgba(0, 0, 0, 0)'}
+    ];
+
+    for (var i = 0; i < tchoices.length; i++){
+        var tchoice = document.createElement('button');
+        tchoice.id = tchoices[i].name + appnumber;
+        tchoice.type = 'text';
+        tchoice.innerHTML = tchoices[i].name;
+        tchoice.style.backgroundColor = tchoices[i].color;
+        tchoice.className = 'backgroundoption';
+        tchoice.onclick = function () {
+            document.getElementById('navbar').style.backgroundColor = this.style.backgroundColor;
+            app.style.backgroundColor = this.style.backgroundColor;
+            actioncenter.style.backgroundColor = this.style.backgroundColor;
+            document.getElementById('datetime').style.backgroundColor = this.style.backgroundColor;
+            document.getElementById('rightcon').style.backgroundColor = this.style.backgroundColor;
+            document.getElementById('menu').style.backgroundColor = this.style.backgroundColor;
+            document.getElementById('notificon').style.backgroundColor = this.style.backgroundColor;
+            document.getElementById('datetime').style.backgroundColor = this.style.backgroundColor;
+            localStorage.setItem('theme', this.style.backgroundColor);
+        };
+        backgroundsettings.appendChild(tchoice);
+    }
+
+    var backgroundinput = document.createElement('input');
+    var backgroundaddbutt = document.createElement('button');
+    backgroundaddbutt.innerHTML = 'Add';
+    backgroundinput.placeholder = "Background URL";
+    backgroundaddbutt.onclick = function () {
+        document.body.style.backgroundImage = "url('" + backgroundinput.value + "')";
+        var custombackground = document.createElement('button');
+        custombackground.type = 'image';
+        custombackground.style.backgroundImage = "url('" + backgroundinput.value + "')";
+        custombackground.className = 'backgroundoption';
+        custombackground.onclick = function () {
+            document.body.style.backgroundImage = "url('" + backgroundinput.value + "')";
+            localStorage.setItem('background',"url('" + backgroundinput.value + "')");
+        };
+        backgroundsettings.appendChild(custombackground);
+    };
+
+    appbody.appendChild(about);
+    about.className = 'tabcontent';
+    about.id = "About" ;
+
+    var betaOStxt = document.createElement('h1');
+    var browserversion = document.createElement('h1');
+    var copyright = document.createElement('h1');
+    var logoimg = document.createElement('img');
+    var logoimg2 = document.createElement('img');
+
+    app.style.color = 'white';
+    browserversion.innerHTML = objbrowserName + ": " + objfullVersion;
+    betaOStxt.innerHTML = "betaOS " + betaosversion;
+    copyright.innerHTML = "© nononopmv 2025";
+    logoimg.src = 'images/beta.png';
+    logoimg.style = 'height: 150px';
+    logoimg2.src = 'images/Nono.png';
+    logoimg2.style = 'height: 150px';
+
+    about.appendChild(logoimg);
+    about.appendChild(logoimg2);
+    about.appendChild(betaOStxt);
+    about.appendChild(copyright);
+    about.appendChild(browserversion);
+
+    appbody.appendChild(shortcuts);
+    shortcuts.id = "Shortcuts";
+    shortcuts.className = "tabcontent"
+
+    var appnameshort = document.createElement('input');
+    var shortaddnav = document.createElement('button');
+    var shortadddesk = document.createElement('button');
+    var newshortcut = document.createElement('button');
+    var navshort = document.createElement('button');
+    var noticetxt = document.createElement("h3");
+    var resetsc = document.createElement("button");
+    var iconpreview = document.createElement('img');
+
+    newshortcut.type = 'image';
+    newshortcut.style.width = '50px';
+    newshortcut.style.height = '50px';
+    newshortcut.style.textAlign = 'center';
+
+    appnameshort.type = 'text';
+    appnameshort.placeholder = "App name";
+
+    shortaddnav.innerHTML = 'Navbar';
+    shortadddesk.innerHTML = 'Desktop';
+
+    noticetxt.innerHTML = "***NAMES ARE CASE SENSITIVE***"
+
+    resetsc.innerHTML = "Reset Shortcuts";
+    resetsc.title = "This will remove all added shortcuts";
+    resetsc.onclick = function () {
+        localStorage.removeItem("savednav");
+        localStorage.removeItem("saveddesk");
+        window.location.reload();
+    };
+
+    iconpreview.style.width = '20%';
+    iconpreview.style.height = 'auto';
+
+    shortcuts.appendChild(appnameshort);
+    shortcuts.appendChild(shortaddnav);
+    shortcuts.appendChild(shortadddesk);
+    shortcuts.appendChild(resetsc);
+    shortcuts.appendChild(noticetxt);
+    shortcuts.appendChild(iconpreview);
+
+    shortaddnav.onclick = function () {
+        iconpreview.src = "images/" + appnameshort.value + ".png";
+        navshort.title = appnameshort.value;
+        navshort.style = 'background-image: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
+        navshort.className = 'appicon';
+        if(appnameshort.value != "Shortcuts"){
+            navshort.setAttribute("onclick", appnameshort.value + "()");
+        } else {
+            navshort.setAttribute("onclick", "Settings(); openSett(event, 'Shortcuts');");
+        }
+        pinneddiv.appendChild(navshort);
+        localStorage.setItem("savednav", pinneddiv.innerHTML);
+        desktopbody.removeChild(app);
+    };
+
+    shortadddesk.onclick = function () {
+        iconpreview.src = "images/" + appnameshort.value + ".png";
+        newshortcut.title = appnameshort.value;
+        newshortcut.style = 'background-image: url("images/' + appnameshort.value + '.png"); background-size: 50px 50px;';
+        newshortcut.className = 'appicon';
+        if(appnameshort.value != "Shortcuts"){
+            newshortcut.setAttribute("onclick", appnameshort.value + "()");
+        } else {
+            newshortcut.setAttribute("onclick", "Settings(); openSett(event, 'Shortcuts');");
+        }
+        deskgrid.appendChild(newshortcut);
+        localStorage.setItem("saveddesk", deskgrid.innerHTML);
+        desktopbody.removeChild(app);
+    };
+
+    appbody.appendChild(changelogsett);
+    changelogsett.id = "Changelog";
+    changelogsett.className = "tabcontent";
+
+    var changelogtext = document.createElement('textarea');
+    changelogtext.value = changelog;
+    changelogtext.style.width = '100%';
+    changelogtext.style.fontSize = '16px';
+    changelogtext.style.height = 'calc(100% - 20px)';
+    changelogtext.style.color = 'white';
+    changelogtext.style.backgroundColor = 'inherit';
+    changelogtext.style.border = 'none';
+    changelogtext.readOnly = true;
+    changelogtext.style.resize = 'none';
+    changelogsett.appendChild(changelogtext);
+}
+
+function openSett(evt, pageName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(pageName).style.display = "block";
+    evt.currentTarget.className += " active";
+}

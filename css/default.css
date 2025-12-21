@@ -8,7 +8,6 @@ body {
     width: auto;
     height: auto;
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
     background: url('') no-repeat center fixed;
     background-size: cover;
     -webkit-background-size: cover;
@@ -16,6 +15,9 @@ body {
     -o-background-size: cover;
     background-attachment: fixed;
     display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .navbar {
@@ -30,10 +32,28 @@ body {
     height: 50px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
     border-radius: 15px;
-    animation: slidenavbar;
+    animation: sliderightdiv;
     animation-duration: 2s;
     background-color: rgba(255, 255, 255, .15);  
     backdrop-filter: blur(5px);
+}
+
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+h2{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+h3{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .sloadbar{
@@ -50,10 +70,12 @@ body {
 }
 
 .so4icon{
-    width: 50%;
+    width: 500px;
     position: absolute;
-    top: 300px;
-    left: 25%;
+    top: calc(50% - 250px);
+    bottom: calc(50% - 250px);
+    left: calc(50% - 250px);
+    right: calc(50% - 250px);
     animation: zoomfade;
     animation-duration: 3s;
 }
@@ -138,8 +160,37 @@ body {
     filter: blur(10px);
 }*/
 
+#hoursel{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+#minutesel{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
 
 #appdiv{
+    width: fit-content;
+    height: 50px;
+    display: inline;
+}
+
+#funcdiv{
     width: fit-content;
     height: 50px;
     display: inline;
@@ -168,12 +219,12 @@ body {
     margin-right: 5px;
     top: 5px;
     bottom: 5px;
+    background-color: rgba(134, 0, 0, 0.664);
     box-shadow: rgba(255, 0, 0, .5) 0 0 7px;
 }
 .miniicon:hover{
     z-index: 100;
     transform: scale(1.25);
-    background-color: inherit;
     box-shadow: rgba(255, 0, 0, .5) 0 0 8px 2px;
 }
 
@@ -185,6 +236,7 @@ body {
     bottom: 5px;
     animation: sliderightdiv;
     animation-duration: 2s;
+    z-index: 10000;
 }
 
 .rightdiv{
@@ -194,29 +246,122 @@ body {
     height: 50px;
     right: 10px;
     bottom: 5px;
+    z-index: 10000;
     animation: sliderightdiv;
     animation-duration: 2s;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
-
-#datetime{
+#rightcon{
+    position: absolute;
+    width: fit-content;
+    height: 400px;
+    right: 10px;
+    bottom: 60px;
+    animation: sliderightcon;
+    animation-duration: 2s;
     color: white;
     background-size: cover;
-    box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
+    box-shadow: rgba(0, 0, 0, .2) 0 0 5px 5px;
     backdrop-filter: blur(15px);
-} #datetime:hover{
-    backdrop-filter: blur(25px);
-    transform: translateX(-20px);
-
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
+.rightcon{
+    position: absolute;
+    width: fit-content;
+    margin: 10px;
+    height: 400px;
+    right: 10px;
+    bottom: 60px;
+    animation: slightrightcon;
+    animation-duration: 2s;
+    color: white;
+    background-size: cover;
+    box-shadow: rgba(0, 0, 0, .2) 0 0 5px 5px;
+    backdrop-filter: blur(15px);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+.rightcon input[type='range']{
+    width: 100%;
+    height: 50px;
+}
+
+.rightcon button{
+    margin: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: rgba(162, 162, 162, 0.513);
+    border-radius: 25px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, .2) 0 5px 5px;
+    backdrop-filter: blur(15px);
+}
+
+input[type="range"]::-moz-range-track {
+    background: rgba(162, 162, 162, 0.513);
+    border-radius: 25px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, .2) 0 0 5px 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    background: rgba(255, 255, 255, 0.099);
+    border-radius: 25px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, .2) 0 0 5px 5px;
+    backdrop-filter: blur(15px);
+}
+
+input[type="range"]::-moz-range-thumb {
+    background: rgba(255, 255, 255, 0.099);
+    border-radius: 25px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, .2) 0 0 5px 5px;
+    backdrop-filter: blur(15px);
+}
+
+.datetime{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    z-index: 10000;
+    animation: zoomfade;
+    animation-duration: 2s;
+    margin-left: 10px;
+    margin-right: 10px;
+    top: 5px;
+    bottom: 5px;
+    box-shadow: rgba(0, 0, 0, .25) 0 0 2.5px 2.5px;
+    backdrop-filter: blur(25px);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+  } .datetime:hover {
+    background: rgba(255, 0, 0, 0.5);
+    box-shadow: rgba(0, 0, 0, .5) 0 0 2.5px 2.5px;
+    transform: scale(1.10);
+  }
+
 .notifbody {
-    width: 500px;
+    width: 400px;
     height: 200px;
     resize: none;
     position: absolute;
     top: 20px;
-    right: 10px;
+    right: 20px;
     animation: zoomfade; 
     animation-duration: .5s;
     z-index: 10;
@@ -227,17 +372,18 @@ body {
     flex-direction: column;
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     text-align: center;
-    color: white;
     overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
     background: inherit;
     background-color: rgba(31, 31, 31, 0.15);  
     backdrop-filter: blur(5px);
     transition: top 0.3s ease;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .notifcontrol{
-    margin-top: auto;
     width: 100%;
     height: 40px;
     display: flex;
@@ -252,7 +398,7 @@ body {
     height: 30px;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
+    margin: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -261,19 +407,19 @@ body {
 .menu {
     width: 200px;
     height: fit-content;
-    z-index: 100;
+    z-index: 40000;
     position: fixed;
     box-shadow: 5px;
     display: none;
     color: white;
-    box-shadow: rgba(0, 0, 0, 0.25) 0 0 5px 5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 0 7.5px 7.5px;
     border-radius: 25px;
     text-align: left;
     cursor: context-menu;
     animation: zoomfade;
     animation-duration: .5s;
     background-color: rgba(0, 0, 0, .5);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(5px);
 }
 
 .menu:active{
@@ -287,11 +433,15 @@ body {
     text-align: center;
     align-items: center;
     justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 .menubutton:hover{
     background: inherit;
     border-radius: 20px;
     transform: scale(1.15);
+    backdrop-filter: blur(25px);
 }
 
 .navbar {
@@ -299,7 +449,7 @@ body {
     position: absolute;
     display: flex;
     bottom: 0;
-    z-index: 10;
+    z-index: 10000;
     width: calc(fit-content + 10px);
     margin: 10px;
     height: 60px;
@@ -330,8 +480,7 @@ body {
 .logininput{
     border-radius: 25px; 
     border-style: none; 
-    box-shadow: rgba(0, 0, 0, .5)5px 5px 5px; 
-    background: rgba(0,0,0, .25); 
+    background: rgba(0,0,0,0); 
     margin: 10px;
     width: 75%; 
     height: 70px; 
@@ -339,16 +488,10 @@ body {
     z-index:10; 
     animation:zoomfade; 
     animation-duration: 2s;
-    color: white;
     position: relative;
-}
-.logininput:hover{
-    box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
-    background-color: rgba(255, 0, 0, 0.5);
-}
-.logininput input:active{
-    box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
-    background-color: rgba(255, 0, 0, 0.6);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .loginbutt{
@@ -363,12 +506,15 @@ body {
     z-index:10; 
     animation:zoomfade; 
     animation-duration: 2s;
-    color: white;
     margin: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
+
 .loginbutt:hover{
     box-shadow: rgba(0, 0, 0, .5)10px 10px 10px;
     background-color: rgba(255, 0, 0, 0.5);
@@ -378,6 +524,7 @@ body {
     width: 50px;
     height: 50px;
     background-repeat: no-repeat;
+    background-color: inherit;
     margin-bottom: 10px;
     z-index: 100;
     animation: zoomfade;
@@ -393,6 +540,25 @@ body {
     transform: scale(1.25);
     box-shadow: rgba(0,0,0,0.6) 0 5px 5px 5px;
     backdrop-filter: blur(25px);
+}
+
+.funcicon {
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    z-index: 100;
+    animation: zoomfade;
+    animation-duration: 2s;
+    margin-left: 10px;
+    margin-right: 10px;
+    top: 5px;
+    bottom: 5px;
+    box-shadow: rgba(0, 0, 0, .25) 0 0 2.5px 2.5px;
+}
+
+.funcicon:hover{
+   background-color: rgba(255, 0, 0, 0.5);
 }
 
 
@@ -421,6 +587,11 @@ body {
     margin-right: 30px;
     top: 5px;
     bottom: 5px;
+    order: 0;
+}
+
+deskgrid.edit-mode .appicon {
+    order: initial; /* ensures DOM order controls grid position */
 }
 
 .deskicon:hover{
@@ -458,6 +629,9 @@ body {
     display: inline-block;
     animation: slidetopbar;
     animation-duration: 2s;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .backgroundoption {
@@ -467,6 +641,9 @@ body {
     margin: 10px;
     box-shadow: rgba(0, 0, 0, 0.5) 0 2.5px 2.5px 2.5px;
     background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 .backgroundoption:hover{
     box-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px; 
@@ -533,6 +710,9 @@ body {
     border: none;
     outline: none;
     resize: none; /* keep resizing controlled by the note container */
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .codetxt{
@@ -555,6 +735,9 @@ body {
     border: none;
     outline: none;
     resize: none; /* keep resizing controlled by the note container */
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .usercard{
@@ -571,6 +754,8 @@ body {
 .usernametxt{
     font-size: 30px;
     font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .userpic{
@@ -618,11 +803,33 @@ body {
 @keyframes sliderightdiv {
     0% {
         opacity: 5%;
-        right: -200px
+        bottom: -60px
     }
     100%{
         opacity: 100%;
-        right: 5px;
+        bottom: 5px;
+    }
+}
+
+@keyframes slidenotifs {
+    0% {
+        opacity: 5%;
+        right: -600px;
+    }
+    100%{
+        opacity: 100%;
+        right: 10px;
+    }
+}
+
+@keyframes sliderightcon {
+    0% {
+        opacity: 5%;
+        bottom: -700px;
+    }
+    100%{
+        opacity: 100%;
+        bottom: 60px;
     }
 }
 
@@ -778,7 +985,7 @@ body {
 .app {
     width: 50%; 
     height: 50%;
-    max-height: calc(100% - 50px);
+    max-height: calc(100% - 80px);
     max-width: 100%;
     min-height: 17.5%;
     min-width: 17.5%;
@@ -838,11 +1045,14 @@ body {
     border: none;
     outline: none;
     resize: none; /* keep resizing controlled by the note container */
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .controlcenter{
-    width: 50%;
-    height: 100%;
+    height: 30%;
+    width: 100%;
     resize: none;
     overflow: hidden;
     vertical-align: top;
@@ -852,8 +1062,8 @@ body {
 }
 
 .appcenter{
-    width: 50%;
-    height: 100%;
+    height: 70%;
+    width: 100%;
     resize: none;
     overflow-y:scroll;
     position: relative;
@@ -866,7 +1076,7 @@ input[type=text]{
     border-radius: 15px;
     width: 75%;
     height: 50px;
-    font-size: 40px;
+    font-size: 25px;
     border-top: none;
     border-right: none;
     border-left: none;
@@ -881,8 +1091,89 @@ input[type=text]{
     color: white;
 }
 
+textarea{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+p{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+input[type=password]{
+    border-radius: 15px;
+    width: 75%;
+    height: 50px;
+    font-size: 25px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: white;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0);
+    text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    color: white;
+}
+
+input[type=number]{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 15px;
+    font-size: 40px;
+    background: rgba(0, 0, 0, 0);
+    text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    color: white;
+    width: 250px;
+    height: 115px;
+}
+
+select{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    border-radius: 15px;
+    font-size: 40px;
+    background: rgba(0, 0, 0, 0);
+    text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    color: white;
+    width: 200px;
+    height: 115px;
+}
+
 input[type=image]{
     outline: none;
+}
+
+@keyframes slideDownLock {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-up {
+    transform: translateY(-100%);
+}
+
+#lockbody {
+    animation: slideDownLock 0.6s ease-out forwards;
+    transition: transform 0.5s ease-in-out;
 }
 
 textarea{
@@ -891,7 +1182,7 @@ textarea{
 
 .popuplist {
     position: absolute;
-    z-index: 99;
+    z-index: 1000;
     animation: slidetopam;
     animation-duration: 2s;
     bottom: 80px;
@@ -899,7 +1190,7 @@ textarea{
     transform: translateX(-50%);
     border-radius: 15px;
     width: 525px;
-    height: auto;
+    height: 725px;
     max-height: 80vh;
     border-style: none;
     box-shadow: rgba(0, 0, 0, .5) 0 2.5px 2.5px 2.5px;
@@ -945,7 +1236,7 @@ textarea{
     border: none;
     outline: none;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 25px;
     background-color: rgba(255, 255, 255, 0.05);
     transition: all 0.2s ease;
     margin: 10px;
@@ -958,7 +1249,7 @@ textarea{
 
 .appcenter .appicon:hover {
     transform: scale(1.25);
-    box-shadow: rgba(0,0,0,0.6) 0 8px 8px 8px;
+    box-shadow: rgba(0,0,0,0.6) 0 0 5px 5px;
     backdrop-filter: blur(15px);
 }
 
@@ -1100,14 +1391,20 @@ button{
     transition: 0.3s;
     border-radius: 15px;
     font-size: 17px;
-    background: rgba(0, 0, 0, 0);
+    background: inherit;
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    backdrop-filter: blur(5px);
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   } button:hover {
-    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
-    transform: scale(1.25);
+    box-shadow: rgba(0, 0, 0, .5) 0 0 2.5px 2.5px;
+    backdrop-filter: blur(30px);
+    transform: scale(1.10);
     border-radius: 15px;
   }
+
+  
 
 .uploadbutt{
     border: none;
@@ -1118,8 +1415,9 @@ button{
     border-radius: 15px;
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
-    text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 } .uploadbutt:hover {
     box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
@@ -1129,9 +1427,12 @@ button{
 .tab {
     overflow: hidden;
     border: 1px solid #ccc;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
   
   .tab button {
@@ -1139,17 +1440,18 @@ button{
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    margin: 5px;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 15px;
     background: rgba(0, 0, 0, 0);
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
   
   .tab button:hover {
-    background: rgba(255, 0, 0, 0.5);
-    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
     transform: scale(1.25);
+    backdrop-filter: blur(25px);
     border-radius: 15px;
   }
   
@@ -1164,15 +1466,21 @@ button{
     height: 90%;
     overflow-x: hidden;
     width: 100%;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
 
   .ntab {
     overflow: hidden;
     border: 1px solid #ccc;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
     box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
   
   .ntab button {
@@ -1180,17 +1488,18 @@ button{
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    margin: 5px;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 15px;
     background: rgba(0, 0, 0, 0);
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
   
   .ntab button:hover {
-    background: rgba(255, 0, 0, 0.5);
-    box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
     transform: scale(1.25);
+    backdrop-filter: blur(25px);
     border-radius: 15px;
   }
   
@@ -1205,6 +1514,9 @@ button{
     height: 90%;
     overflow-x: hidden;
     width: calc(100% - 10px);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
 
 
@@ -1212,7 +1524,7 @@ iframe{
     width: 100%;
     height: calc(100% - 10px);
     border-style: none;
-    background-color: white;
+    background-color: inherit;
     resize: none;
     /* Absolutely position the textarea inside the note so it
        matches the note body size immediately at creation. */
@@ -1226,6 +1538,83 @@ iframe{
     /* leave space at bottom for resize handle */
 }
 
+.betaStoreContainer {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to new rows */
+    gap: 20px; /* Gap between app entries */
+    background-color: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+.appEntries {
+    display: flex; /* Enable flex on app entries */
+    flex-wrap: wrap; /* Allow wrapping */
+    width: 100%; /* Set width to fill the container */
+}
+
+.appEntry {
+    background-color: rgba(105, 105, 105, 0.113); /* Semi-transparent white background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px; /* Padding around content */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Slight shadow */
+    backdrop-filter: blur(10px); /* Blurred backdrop effect */
+    text-align: center; /* Center text alignment */
+    width: 150px; /* Fixed width for each entry */
+    flex: 0 1 auto; /* Allow items to grow and shrink with the container */
+    margin: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+.appEntry img {
+    max-width: 100%; /* Make sure the icon fits inside */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.appEntry span {
+    font-weight: bold; /* Bold app name */
+    display: block; /* Block display for proper spacing */
+    margin: 10px 0; /* Margin between name and button */
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+.appEntry button:hover {
+    background-color: rgba(255, 0, 0, 0.51); /* Darker blue on hover */
+}
+
+.searchBar {
+    width: 100%; /* Make it full width */
+    padding: 10px; /* Padding inside the search bar */
+    margin-bottom: 20px; /* Space below the search bar */
+    border: 1px solid #ccc; /* Border for the search bar */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+.nview{
+    width: 100%;
+    height: calc(100% - 90px);
+    border-style: none;
+    background-color: rgba(0, 0, 0, .5);
+    resize: none;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
 .injectbutt {
     border: none;
     outline: none;
@@ -1235,7 +1624,9 @@ iframe{
     font-size: 20px;
     background: rgba(0, 0, 0, 0);
     border-radius: 15px;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
   
   .injectbutt:hover {
@@ -1246,6 +1637,14 @@ iframe{
   }
 
 #desktopbody{
+    width: 100%;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+}
+
+#lockbody{
     width: 100%;
     height: 100%;
 }
@@ -1367,7 +1766,9 @@ input:checked + .slider:before {
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
   }
   
   /* Rounded sliders */
@@ -1387,7 +1788,7 @@ input:checked + .slider:before {
 }
 
 #close{
-    background-color: rgba(255, 0, 0, .5);
+    background-color: rgba(255, 0, 0, .609);
 }
 
 #close:hover{
@@ -1397,17 +1798,17 @@ input:checked + .slider:before {
 }
 
 #fullscreen{
-    background-color: rgba(0, 0, 255, .5);
+    background-color: rgba(0, 255, 98, 0.609);
 }
 
 #fullscreen:hover{
     text-shadow: blue 5px 5px 5px;
     color: blue;
-    background-color: rgba(0,0,255,1);
+    background-color: rgb(0, 255, 85, 1);
 }
 
 #minimize{
-    background-color: rgba(255, 255, 0, .5);
+    background-color: rgba(255, 255, 0, 0.609);
 }
 
 #minimize:hover{
@@ -1424,11 +1825,12 @@ input:checked + .slider:before {
 
 .appheadtxt{
     font-size: 25px;
-    color: white;
     text-shadow: black 5px 5px 5px;
     margin-left: 10px;
     margin-top: 20px;
     font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 
 .favorite{
@@ -1465,6 +1867,26 @@ input:checked + .slider:before {
     transform: translateY(-10px) scale(1.25);
     box-shadow: rgba(255, 0, 0, .5) 0 5px 5px 5px;
     backdrop-filter: blur(25px);
+}
+
+#funcdiv .funcicon {
+    position: relative; /* contained in DOM but can be translated */
+    z-index: 200; /* above navbar (navbar z-index is 10) */
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+}
+#funcdiv .funcicon:hover {
+    background-color: rgba(255, 0, 0, 0.25);
+}
+
+#funcdiv .datetime{
+    position: relative;
+    z-index: 200; /* above navbar (navbar z-index is 10) */
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+}
+#funcdiv .datetime:hover{
+    background-color: rgba(255, 0, 0, 0.25);
 }
 
 .soalert{

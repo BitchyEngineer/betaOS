@@ -886,7 +886,7 @@ textarea{
 .appcenter .appicon {
     width: 150px;
     height: 150px;
-    background-size: 150px 150px;
+    /*background-size: 150px 150px;*/
     background-repeat: no-repeat;
     background-position: center;
     border: none;
