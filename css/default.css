@@ -18,6 +18,11 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+    cursor: default;
+}
+
+body.loading-cursor {
+    cursor: progress !important;
 }
 
 .navbar {
@@ -576,6 +581,7 @@ input[type="range"]::-moz-range-thumb {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    cursor: pointer;
     /*background-color: rgba(0,0,0,0.5);*/
     box-shadow: rgba(0, 0, 0, .2) 0 0 2.5px 2.5px;
     margin-bottom: 30px;
@@ -617,6 +623,25 @@ deskgrid.edit-mode .appicon {
     animation-duration: 2s;
 }
 
+/* Custom tooltip - betaOS style */
+.custom-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(15px);
+    color: white;
+    text-shadow: rgba(0, 0, 0, .2) 0 0 5px 5px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    pointer-events: none;
+    z-index: 50000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+}
+
 .topnav {
     color: white;
     background-color: #333;
@@ -635,8 +660,8 @@ deskgrid.edit-mode .appicon {
 }
 
 .backgroundoption {
-    width: 20%;
-    height: 20%;
+    width: 200px;
+    height: 75px;
     border-radius: 15px;
     margin: 10px;
     box-shadow: rgba(0, 0, 0, 0.5) 0 2.5px 2.5px 2.5px;

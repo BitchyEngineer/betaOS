@@ -180,7 +180,6 @@ function Settings(){
     generalsettings.appendChild(confirmH2);
     var confirmLabel = document.createElement('label');
     var confirmCheck = document.createElement('input');
-    
     confirmCheck.type = 'checkbox';
     confirmCheck.checked = confirmCloseEnabled;
     confirmCheck.onchange = function() {
@@ -227,7 +226,6 @@ function Settings(){
     var resetH2 = document.createElement('h2');
     resetH2.innerText = 'System';
     generalsettings.appendChild(resetH2);
-
     var bstorereset = document.createElement ("button");
     bstorereset.innerHTML = "Reset betaStore";
     bstorereset.onclick = function(){
@@ -235,7 +233,6 @@ function Settings(){
         window.location.reload();
     };
     generalsettings.appendChild(bstorereset);
-
     var systemreset = document.createElement ("button");
     systemreset.innerHTML = "Reset System";
     systemreset.onclick = function(){
@@ -430,9 +427,25 @@ function Settings(){
     backgroundsettings.style.display = 'none';
     backgroundsettings.id = 'Personalization';
 
+    // === Backgrounds collapsible section ===
+    var bgHeader = document.createElement('div');
+    bgHeader.style.padding = '15px';
+    bgHeader.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    bgHeader.style.cursor = 'pointer';
+    bgHeader.style.borderRadius = '8px';
+    bgHeader.style.margin = '10px 0';
+
+    var bgTitle = document.createElement('h2');
+    bgTitle.innerText = 'Backgrounds ▼';
+    bgTitle.style.margin = '0';
+    bgHeader.appendChild(bgTitle);
+
+    var bgContainer = document.createElement('div');
+    bgContainer.style.display = 'none'; // closed by default
+
     var backgroundtxt = document.createElement("h1");
     backgroundtxt.innerHTML = "Background";
-    backgroundsettings.appendChild(backgroundtxt);
+    bgContainer.appendChild(backgroundtxt);
 
     var bchoices = ['Nonono', 'HiddenGooner', 'Backside', 'Exposed', 'GettinDirty',
     'Pineapple', 'WindowShopper', 'Anime1', 'Hermoine', 'Boobs', 'AssInTheWoods',
@@ -453,12 +466,60 @@ function Settings(){
             document.body.style.backgroundImage = 'url(images/' + this.choiceName + '.png)';
             localStorage.setItem('background','url(images/' + this.choiceName + '.png)');
         };
-        backgroundsettings.appendChild(bchoice);
+        bgContainer.appendChild(bchoice);
     }
+
+    var backgroundinput = document.createElement('input');
+    var backgroundaddbutt = document.createElement('button');
+    backgroundaddbutt.innerHTML = 'Add';
+    backgroundinput.placeholder = "Background URL";
+    backgroundaddbutt.onclick = function () {
+        document.body.style.backgroundImage = "url('" + backgroundinput.value + "')";
+        var custombackground = document.createElement('button');
+        custombackground.type = 'image';
+        custombackground.style.backgroundImage = "url('" + backgroundinput.value + "')";
+        custombackground.className = 'backgroundoption';
+        custombackground.onclick = function () {
+            document.body.style.backgroundImage = "url('" + backgroundinput.value + "')";
+            localStorage.setItem('background',"url('" + backgroundinput.value + "')");
+        };
+        bgContainer.appendChild(custombackground);
+    };
+    bgContainer.appendChild(backgroundinput);
+    bgContainer.appendChild(backgroundaddbutt);
+
+    bgHeader.onclick = function() {
+        if (bgContainer.style.display === 'none') {
+            bgContainer.style.display = 'block';
+            bgTitle.innerText = 'Backgrounds ▲';
+        } else {
+            bgContainer.style.display = 'none';
+            bgTitle.innerText = 'Backgrounds ▼';
+        }
+    };
+
+    backgroundsettings.appendChild(bgHeader);
+    backgroundsettings.appendChild(bgContainer);
+
+    // === Themes collapsible section ===
+    var themeHeader = document.createElement('div');
+    themeHeader.style.padding = '15px';
+    themeHeader.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    themeHeader.style.cursor = 'pointer';
+    themeHeader.style.borderRadius = '8px';
+    themeHeader.style.margin = '10px 0';
+
+    var themeTitle = document.createElement('h2');
+    themeTitle.innerText = 'Themes ▼';
+    themeTitle.style.margin = '0';
+    themeHeader.appendChild(themeTitle);
+
+    var themeContainer = document.createElement('div');
+    themeContainer.style.display = 'none'; // closed by default
 
     var themetxt = document.createElement("h1");
     themetxt.innerHTML = "Themes";
-    backgroundsettings.appendChild(themetxt);
+    themeContainer.appendChild(themetxt);
 
     var tchoices = [
         {name: 'One In The Pink', color: 'rgba(238, 39, 149, 0.65)'},
@@ -494,25 +555,21 @@ function Settings(){
             document.getElementById('datetime').style.backgroundColor = this.style.backgroundColor;
             localStorage.setItem('theme', this.style.backgroundColor);
         };
-        backgroundsettings.appendChild(tchoice);
+        themeContainer.appendChild(tchoice);
     }
 
-    var backgroundinput = document.createElement('input');
-    var backgroundaddbutt = document.createElement('button');
-    backgroundaddbutt.innerHTML = 'Add';
-    backgroundinput.placeholder = "Background URL";
-    backgroundaddbutt.onclick = function () {
-        document.body.style.backgroundImage = "url('" + backgroundinput.value + "')";
-        var custombackground = document.createElement('button');
-        custombackground.type = 'image';
-        custombackground.style.backgroundImage = "url('" + backgroundinput.value + "')";
-        custombackground.className = 'backgroundoption';
-        custombackground.onclick = function () {
-            document.body.style.backgroundImage = "url('" + backgroundinput.value + "')";
-            localStorage.setItem('background',"url('" + backgroundinput.value + "')");
-        };
-        backgroundsettings.appendChild(custombackground);
+    themeHeader.onclick = function() {
+        if (themeContainer.style.display === 'none') {
+            themeContainer.style.display = 'block';
+            themeTitle.innerText = 'Themes ▲';
+        } else {
+            themeContainer.style.display = 'none';
+            themeTitle.innerText = 'Themes ▼';
+        }
     };
+
+    backgroundsettings.appendChild(themeHeader);
+    backgroundsettings.appendChild(themeContainer);
 
     appbody.appendChild(about);
     about.className = 'tabcontent';
@@ -523,7 +580,6 @@ function Settings(){
     var copyright = document.createElement('h1');
     var logoimg = document.createElement('img');
     var logoimg2 = document.createElement('img');
-
     app.style.color = 'white';
     browserversion.innerHTML = objbrowserName + ": " + objfullVersion;
     betaOStxt.innerHTML = "betaOS " + betaosversion;
@@ -532,12 +588,24 @@ function Settings(){
     logoimg.style = 'height: 150px';
     logoimg2.src = 'images/Nono.png';
     logoimg2.style = 'height: 150px';
-
     about.appendChild(logoimg);
     about.appendChild(logoimg2);
     about.appendChild(betaOStxt);
     about.appendChild(copyright);
     about.appendChild(browserversion);
+
+    // Update check button moved to About tab
+    var updateH2 = document.createElement('h2');
+    updateH2.innerText = 'Updates';
+    about.appendChild(updateH2);
+    var updateBtn = document.createElement('button');
+    updateBtn.innerText = 'Check for Updates';
+    updateBtn.style.padding = '12px 30px';
+    updateBtn.style.fontSize = '18px';
+    updateBtn.style.display = 'block';
+    updateBtn.style.margin = '10px auto';
+    updateBtn.onclick = checkForUpdate;
+    about.appendChild(updateBtn);
 
     appbody.appendChild(shortcuts);
     shortcuts.id = "Shortcuts";

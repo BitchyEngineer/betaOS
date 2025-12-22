@@ -4,7 +4,7 @@
     See LICENSE file for details.
 */
 bootDesktop();
-var betaosversion = "1.1.0";
+var betaosversion = "1.1.1";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
 var savedtheme = localStorage.getItem("theme");
@@ -93,10 +93,13 @@ var changelog = `betaOS Changelog:
     - New apps available in betaStore
     - Notification center added
     - Desktop shortcuts can be rearranged/swapped
-    - Confirm before deleting shortcuts`;
+    - Confirm before deleting shortcuts
+.betaOS 1.1.1
+    - Download betaOS updates from the Settings app
+    - Titles will show above the cursor when hovering over icons
+    - Bug fixes and other minor improvements`;
 
 var savedbackground = localStorage.getItem('background');
-
 
 function dragWindow(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -207,6 +210,48 @@ function bootDesktop(){
     
     setTimeout(function(){desktopbody.removeChild(boottxt); startUp();}, 2900);
 }
+
+var tooltip = document.createElement('div');
+tooltip.className = 'custom-tooltip';
+document.body.appendChild(tooltip);
+
+document.addEventListener('mouseover', function(e) {
+    if (e.target.title || e.target.dataset.title) {
+        tooltip.textContent = e.target.title || e.target.dataset.title;
+        tooltip.style.opacity = '1';
+
+        // Position above the cursor
+        tooltip.style.left = (e.pageX) + 'px';
+        tooltip.style.top = (e.pageY - 50) + 'px'; // 35px above cursor (adjust if needed)
+
+        // Hide default title
+        if (e.target.title) {
+            e.target.dataset.title = e.target.title;
+            e.target.title = '';
+        }
+    }
+});
+
+document.addEventListener('mousemove', function(e) {
+    if (tooltip.style.opacity === '1') {
+        tooltip.style.left = (e.pageX + 10) + 'px';
+        tooltip.style.top = (e.pageY - 35) + 'px'; // follows above cursor
+    }
+});
+
+document.addEventListener('mouseout', function(e) {
+    tooltip.style.opacity = '0';
+
+    // Restore default title
+    if (e.target.dataset.title) {
+        e.target.title = e.target.dataset.title;
+        delete e.target.dataset.title;
+    }
+});
+
+document.addEventListener('mouseleave', function() {
+    tooltip.style.opacity = '0';
+});
 
 //Drag & Rearrange Icons
 function dragStarted(evt){
@@ -382,6 +427,8 @@ function loadDesktop(){
     } else {
         deskgrid.innerHTML = '';
     }
+
+    bootUpdateCheck();
 
     // Create app buttons using a loop
     apps = [
@@ -740,27 +787,28 @@ function loadDesktop(){
 
     function startTime() {
         var date = new Date();
-        var day = date.getDay()+14;
-        var month = date.getMonth()+1;
+        var day = date.getDate();          // fixed: getDate() for day of month (1-31)
+        var month = date.getMonth() + 1;   // fixed: getMonth() is 0-11, so add 1 for 1-12
         var year = date.getFullYear();
         var hour = date.getHours();
         var min = date.getMinutes();
         var sec = date.getSeconds();
         var midday = "AM";
         midday = (hour >= 12) ? "PM" : "AM";
-        hour = (hour == 0) ? 12 : ((hour > 12) ? (hour - 12): hour);
+        hour = (hour == 0) ? 12 : ((hour > 12) ? (hour - 12) : hour);
         hour = updateTime(hour);
         min = updateTime(min);
         sec = updateTime(sec);
+
         clockb.innerHTML = month + "/" + day + "/" + year + " | " + hour + ":" + min + " " + midday;
+
         var t = setTimeout(startTime, 1000);
     }
 
     function updateTime(k) {
         if (k < 10) {
             return "0" + k;
-        }
-        else {
+        } else {
             return k;
         }
     }
@@ -1200,7 +1248,6 @@ function editMode(){
     var icons = deskgrid.querySelectorAll('.appicon');
     icons.forEach(function(icon) {
         icon.draggable = true;
-        icon.style.cursor = 'move';
 
         icon.ondragstart = function(e) {
             draggedIcon = this;
@@ -1742,3 +1789,89 @@ if ((objOffsetVersion=objAgent.indexOf("Chrome"))!=-1) {
 }
 
 var menucon = document.getElementById("menu");
+
+// === UPDATE CHECKER ===
+async function checkForUpdate() {
+    try {
+        const response = await fetch('https://api.github.com/repos/nononodev/betaOS/releases/latest');
+        const data = await response.json();
+
+        if (!data.tag_name) {
+            alert('Could not retrieve latest version info.');
+            return;
+        }
+
+        const latestVersion = data.tag_name.trim(); // e.g. "v1.1.0" or "1.1.0"
+        const currentVersion = betaosversion.trim();
+
+        // Simple version comparison (removes 'v' prefix if present and compares as strings)
+        const normalize = v => v.replace(/^v/i, '');
+        const isNewer = normalize(latestVersion) > normalize(currentVersion);
+
+        if (isNewer) {
+            const confirmUpdate = confirm(
+                `New update available: ${latestVersion}\n` +
+                `You are running: ${currentVersion}\n\n` +
+                `Release notes:\n${data.body || 'No notes provided'}\n\n` +
+                `Download the update now? \n\n` +
+                `You will need to extract the zip file and move its contents to your betaOS folder, replacing the old files.`
+            );
+
+            if (confirmUpdate) {
+                const zipUrl = data.zipball_url;
+                const a = document.createElement('a');
+                a.href = zipUrl;
+                a.download = `betaOS-${latestVersion}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        } else {
+            alert(`You are up to date!\nCurrent version: ${currentVersion}`);
+        }
+    } catch (err) {
+        alert('Could not check for updates. Are you online?');
+        console.error(err);
+    }
+}
+
+// === AUTO UPDATE CHECK ON STARTUP ===
+async function bootUpdateCheck() {
+    try {
+        const response = await fetch('https://api.github.com/repos/nononodev/betaOS/releases/latest');
+        const data = await response.json();
+
+        if (!data.tag_name) {
+            return; // silent fail if no info
+        }
+
+        const latestVersion = data.tag_name.trim();
+        const currentVersion = betaosversion.trim();
+
+        const normalize = v => v.replace(/^v/i, '');
+        const isNewer = normalize(latestVersion) > normalize(currentVersion);
+
+        if (isNewer) {
+            pushNotif(
+                "Settings",
+                `New betaOS update available: ${latestVersion}`,
+                function() {
+                    Settings();
+                    // Wait for Settings app to load, then open About tab
+                    setTimeout(function() {
+                        var aboutTab = document.querySelector('.tablinks[onclick*="About"]') || 
+                                       Array.from(document.querySelectorAll('.tablinks')).find(btn => btn.innerHTML === 'About');
+                        if (aboutTab) {
+                            aboutTab.click();
+                        }
+                    }, 500); // small delay to ensure Settings is ready
+                }
+            );
+        } else {
+            console.log("betaOS " + betaosversion + " is up to date.");
+        }
+    } catch (err) {
+        // Silent on startup - no alert, no console if you don't want
+        console.error('Boot update check failed:', err);
+    }
+}
