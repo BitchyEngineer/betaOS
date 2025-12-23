@@ -4,7 +4,7 @@
     See LICENSE file for details.
 */
 bootDesktop();
-var betaosversion = "1.1.1";
+var betaosversion = "1.1.2";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
 var savedtheme = localStorage.getItem("theme");
@@ -97,7 +97,10 @@ var changelog = `betaOS Changelog:
 .betaOS 1.1.1
     - Download betaOS updates from the Settings app
     - Titles will show above the cursor when hovering over icons
-    - Bug fixes and other minor improvements`;
+    - Bug fixes and other minor improvements
+.betaOS 1.1.2
+    - Slight design tweaks
+    - Minor bug fixes (ew, bugs)`;
 
 var savedbackground = localStorage.getItem('background');
 
@@ -618,6 +621,7 @@ function loadDesktop(){
     bgSlider.style.width = '100%';
     ControlArea.appendChild(bgSlider);
 
+
     var br1 = document.createElement('br');
     ControlArea.appendChild(br1);
 
@@ -684,7 +688,7 @@ function loadDesktop(){
     overlay.style.opacity = (100 - bgSlider.value) / 100;
     overlay.style.pointerEvents = 'none';
     overlay.style.zIndex = '9998';
-    desktopbody.appendChild(overlay);
+    document.body.appendChild(overlay);
 
     // Overlay for color temp
     var overlay2 = document.createElement('div');
@@ -700,7 +704,7 @@ function loadDesktop(){
     overlay2.style.pointerEvents = 'none';
     overlay2.style.zIndex = '10000';
     overlay2.style.display = 'none';
-    desktopbody.appendChild(overlay2);
+    document.body.appendChild(overlay2);
 
     overlay.style.opacity = (100 - bgSlider.value) / 100;
 
