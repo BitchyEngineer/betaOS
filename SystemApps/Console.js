@@ -89,8 +89,9 @@ function Console(){
     terminal.style.width = '100%';
     terminal.style.height = '100%';
     terminal.style.backgroundColor = 'inherit';
-    terminal.style.color = '#0f0';
+    terminal.style.color = 'rgba(215, 0, 0, 1)';
     terminal.style.fontFamily = 'Courier New, monospace';
+    terminal.style.textShadow = 'rgba(0, 0, 0, .25) 0 0 5px 5px';
     terminal.style.textAlign = 'left';
     terminal.style.fontSize = '16px';
     terminal.style.padding = '15px';
@@ -104,16 +105,17 @@ function Console(){
     var promptLine = document.createElement('div');
     var promptText = document.createElement('span');
     promptText.innerText = '$ ';
-    promptText.style.color = '#0f0';
+    promptText.style.color = 'rgba(215, 0, 0, 1)';
 
     var input = document.createElement('input');
     input.type = 'text';
     input.style.background = 'transparent';
     input.style.border = 'none';
     input.style.outline = 'none';
-    input.style.color = '#0f0';
+    input.style.color = 'rgba(215, 0, 0, 1)';
     input.style.fontFamily = 'Courier New, monospace';
     input.style.fontSize = '16px';
+    input.style.textShadow = 'rgba(0, 0, 0, .25) 0 0 5px 5px';
     input.autocorrect = false;
     input.autocomplete = false;
     input.autocapitalize = false;

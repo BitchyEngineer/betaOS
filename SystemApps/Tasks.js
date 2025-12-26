@@ -64,17 +64,17 @@ function Tasks(){
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
-            app.style.height = 'calc(100% - 80px)'; 
-            app.style.top = '0px'; 
+            app.style.height = 'calc(100% - 80px)';
+            app.style.top = '0px';
             app.style.left = '0%';
             if(savedtheme){
                 app.style.backgroundColor = localStorage.getItem('theme');
             }
             isfull = true;
         } else if (isfull == true){
-            app.style.width = '50%'; 
+            app.style.width = '50%';
             app.style.height = '50%';
-            app.style.top = '25%'; 
+            app.style.top = '25%';
             app.style.left = '25%';
             isfull = false;
             if(savedtheme){
@@ -83,47 +83,75 @@ function Tasks(){
         }
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
-    
-    var tasknum = document.createElement('h1');
-    var closeall = document.createElement('button');
-    var refreshb = document.createElement('button');
-    refreshb.innerHTML = "Refresh";
-    refreshb.onclick = function(){
-       taskManage();
-    };
-    appbody.appendChild(tasknum);
-    appbody.appendChild(refreshb);
-    //app.appendChild(closeall);
-    function taskManage(){
-        appbody.innerHTML = "";
-        appbody.appendChild(tasknum);
-        appbody.appendChild(refreshb);
-        var task = document.getElementsByClassName('app');
-        var taska = [];
-        currentTasks = document.getElementsByClassName('app').length;
-        tasknum.innerHTML = "Current Tasks: " + currentTasks;
-            
-        for(var i = 0; i < currentTasks; i++){
-            taska.push(task[i].id + '\n');
-            if(taska.length > currentTasks){
-            if(task[i].id = taska[i]){
-                    taska[i].pop();
-                }
-            } 
-        }
 
-        for (var i = 0; i < taska.length; i++){
-            var taskbutt = document.createElement('button');
-            taskbutt.innerHTML = taska[i];
-            taskbutt.id = 'task-' + task.id;
-            taskbutt.onclick = function(){
-                desktopbody.remove(document.getElementById(taska[i].value));
-                tasks--;
+    // OLD UI COMPLETELY REMOVED
+    // THIS IS NOW THE ONLY UI - DIRECTLY BUILT, NO FUNCTIONS, NO REFRESH BUTTON, NO OLD ELEMENTS
+
+    var header = document.createElement('h1');
+    header.innerHTML = 'Open Applications';
+    header.style.textAlign = 'center';
+    header.style.padding = '20px';
+    header.style.fontSize = '24px';
+    header.style.borderBottom = '2px solid rgba(255,255,255,0.3)';
+    appbody.appendChild(header);
+
+    var apps = document.getElementsByClassName('app');
+
+    for (var i = 0; i < apps.length; i++) {
+        var currentApp = apps[i];
+        var appId = currentApp.id;
+
+        // Skip the Tasks window itself
+        if (appId === app.id) continue;
+
+        var taskButton = document.createElement('button');
+        taskButton.innerHTML = appId;
+        taskButton.style.display = 'block';
+        taskButton.style.width = '85%';
+        taskButton.style.margin = '15px auto';
+        taskButton.style.padding = '18px';
+        taskButton.style.fontSize = '18px';
+        taskButton.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
+        taskButton.style.color = 'white';
+        taskButton.style.border = 'none';
+        taskButton.style.borderRadius = '12px';
+        taskButton.style.cursor = 'pointer';
+        taskButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+        taskButton.style.transition = 'all 0.2s';
+
+        taskButton.onmouseover = function() {
+            this.style.backgroundColor = 'rgba(255, 60, 60, 0.9)';
+            this.style.transform = 'translateY(-2px)';
+        };
+        taskButton.onmouseout = function() {
+            this.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
+            this.style.transform = 'translateY(0)';
+        };
+
+        taskButton.onclick = (function(id) {
+            return function() {
+                var targetApp = document.getElementById(id);
+                if (targetApp && desktopbody.contains(targetApp)) {
+                    desktopbody.removeChild(targetApp);
+                    tasks--;
+                    // Reopen Tasks to refresh the list instantly
+                    Tasks();
+                }
             };
-            appbody.appendChild(taskbutt);
-            console.log(taska[i] + " - running");
-        }
+        })(appId);
+
+        appbody.appendChild(taskButton);
     }
-    appbody.appendChild(tasknum);
-    appbody.appendChild(refreshb);
+
+    // If no other apps are open
+    if (appbody.children.length === 1) {
+        var noApps = document.createElement('div');
+        noApps.innerHTML = 'No other applications are currently running.';
+        noApps.style.textAlign = 'center';
+        noApps.style.padding = '50px';
+        noApps.style.fontSize = '18px';
+        noApps.style.color = '#aaa';
+        noApps.style.fontStyle = 'italic';
+        appbody.appendChild(noApps);
+    }
 }

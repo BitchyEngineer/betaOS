@@ -150,7 +150,7 @@ function Settings(){
     var usersett = document.createElement('div');
     var changelogsett = document.createElement('div');
 
-    var sett = ['General', 'Personalization', 'About', /*'betaAssist',*/ 'Shortcuts', 'User', 'Changelog'];
+    var sett = ['General', 'Personalization', 'User', 'Changelog', 'About'];
     for(let i = 0; i < sett.length; i++){
         var settbutt = document.createElement('button');
         tab.className = 'tab';
@@ -571,6 +571,80 @@ function Settings(){
     backgroundsettings.appendChild(themeHeader);
     backgroundsettings.appendChild(themeContainer);
 
+    // Navbar Position collapsible
+    var navPosHeader = document.createElement('div');
+    navPosHeader.style.padding = '15px';
+    navPosHeader.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    navPosHeader.style.cursor = 'pointer';
+    navPosHeader.style.borderRadius = '8px';
+    navPosHeader.style.margin = '10px 0';
+
+    var navPosTitle = document.createElement('h2');
+    navPosTitle.innerText = 'Navbar Position ▼';
+    navPosTitle.style.margin = '0';
+    navPosHeader.appendChild(navPosTitle);
+
+    var navPosContainer = document.createElement('div');
+    navPosContainer.style.display = 'none'; // closed by default
+    navPosContainer.style.padding = '15px 0';
+
+    var navPosTxt = document.createElement('h1');
+    navPosTxt.innerHTML = 'Navbar Position';
+    navPosContainer.appendChild(navPosTxt);
+
+    var posChoices = [
+        {name: 'Bottom (default)', value: 'bottom'},
+        {name: 'Left side (hover on left side to show)', value: 'left'}
+    ];
+
+    var currentPos = localStorage.getItem('navbarPosition') || 'bottom';
+
+    posChoices.forEach(function(choice) {
+        var posBtn = document.createElement('button');
+        posBtn.innerText = choice.name;
+        posBtn.style.padding = '12px';
+        posBtn.style.margin = '5px';
+        posBtn.style.width = '70%';
+        posBtn.style.fontSize = '16px';
+        if (choice.value === currentPos) {
+            posBtn.style.backgroundColor = 'rgba(255, 0, 0, 0.46)';
+        }
+        posBtn.onclick = function() {
+            applyNavbarPosition(choice.value);
+            // Update button highlights
+            posChoices.forEach(function(c) {
+                if (c.value === choice.value) {
+                    posBtn.style.backgroundColor = 'rgba(255, 0, 0, 0.46)';
+                } else {
+                    posChoices.forEach(function(other) {
+                        if (other.value !== choice.value) {
+                            // Find other buttons and reset
+                            navPosContainer.querySelectorAll('button').forEach(b => {
+                                if (b.innerText === other.name) {
+                                    b.style.backgroundColor = '';
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        };
+        navPosContainer.appendChild(posBtn);
+    });
+
+    navPosHeader.onclick = function() {
+        if (navPosContainer.style.display === 'none') {
+            navPosContainer.style.display = 'block';
+            navPosTitle.innerText = 'Navbar Position ▲';
+        } else {
+            navPosContainer.style.display = 'none';
+            navPosTitle.innerText = 'Navbar Position ▼';
+        }
+    };
+
+    backgroundsettings.appendChild(navPosHeader);
+    backgroundsettings.appendChild(navPosContainer);
+
     appbody.appendChild(about);
     about.className = 'tabcontent';
     about.id = "About" ;
@@ -710,4 +784,100 @@ function openSett(evt, pageName) {
     }
     document.getElementById(pageName).style.display = "block";
     evt.currentTarget.className += " active";
+}
+
+function applyNavbarPosition(position) {
+    var nbar = document.querySelector('.navbar');
+    var adiv = document.querySelector('.appdiv');
+    var pdiv = document.querySelector('.pinneddiv');
+    var rdiv = document.querySelector('.rightdiv');
+    var fdiv = document.querySelector('.funcdiv');
+    var rcon = document.querySelector('.rightcon');
+    var alib = document.querySelector('.popuplist');
+    var noti = document.querySelector('.notifcontain');
+    var dtime = document.querySelector('.datetime');
+
+    // Remove left/right classes
+    nbar.classList.remove('navbar-left', 'navbar-right');
+    adiv.classList.remove('appdiv-left-right');
+    pdiv.classList.remove('pinneddiv-lr');
+    rdiv.classList.remove('rightdiv-left', 'rightdiv-right');
+    fdiv.classList.remove('funcdiv-lr');
+    rcon.classList.remove('rightcon-left');
+    alib.classList.remove('popuplist-left');
+    noti.classList.remove('notifcontain-left');
+
+    // Wipe ANY old listener by using a single named function
+    document.removeEventListener('mousemove', handleNavbarMouseMove);
+
+    if (position === 'left') {
+        nbar.classList.add('navbar-left');
+        adiv.classList.add('appdiv-left-right');
+        pdiv.classList.add('pinneddiv-lr');
+        rdiv.classList.add('rightdiv-left');
+        fdiv.classList.add('funcdiv-lr');
+        rcon.classList.add('rightcon-left');
+        alib.classList.add('popuplist-left');
+        noti.classList.add('notifcontain-left');
+
+        nbar.style.display = 'none';
+        rdiv.style.display = 'none';
+
+        document.addEventListener('mousemove', handleNavbarMouseMove);
+        
+    } else if (position === 'right') {
+        nbar.classList.add('navbar-right');
+        adiv.classList.add('appdiv-left-right');
+        pdiv.classList.add('pinneddiv-lr');
+        rdiv.classList.add('rightdiv-right');
+        fdiv.classList.add('funcdiv-lr');
+
+        nbar.style.display = 'none';
+        rdiv.style.display = 'none';
+
+        document.addEventListener('mousemove', handleNavbarMouseMove);
+        
+    } else if (position === 'bottom') {
+        nbar.classList.add('navbar');
+        adiv.classList.add('appdiv');
+        pdiv.classList.add('pinneddiv');
+        rdiv.classList.add('rightdiv');
+        fdiv.classList.add('funcdiv');
+        rcon.classList.add('rightcon');
+        alib.classList.add('popuplist');
+        noti.classList.add('notifcontain');
+
+        nbar.style.display = 'flex';
+        rdiv.style.display = 'block';
+        // listener already removed above
+    }
+
+    localStorage.setItem('navbarPosition', position);
+}
+
+// Single shared handler
+function handleNavbarMouseMove(event) {
+    var nbar = document.querySelector('.navbar');
+    var rdiv = document.querySelector('.rightdiv');
+
+    if (nbar.classList.contains('navbar-left')) {
+        if (event.clientX < 100) {
+            nbar.style.display = 'flex';
+            rdiv.style.display = 'block';
+        } else if (event.clientY > window.innerHeight - 500 && event.clientX < 500) {
+            nbar.style.display = 'flex';
+            rdiv.style.display = 'block';
+        } else {
+            nbar.style.display = 'none';
+            rdiv.style.display = 'none';
+        }
+    } else if (nbar.classList.contains('navbar-right')) {
+        if (event.clientX > window.innerWidth - 100) {
+            nbar.style.display = 'flex';
+            rdiv.style.display = 'flex';
+        } else {
+            nbar.style.display = 'none';
+            rdiv.style.display = 'none';
+        }
+    }
 }

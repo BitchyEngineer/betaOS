@@ -85,7 +85,14 @@ function Nono(){
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
     var ntab = document.createElement('div');
-    var videos = ['BCIT1','BCIT2','BCIT3','BCIT4','BCIT5', 'BCIT6'];
+    var videos = [
+        {name: 'BCIT1', src: 'https://video.pmvhaven.com/691d37d32fa310287279f6b1/master.m3u8'},
+        {name: 'BCIT2', src: 'https://video.pmvhaven.com/691e72faa97455eaaad59b98/master.m3u8'},
+        {name: 'BCIT3', src: 'https://video.pmvhaven.com/6923ab03bf9c8c82efb641bf/master.m3u8'},
+        {name: 'BCIT4', src: 'https://video.pmvhaven.com/videos/1765065800755_ruegwdmvunq_BCIT4.mp4/master.m3u8'},
+        {name: 'BCIT5', src: 'https://video.pmvhaven.com/videos/1765643814024_fezanretd1_BCIT5.mp4/master.m3u8'}, 
+        {name: 'BCIT6', src: 'https://video.pmvhaven.com/videos/1765944924953_nlb8vx2gg6e_BCIT6.mp4/master.m3u8'}
+    ];
     var thumbnails = [];
     var bcitlist = document.createElement("div");
     var pages = ['BCIT', 'Teasers', 'Clips','About']
@@ -99,19 +106,23 @@ function Nono(){
     bcitlist.id = 'BCIT';
     bcitlist.name = 'BCIT';
     bcitlist.className = "ntabcontent";
-    for(let i = 0; i < videos.length; i++){
+    for (let i = 0; i < videos.length; i++) {
         var thumbnail = document.createElement('button');
-        thumbnails.push(videos[i] + ".png");
+
+        thumbnails.push(videos[i].name + ".png");
         thumbnail.type = 'image';
-        thumbnail.style.backgroundImage = 'url(vthumbnails/' + videos[i] + '.png)';
+        thumbnail.style.backgroundImage = 'url(vthumbnails/' + videos[i].name + '.png)';
         thumbnail.className = 'vthumb';
-        thumbnail.id = "thumbnail" + videos[i];
-        thumbnail.title = videos[i];
-        thumbnail.onclick = function(){
-            vidPlay(videos[i] + ".mp4");
+        thumbnail.id = "thumbnail" + videos[i].name;
+        thumbnail.title = videos[i].name;
+
+        thumbnail.onclick = function() {
+            vidPlay(videos[i].name, videos[i].src);
         };
+
         bcitlist.appendChild(thumbnail);
     }
+
 
     var teasers = document.createElement("div");
     var placeholdtxt = document.createElement("h1");

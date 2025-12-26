@@ -4,11 +4,12 @@
     See LICENSE file for details.
 */
 bootDesktop();
-var betaosversion = "1.1.2";
+var betaosversion = "v1.1.3";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
 var savedtheme = localStorage.getItem("theme");
 var batterybar = document.getElementById("batteryprogress");
+var savedPos = localStorage.getItem('navbarPosition');
 var errorsound = new Audio("sounds/so4error.mp3");
 var notifsound;
 var notifsounds = ['notifsound.mp3', 'notifsound2.wav', 'notifsound3.wav', 'notifsound4.wav'];
@@ -100,7 +101,14 @@ var changelog = `betaOS Changelog:
     - Bug fixes and other minor improvements
 .betaOS 1.1.2
     - Slight design tweaks
-    - Minor bug fixes (ew, bugs)`;
+    - Minor bug fixes (ew, bugs)
+.betaOS 1.1.3
+    - The navbar can be repositioned through the personalization settings
+    - Shortcuts can now be added and deleted by right clicking on app icons in the App Library, on the Desktop or in the Navbar
+    - Shortcuts page removed from settings
+    - Desktop icons now generate from top to bottom rather than right to left
+    - Windows can't be dragged out of view, they remain within the bounds of your display
+    - BCIT videos in the Nono app are now streamed from PMVHaven`;
 
 var savedbackground = localStorage.getItem('background');
 
@@ -128,8 +136,26 @@ function dragWindow(elmnt) {
         pos2 = pos4 - e.clientY;
         pos3 = e.clientX;
         pos4 = e.clientY;
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+        // Proposed new position
+        let newTop = elmnt.offsetTop - pos2;
+        let newLeft = elmnt.offsetLeft - pos1;
+
+        // Viewport dimensions
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        // Window dimensions (includes borders, padding, everything)
+        const windowWidth = elmnt.offsetWidth;
+        const windowHeight = elmnt.offsetHeight;
+
+        // Clamp so the window never goes outside the page
+        newTop  = Math.max(0, Math.min(newTop, viewportHeight - windowHeight));
+        newLeft = Math.max(0, Math.min(newLeft, viewportWidth - windowWidth));
+
+        // Apply the constrained position
+        elmnt.style.top = newTop + "px";
+        elmnt.style.left = newLeft + "px";
     }
 
     function closeDragElement() {
@@ -146,6 +172,7 @@ var ControlArea = document.createElement('div');
 var notifcontain = document.createElement('div');
 var noNotifMsg = document.createElement('div');
 var notifshow = false;
+var applibshow = false;
 rightnav.className = 'rightdiv';
 rightnav.id = 'rightdiv';
 ControlArea.className = 'rightcon';
@@ -237,8 +264,8 @@ document.addEventListener('mouseover', function(e) {
 
 document.addEventListener('mousemove', function(e) {
     if (tooltip.style.opacity === '1') {
-        tooltip.style.left = (e.pageX + 10) + 'px';
-        tooltip.style.top = (e.pageY - 35) + 'px'; // follows above cursor
+        tooltip.style.left = (e.pageX - 50) + 'px';
+        tooltip.style.top = (e.pageY - 50) + 'px'; // follows above cursor
     }
 });
 
@@ -460,7 +487,7 @@ function loadDesktop(){
         appButton.className = 'appicon';
         appButton.style.backgroundImage = 'url(images/' + app.icon + ')';
         appButton.title = app.name;
-        appButton.setAttribute("onclick", app.name + "(); desktopbody.removeChild(actioncenter);");
+        appButton.setAttribute("onclick", app.name + "(); actioncenter.style.display = 'none';");
         appcenter.appendChild(appButton);
     });
 
@@ -470,7 +497,7 @@ function loadDesktop(){
     desktopbody.appendChild(rightnav);
 
     actiondiv.id = 'actiondiv';
-    appdiv.id = 'appdiv';
+    appdiv.className = 'appdiv';
     navbar.appendChild(actiondiv);
     navbar.appendChild(appdiv);
     navbar.appendChild(pinneddiv);
@@ -481,7 +508,15 @@ function loadDesktop(){
     actionmenuicon.style = 'background: url("images/bStart.png"); background-size: 50px 50px;';
     actionmenuicon.className = 'appicon';
     actionmenuicon.title = 'App Library';
-    actionmenuicon.setAttribute("onclick", "desktopbody.appendChild(actioncenter);");
+    actionmenuicon.onclick = function(){ 
+        if(applibshow == true){
+            applibshow = false;
+            actioncenter.style.display = 'none';
+        } else if (applibshow == false){
+            applibshow = true;
+            actioncenter.style.display = 'flex';
+        }
+    };
     actiondiv.appendChild(actionmenuicon);
 
     var appicon1 = document.createElement('button');
@@ -509,10 +544,10 @@ function loadDesktop(){
     appdiv.appendChild(appicon3);
 
     var notifbdiv = document.createElement('div');
-    notifbdiv.id = 'funcdiv';
+    notifbdiv.className = 'funcdiv';
 
     var funcdiv = document.createElement('div');
-    funcdiv.id = 'funcdiv';
+    funcdiv.className = 'funcdiv';
 
     var notifs = document.createElement('button');
     notifs.type = 'image';
@@ -562,22 +597,7 @@ function loadDesktop(){
     //NotifCenter
 
     notifcontain.className = 'notifcontain';
-    notifcontain.style.position = 'fixed';
-    notifcontain.style.bottom = '80px';     // stays 80px above the bottom of the viewport
-    notifcontain.style.right = '10px';
-    notifcontain.style.top = '10px';
-    notifcontain.style.height = 'calc(100vh - 80px)'; // full height minus the 80px bottom offset
-    notifcontain.style.width = '440px';
-    notifcontain.style.zIndex = '10000';
-    notifcontain.style.overflowY = 'auto';  // scrollable up and down only
-    notifcontain.style.overflowX = 'hidden'; // no horizontal scrolling
-    notifcontain.style.pointerEvents = 'auto'; // allows scrolling inside
-    notifcontain.style.backdropFilter = 'blur(15px)';
-    notifcontain.style.borderRadius = '25px';
-    notifcontain.style.boxShadow = 'rgba(0,0,0,0.5) 0 0 2.5px 2.5px';
     notifcontain.style.display = 'none';
-    notifcontain.style.animation = 'slidenotifs';
-    notifcontain.style.animationDuration = '2s';
 
     noNotifMsg.innerText = 'No Notifications';
     noNotifMsg.style.position = 'absolute';
@@ -803,7 +823,6 @@ function loadDesktop(){
         hour = updateTime(hour);
         min = updateTime(min);
         sec = updateTime(sec);
-
         clockb.innerHTML = month + "/" + day + "/" + year + " | " + hour + ":" + min + " " + midday;
 
         var t = setTimeout(startTime, 1000);
@@ -817,6 +836,9 @@ function loadDesktop(){
         }
     }
 
+    desktopbody.appendChild(actioncenter);
+    actioncenter.style.display = 'none';
+
     if(savednav){
         pinneddiv.innerHTML = localStorage.getItem("savednav");
     }
@@ -827,7 +849,12 @@ function loadDesktop(){
         ControlArea.style.backgroundColor = localStorage.getItem('theme');
     }
 
+    
     actioncenter.className = 'popuplist';
+
+    if(savedPos){
+        applyNavbarPosition(savedPos);
+    }
 
     var controlcenter = document.createElement('div');
     var usercard = document.createElement('div');
@@ -860,7 +887,7 @@ function loadDesktop(){
     closebutt.className = "appheadbutt";
     closebutt.style.position = 'relative';
     closebutt.style.right = '0px';
-    closebutt.onclick = function () { desktopbody.removeChild(actioncenter); };
+    closebutt.onclick = function () { actioncenter.style.display = 'none'; applibshow = false; };
 
     actioncenter.appendChild(closebutt);
     actioncenter.appendChild(appcenter);
@@ -893,7 +920,7 @@ function loadDesktop(){
 
         btn.onclick = function() {
             eval(app.name + "()");
-            desktopbody.removeChild(actioncenter);
+            actioncenter.style.display = 'none';
         };
 
         controlcenter.appendChild(btn);
@@ -924,6 +951,102 @@ function RSOD(message){
     document.body.innerText+="\n " + message;
     document.body.innerText+='\n Press CTRL + R or F5 for a system refresh';
 
+}
+
+function applyNavbarPosition(position) {
+    var nbar = document.querySelector('.navbar');
+    var adiv = document.querySelector('.appdiv');
+    var pdiv = document.querySelector('.pinneddiv');
+    var rdiv = document.querySelector('.rightdiv');
+    var fdiv = document.querySelector('.funcdiv');
+    var rcon = document.querySelector('.rightcon');
+    var alib = document.querySelector('.popuplist');
+    var noti = document.querySelector('.notifcontain');
+    var dtime = document.querySelector('.datetime');
+
+    // Remove left/right classes
+    nbar.classList.remove('navbar-left', 'navbar-right');
+    adiv.classList.remove('appdiv-left-right');
+    pdiv.classList.remove('pinneddiv-lr');
+    rdiv.classList.remove('rightdiv-left', 'rightdiv-right');
+    fdiv.classList.remove('funcdiv-lr');
+    rcon.classList.remove('rightcon-left');
+    alib.classList.remove('popuplist-left');
+    noti.classList.remove('notifcontain-left');
+
+    // Wipe ANY old listener by using a single named function
+    document.removeEventListener('mousemove', handleNavbarMouseMove);
+
+    if (position === 'left') {
+        nbar.classList.add('navbar-left');
+        adiv.classList.add('appdiv-left-right');
+        pdiv.classList.add('pinneddiv-lr');
+        rdiv.classList.add('rightdiv-left');
+        fdiv.classList.add('funcdiv-lr');
+        rcon.classList.add('rightcon-left');
+        alib.classList.add('popuplist-left');
+        noti.classList.add('notifcontain-left');
+
+        nbar.style.display = 'none';
+        rdiv.style.display = 'none';
+
+        document.addEventListener('mousemove', handleNavbarMouseMove);
+        
+    } else if (position === 'right') {
+        nbar.classList.add('navbar-right');
+        adiv.classList.add('appdiv-left-right');
+        pdiv.classList.add('pinneddiv-lr');
+        rdiv.classList.add('rightdiv-right');
+        fdiv.classList.add('funcdiv-lr');
+
+        nbar.style.display = 'none';
+        rdiv.style.display = 'none';
+
+        document.addEventListener('mousemove', handleNavbarMouseMove);
+        
+    } else if (position === 'bottom') {
+        nbar.classList.add('navbar');
+        adiv.classList.add('appdiv');
+        pdiv.classList.add('pinneddiv');
+        rdiv.classList.add('rightdiv');
+        fdiv.classList.add('funcdiv');
+        rcon.classList.add('rightcon');
+        alib.classList.add('popuplist');
+        noti.classList.add('notifcontain');
+
+        nbar.style.display = 'flex';
+        rdiv.style.display = 'block';
+        // listener already removed above
+    }
+
+    localStorage.setItem('navbarPosition', position);
+}
+
+// Single shared handler
+function handleNavbarMouseMove(event) {
+    var nbar = document.querySelector('.navbar');
+    var rdiv = document.querySelector('.rightdiv');
+
+    if (nbar.classList.contains('navbar-left')) {
+        if (event.clientX < 100) {
+            nbar.style.display = 'flex';
+            rdiv.style.display = 'block';
+        } else if (event.clientY > window.innerHeight - 500 && event.clientX < 500) {
+            nbar.style.display = 'flex';
+            rdiv.style.display = 'block';
+        } else {
+            nbar.style.display = 'none';
+            rdiv.style.display = 'none';
+        }
+    } else if (nbar.classList.contains('navbar-right')) {
+        if (event.clientX > window.innerWidth - 100) {
+            nbar.style.display = 'flex';
+            rdiv.style.display = 'flex';
+        } else {
+            nbar.style.display = 'none';
+            rdiv.style.display = 'none';
+        }
+    }
 }
 
 function updateNoNotifMessage() {
@@ -994,8 +1117,8 @@ document.body.appendChild(lockbody);
 
 //Sign Out
 function signOut(){
-    desktopbody.style.display = 'none';
     lockbody.style.display = 'block';
+    desktopbody.style.display = 'none';
 
     timetxt.style.textShadow = 'rgba(0,0,0,.5) 5px 5px 5px';
     timetxt.style.fontFamily = "Arial";
@@ -1158,28 +1281,150 @@ var conmenu1butt6 = document.getElementById('conbutt6');
 if(savedtheme){
     conmenu1.style.backgroundColor = localStorage.getItem('theme');
 }
-conmenu1butt1.setAttribute('onclick',"Settings(); openSett(event,'Personalization');");
-conmenu1butt2.setAttribute('onclick',"Settings(); openSett(event,'Shortcuts');");
-conmenu1butt3.onclick = function () {
+conmenu1butt1.setAttribute('onclick',"Settings(); openSett(event,'Personalization'); document.getElementById('menu').style.display = 'none';");
+conmenu1butt2.onclick = function () {
     newSticky();
+    conmenu1.style.display = 'none';
 };
-conmenu1butt4.setAttribute('onclick','Tasks();');
-conmenu1butt5.onclick = function () {
+conmenu1butt3.setAttribute('onclick','Tasks();');
+conmenu1butt4.onclick = function () {
     editMode();
     this.remove();
-    conmenu1butt6.style.display = 'flex';
+    conmenu1butt5.style.display = 'flex';
+    conmenu1.style.display = 'none';
 };
-conmenu1butt6.onclick = function () {
+conmenu1butt5.onclick = function () {
     normMode();
+    conmenu1.style.display = 'none';
 };
 
+//Context Menu 1
+var conmenu2 = document.getElementById('menu2');
+var conmenu2butt1 = document.getElementById('iconbutt1');
+var conmenu2butt2 = document.getElementById('iconbutt2');
+var conmenu2butt3 = document.getElementById('iconbutt3');
 
-/*conmenu1.appendChild(conmenu1butt1);
-conmenu1.appendChild(conmenu1butt4);
-conmenu1.appendChild(conmenu1butt8);
-conmenu1.appendChild(conmenu1butt6);
-conmenu1.appendChild(conmenu1butt9);
-document.body.appendChild(conmenu1);*/
+if(savedtheme){
+    conmenu2.style.backgroundColor = localStorage.getItem('theme');
+}
+
+document.addEventListener("contextmenu", function(event) {
+    const appIcon = event.target.closest(".navbar .appicon");
+
+    if (appIcon) {
+        event.preventDefault(); // Prevent the default context menu
+
+        // Get the onclick attribute directly from the appIcon
+        const onClickFunction = appIcon.getAttribute('onclick');
+        var appIconName = appIcon.getAttribute('title');
+
+        conmenu2butt1.onclick = new Function(onClickFunction);
+        conmenu2butt2.onclick = function(){addDeskShort(onClickFunction.replace('()','')); conmenu2.style.display = 'none';};
+        conmenu2butt3.onclick = function() {
+            if (appIcon && pinneddiv.contains(appIcon)) {
+                pinneddiv.removeChild(appIcon);
+            }
+            
+            // Close the menu after deletion
+            menu2.style.display = "none";
+            localStorage.setItem("savednav", pinneddiv.innerHTML);
+        };
+
+        // Show the context menu at mouse position
+        menu2.style.left = `${event.pageX}px`;
+        menu2.style.top = `${event.pageY}px`;
+        menu2.style.display = "block";
+    }
+});
+
+//Context Menu 3
+var conmenu3 = document.getElementById('menu3');
+var conmenu3butt1 = document.getElementById('deskbutt1');
+var conmenu3butt2 = document.getElementById('deskbutt2');
+var conmenu3butt3 = document.getElementById('deskbutt3');
+
+if(savedtheme){
+    conmenu3.style.backgroundColor = localStorage.getItem('theme');
+}
+
+document.addEventListener("contextmenu", function(event) {
+    const appIcon = event.target.closest(".deskgrid .appicon");
+
+    if (appIcon) {
+        event.preventDefault(); // Prevent the default context menu
+
+        // Get the onclick attribute directly from the appIcon
+        const onClickFunction = appIcon.getAttribute('onclick');
+
+        conmenu3butt1.onclick = new Function(onClickFunction);
+        conmenu3butt2.onclick = function(){addNavShort(onClickFunction.replace('()','')); conmenu3.style.display = 'none';};
+        conmenu3butt3.onclick = function() {
+            if (appIcon && deskgrid.contains(appIcon)) {
+                deskgrid.removeChild(appIcon);
+                localStorage.setItem("saveddesk", deskgrid.innerHTML);
+            }
+            
+            // Close the menu after deletion
+            menu3.style.display = "none";
+        };
+
+        // Show the context menu at mouse position
+        menu3.style.left = `${event.pageX}px`;
+        menu3.style.top = `${event.pageY}px`;
+        menu3.style.display = "block";
+    }
+});
+
+//Context Menu 4
+var conmenu4 = document.getElementById('menu4');
+var conmenu4butt1 = document.getElementById('appbutt1');
+var conmenu4butt2 = document.getElementById('appbutt2');
+var conmenu4butt3 = document.getElementById('appbutt3');
+
+if(savedtheme){
+    conmenu4.style.backgroundColor = localStorage.getItem('theme');
+}
+
+document.addEventListener("contextmenu", function(event) {
+    const appIcon = event.target.closest(".appcenter .appicon");
+
+    if (appIcon) {
+        event.preventDefault(); // Prevent the default context menu
+
+        // Get the onclick attribute directly from the appIcon
+        const onClickFunction = appIcon.getAttribute('onclick');
+
+        conmenu4butt1.onclick = new Function(onClickFunction);
+        conmenu4butt2.onclick = function(){addNavShort(onClickFunction.replace("(); actioncenter.style.display = 'none';","")); conmenu4.style.display = 'none';};
+        conmenu4butt3.onclick = function(){addDeskShort(onClickFunction.replace("(); actioncenter.style.display = 'none';","")); conmenu4.style.display = 'none';};
+
+        // Show the context menu at mouse position
+        menu4.style.left = `${event.pageX}px`;
+        menu4.style.top = `${event.pageY}px`;
+        menu4.style.display = "block";
+    }
+});
+
+function addDeskShort(shortname){
+    var newshortcut = document.createElement('button');
+    newshortcut.title = shortname;
+    newshortcut.style = 'background-image: url("images/' + shortname + '.png"); background-size: 50px 50px;';
+    newshortcut.className = 'appicon';
+    newshortcut.setAttribute("onclick", shortname + "()");
+    deskgrid.appendChild(newshortcut);
+    localStorage.setItem("saveddesk", deskgrid.innerHTML);
+}
+
+function addNavShort(appname){
+    var navshort = document.createElement('button');
+    navshort.title = appname;
+    navshort.style = 'background-image: url("images/' + appname + '.png"); background-size: 50px 50px;';
+    navshort.className = 'appicon';
+    navshort.setAttribute("onclick", appname + "()");
+    pinneddiv.appendChild(navshort);
+    localStorage.setItem("savednav", pinneddiv.innerHTML);
+}
+
 
 //close apps
 function closeApp(appname){
@@ -1234,7 +1479,7 @@ function editMode(){
     if (isEditMode) return;
     isEditMode = true;
 
-    pushNotif("Edit Mode", "Drag desktop icons to rearrange them in the grid. Drop anywhere — the icon will move to that spot in the grid order. Right-click or long-press to delete. Exit via context menu when done.", null);
+    pushNotif("Edit Mode", "Drag desktop icons to rearrange them in the grid. Drop anywhere — the icon will move to that spot in the grid order. Exit via context menu when done.", null);
 
     deskgrid.ondragover = function(e) {
         e.preventDefault();
@@ -1255,21 +1500,7 @@ function editMode(){
 
         icon.ondragstart = function(e) {
             draggedIcon = this;
-            this.style.opacity = '0.5';
             e.dataTransfer.setData('text/plain', '');
-        };
-
-        icon.ondragend = function() {
-            this.style.opacity = '1';
-        };
-
-        // Right-click delete
-        icon.oncontextmenu = function(e) {
-            e.preventDefault();
-            if (confirm("Delete this icon?")) {
-                this.remove();
-                localStorage.setItem('saveddesk', deskgrid.innerHTML);
-            }
         };
     });
 }
@@ -1453,7 +1684,7 @@ function AudioPlayer(audio){
     });
 }
 
-function vidPlay(vidtitle){
+function vidPlay(vidtitle, vidsrc){
     var app = document.createElement('div');
     var apphead = document.createElement('div');
     var appheadtext = document.createElement('ui');
@@ -1541,7 +1772,7 @@ function vidPlay(vidtitle){
 
     var vidplayer = document.createElement("video");
     vidplayer.className = "vidplay";
-    vidplayer.src = "videos/" + vidtitle;
+    vidplayer.src = vidsrc;
     vidplayer.controls = true;
     appheadtext.innerHTML = vidtitle;
     appbody.appendChild(vidplayer);
@@ -1613,17 +1844,17 @@ function Tasks(){
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
-            app.style.height = 'calc(100% - 80px)'; 
-            app.style.top = '0px'; 
+            app.style.height = 'calc(100% - 80px)';
+            app.style.top = '0px';
             app.style.left = '0%';
             if(savedtheme){
                 app.style.backgroundColor = localStorage.getItem('theme');
             }
             isfull = true;
         } else if (isfull == true){
-            app.style.width = '50%'; 
+            app.style.width = '50%';
             app.style.height = '50%';
-            app.style.top = '25%'; 
+            app.style.top = '25%';
             app.style.left = '25%';
             isfull = false;
             if(savedtheme){
@@ -1632,49 +1863,76 @@ function Tasks(){
         }
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
-    
-    var tasknum = document.createElement('h1');
-    var closeall = document.createElement('button');
-    var refreshb = document.createElement('button');
-    refreshb.innerHTML = "Refresh";
-    refreshb.onclick = function(){
-       taskManage();
-    };
-    appbody.appendChild(tasknum);
-    appbody.appendChild(refreshb);
-    //app.appendChild(closeall);
-    function taskManage(){
-        appbody.innerHTML = "";
-        appbody.appendChild(tasknum);
-        appbody.appendChild(refreshb);
-        var task = document.getElementsByClassName('app');
-        var taska = [];
-        currentTasks = document.getElementsByClassName('app').length;
-        tasknum.innerHTML = "Current Tasks: " + currentTasks;
-            
-        for(var i = 0; i < currentTasks; i++){
-            taska.push(task[i].id + '\n');
-            if(taska.length > currentTasks){
-            if(task[i].id = taska[i]){
-                    taska[i].pop();
-                }
-            } 
-        }
 
-        for (var i = 0; i < taska.length; i++){
-            var taskbutt = document.createElement('button');
-            taskbutt.innerHTML = taska[i];
-            taskbutt.id = 'task-' + task.id;
-            taskbutt.onclick = function(){
-                desktopbody.remove(document.getElementById(taska[i].value));
-                tasks--;
+    // OLD UI COMPLETELY REMOVED
+    // THIS IS NOW THE ONLY UI - DIRECTLY BUILT, NO FUNCTIONS, NO REFRESH BUTTON, NO OLD ELEMENTS
+
+    var header = document.createElement('h1');
+    header.innerHTML = 'Open Applications';
+    header.style.textAlign = 'center';
+    header.style.padding = '20px';
+    header.style.fontSize = '24px';
+    header.style.borderBottom = '2px solid rgba(255,255,255,0.3)';
+    appbody.appendChild(header);
+
+    var apps = document.getElementsByClassName('app');
+
+    for (var i = 0; i < apps.length; i++) {
+        var currentApp = apps[i];
+        var appId = currentApp.id;
+
+        // Skip the Tasks window itself
+        if (appId === app.id) continue;
+
+        var taskButton = document.createElement('button');
+        taskButton.innerHTML = appId + " (click to close app)";
+        taskButton.style.display = 'block';
+        taskButton.style.width = '85%';
+        taskButton.style.margin = '15px auto';
+        taskButton.style.padding = '18px';
+        taskButton.style.fontSize = '18px';
+        taskButton.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
+        taskButton.style.color = 'white';
+        taskButton.style.border = 'none';
+        taskButton.style.borderRadius = '12px';
+        taskButton.style.cursor = 'pointer';
+        taskButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+        taskButton.style.transition = 'all 0.2s';
+
+        taskButton.onmouseover = function() {
+            this.style.backgroundColor = 'rgba(255, 60, 60, 0.9)';
+            this.style.transform = 'translateY(-2px)';
+        };
+        taskButton.onmouseout = function() {
+            this.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
+            this.style.transform = 'translateY(0)';
+        };
+
+        taskButton.onclick = (function(id) {
+            return function() {
+                var targetApp = document.getElementById(id);
+                if (targetApp && desktopbody.contains(targetApp)) {
+                    desktopbody.removeChild(targetApp);
+                    this.remove();
+                    tasks--;
+                }
             };
-            appbody.appendChild(taskbutt);
-            console.log(taska[i] + " - running");
-        }
+        })(appId);
+
+        appbody.appendChild(taskButton);
     }
-    appbody.appendChild(tasknum);
-    appbody.appendChild(refreshb);
+
+    // If no other apps are open
+    if (appbody.children.length === 1) {
+        var noApps = document.createElement('div');
+        noApps.innerHTML = 'No other applications are currently running.';
+        noApps.style.textAlign = 'center';
+        noApps.style.padding = '50px';
+        noApps.style.fontSize = '18px';
+        noApps.style.color = '#aaa';
+        noApps.style.fontStyle = 'italic';
+        appbody.appendChild(noApps);
+    }
 }
 
 function addAppToStore(appName, repoUrl, appimg) {
@@ -1683,7 +1941,7 @@ function addAppToStore(appName, repoUrl, appimg) {
     appButton.className = 'appicon';
     appButton.style.backgroundImage = 'url(' + appimg + ')';
     appButton.title = appName;
-    appButton.setAttribute('onclick', appName + "(); desktopbody.removeChild(actioncenter);");
+    appButton.setAttribute('onclick', appName + "(); actioncenter.style.display = 'none';");
     appcenter.appendChild(appButton);
 
     // Append the script
@@ -1731,7 +1989,7 @@ function loadSavedApps() {
             appButton.className = 'appicon';
             appButton.style.backgroundImage = 'url(' + appimg + ')';
             appButton.title = appName;
-            appButton.setAttribute('onclick', appName + "(); desktopbody.removeChild(actioncenter);");
+            appButton.setAttribute('onclick', appName + "(); actioncenter.style.display = 'none';");
             appcenter.appendChild(appButton); // Add to the app center
 
             // Append the script to the document

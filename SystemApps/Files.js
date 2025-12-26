@@ -185,7 +185,7 @@ function Files(){
                     currentAudioContent = fileData.content; // Set current audio content globally
                     AudioPlayer(fileData.name); // Open the AudioPlayer (implement this function separately)
                 } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.mov')) {
-                    vidPlay(fileData.name); // Function to play video files
+                    vidPlay(fileData.name, 'videos/' + fileData.name); // Function to play video files
                 } else {
                     alert('File type not supported for playback.'); // Alert for unsupported file types
                 }
