@@ -4,7 +4,7 @@
     See LICENSE file for details.
 */
 bootDesktop();
-var betaosversion = "v1.1.3";
+var betaosversion = "v1.1.4";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
 var savedtheme = localStorage.getItem("theme");
@@ -108,7 +108,10 @@ var changelog = `betaOS Changelog:
     - Shortcuts page removed from settings
     - Desktop icons now generate from top to bottom rather than right to left
     - Windows can't be dragged out of view, they remain within the bounds of your display
-    - BCIT videos in the Nono app are now streamed from PMVHaven`;
+    - BCIT videos in the Nono app are now streamed from PMVHaven
+.betaOS 1.1.4
+    - Settings app and Timer app sizing changed
+    - Bug fixes (ew, bugs)`;
 
 var savedbackground = localStorage.getItem('background');
 
@@ -1875,63 +1878,72 @@ function Tasks(){
     header.style.borderBottom = '2px solid rgba(255,255,255,0.3)';
     appbody.appendChild(header);
 
+    var refreshbutt = document.createElement('button');
+    refreshbutt.innerHTML = 'Refresh';
+    refreshbutt.onclick = function() {refreshTasks()};
+    header.appendChild(refreshbutt);
+
     var apps = document.getElementsByClassName('app');
 
-    for (var i = 0; i < apps.length; i++) {
-        var currentApp = apps[i];
-        var appId = currentApp.id;
+    refreshTasks();
 
-        // Skip the Tasks window itself
-        if (appId === app.id) continue;
+    function refreshTasks(){
+        for (var i = 0; i < apps.length; i++) {
+            var currentApp = apps[i];
+            var appId = currentApp.id;
 
-        var taskButton = document.createElement('button');
-        taskButton.innerHTML = appId + " (click to close app)";
-        taskButton.style.display = 'block';
-        taskButton.style.width = '85%';
-        taskButton.style.margin = '15px auto';
-        taskButton.style.padding = '18px';
-        taskButton.style.fontSize = '18px';
-        taskButton.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
-        taskButton.style.color = 'white';
-        taskButton.style.border = 'none';
-        taskButton.style.borderRadius = '12px';
-        taskButton.style.cursor = 'pointer';
-        taskButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
-        taskButton.style.transition = 'all 0.2s';
+            // Skip the Tasks window itself
+            if (appId === app.id) continue;
 
-        taskButton.onmouseover = function() {
-            this.style.backgroundColor = 'rgba(255, 60, 60, 0.9)';
-            this.style.transform = 'translateY(-2px)';
-        };
-        taskButton.onmouseout = function() {
-            this.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
-            this.style.transform = 'translateY(0)';
-        };
+            var taskButton = document.createElement('button');
+            taskButton.innerHTML = appId + " (click to close app)";
+            taskButton.style.display = 'block';
+            taskButton.style.width = '85%';
+            taskButton.style.margin = '15px auto';
+            taskButton.style.padding = '18px';
+            taskButton.style.fontSize = '18px';
+            taskButton.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
+            taskButton.style.color = 'white';
+            taskButton.style.border = 'none';
+            taskButton.style.borderRadius = '12px';
+            taskButton.style.cursor = 'pointer';
+            taskButton.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+            taskButton.style.transition = 'all 0.2s';
 
-        taskButton.onclick = (function(id) {
-            return function() {
-                var targetApp = document.getElementById(id);
-                if (targetApp && desktopbody.contains(targetApp)) {
-                    desktopbody.removeChild(targetApp);
-                    this.remove();
-                    tasks--;
-                }
+            taskButton.onmouseover = function() {
+                this.style.backgroundColor = 'rgba(255, 60, 60, 0.9)';
+                this.style.transform = 'translateY(-2px)';
             };
-        })(appId);
+            taskButton.onmouseout = function() {
+                this.style.backgroundColor = 'rgba(200, 40, 40, 0.85)';
+                this.style.transform = 'translateY(0)';
+            };
 
-        appbody.appendChild(taskButton);
-    }
+            taskButton.onclick = (function(id) {
+                return function() {
+                    var targetApp = document.getElementById(id);
+                    if (targetApp && desktopbody.contains(targetApp)) {
+                        desktopbody.removeChild(targetApp);
+                        this.remove();
+                        tasks--;
+                    }
+                };
+            })(appId);
 
-    // If no other apps are open
-    if (appbody.children.length === 1) {
-        var noApps = document.createElement('div');
-        noApps.innerHTML = 'No other applications are currently running.';
-        noApps.style.textAlign = 'center';
-        noApps.style.padding = '50px';
-        noApps.style.fontSize = '18px';
-        noApps.style.color = '#aaa';
-        noApps.style.fontStyle = 'italic';
-        appbody.appendChild(noApps);
+            appbody.appendChild(taskButton);
+        }
+
+        // If no other apps are open
+        if (appbody.children.length === 1) {
+            var noApps = document.createElement('div');
+            noApps.innerHTML = 'No other applications are currently running.';
+            noApps.style.textAlign = 'center';
+            noApps.style.padding = '50px';
+            noApps.style.fontSize = '18px';
+            noApps.style.color = '#aaa';
+            noApps.style.fontStyle = 'italic';
+            appbody.appendChild(noApps);
+        }
     }
 }
 

@@ -1143,6 +1143,34 @@ input[type="range"]::-moz-range-thumb {
     }
 }
 
+.settapp {
+    width: 600px; 
+    height: 800px;
+    max-height: calc(100% - 80px);
+    max-width: 100%;
+    min-height: 17.5%;
+    min-width: 17.5%;
+    resize: both;
+    position: absolute;
+    animation: zoomfade; 
+    animation-duration: .5s;
+    z-index: 10;
+    border: 1px solid #d3d3d3;
+    left: calc(50% - 300px);
+    top: calc(50% - 400px);
+    border-radius: 15px;
+    border-style: none;
+    display: inline;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, .2) 0 2.5px 2.5px 2.5px;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: inherit;
+    backdrop-filter: blur(25px);
+}
+
 .app {
     width: 50%; 
     height: 50%;

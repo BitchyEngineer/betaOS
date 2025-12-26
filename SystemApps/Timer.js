@@ -32,7 +32,7 @@ function Timer(){
     close.style.fontFamily = "Arial";
     close.className = "appheadbutt";
     minimize.type = 'image';
-    minimize.title = 'Small';
+    minimize.title = 'Minimize';
     minimize.id = "minimize";
     minimize.className = "appheadbutt";
     appbody.className = 'appbody';
@@ -66,7 +66,7 @@ function Timer(){
     var timing;
     var alarm = new Audio('sounds/analog-watch-alarm_daniel-simion.mp3');
     app.style.width = '300px';
-    app.style.height = '300px';
+    app.style.height = '400px';
     app.style.resize = 'none';
     timesuptext.innerHTML = "TIMES UP!!!";
     timeset.placeholder = "Time(in seconds)";

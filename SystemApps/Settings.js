@@ -23,7 +23,7 @@ function Settings(){
     headbuttdiv.style.cssFloat = 'right';
     appnumber++;
 
-    app.className = 'app';
+    app.className = 'settapp';
     apphead.className = 'appheader';
     appheadtext.className = 'appheadtxt';
     appheadtext.innerText = appsname;
@@ -41,7 +41,7 @@ function Settings(){
     fullscreen.className = "appheadbutt";
 
     minimize.type = 'image';
-    minimize.title = 'Small';
+    minimize.title = 'Minimize';
     minimize.id = "minimize";
     minimize.className = "appheadbutt";
 
@@ -82,21 +82,6 @@ function Settings(){
         }
     };
 
-    // 3. Default window size toggle (small or normal)
-    var defaultSmallWindow = (localStorage.getItem('defaultSmallWindow') === 'true');
-    // Apply default window size right now to this Settings window
-    if (defaultSmallWindow) {
-        app.style.width = '30%';
-        app.style.height = '30%';
-        app.style.top = '35%';
-        app.style.left = '35%';
-    } else {
-        app.style.width = '50%';
-        app.style.height = '50%';
-        app.style.top = '25%';
-        app.style.left = '25%';
-    }
-
     // Fullscreen button now respects default size when exiting fullscreen
     fullscreen.onclick = function () {
         if (isfull == false){
@@ -109,17 +94,10 @@ function Settings(){
             }
             isfull = true;
         } else if (isfull == true){
-            if (defaultSmallWindow) {
-                app.style.width = '30%';
-                app.style.height = '30%';
-                app.style.top = '35%';
-                app.style.left = '35%';
-            } else {
-                app.style.width = '50%';
-                app.style.height = '50%';
-                app.style.top = '25%';
-                app.style.left = '25%';
-            }
+            app.style.width = '600px';
+            app.style.height = '800px';
+            app.style.top = 'calc(50% - 400px)';
+            app.style.left = 'calc(50% - 300px)';
             if(savedtheme){
                 app.style.backgroundColor = localStorage.getItem('theme');
             }
@@ -174,22 +152,6 @@ function Settings(){
     genTitle.innerText = 'General';
     generalsettings.appendChild(genTitle);
 
-    // Confirm close toggle
-    var confirmH2 = document.createElement('h2');
-    confirmH2.innerText = 'Closing Apps';
-    generalsettings.appendChild(confirmH2);
-    var confirmLabel = document.createElement('label');
-    var confirmCheck = document.createElement('input');
-    confirmCheck.type = 'checkbox';
-    confirmCheck.checked = confirmCloseEnabled;
-    confirmCheck.onchange = function() {
-        localStorage.setItem('confirmAppClose', this.checked);
-        confirmCloseEnabled = this.checked;
-    };
-    confirmLabel.appendChild(confirmCheck);
-    confirmLabel.appendChild(document.createTextNode(' Ask for confirmation before closing any app'));
-    generalsettings.appendChild(confirmLabel);
-
     // Error sound toggle
     var soundH2 = document.createElement('h2');
     soundH2.innerText = 'Sound';
@@ -205,23 +167,6 @@ function Settings(){
     soundLabel.appendChild(soundCheck);
     soundLabel.appendChild(document.createTextNode(' Play error sound when something goes wrong'));
     generalsettings.appendChild(soundLabel);
-
-    // Default window size toggle
-    var sizeH2 = document.createElement('h2');
-    sizeH2.innerText = 'New Windows';
-    generalsettings.appendChild(sizeH2);
-    var sizeLabel = document.createElement('label');
-    var sizeCheck = document.createElement('input');
-    sizeCheck.type = 'checkbox';
-    sizeCheck.checked = defaultSmallWindow;
-    sizeCheck.onchange = function() {
-        localStorage.setItem('defaultSmallWindow', this.checked);
-        defaultSmallWindow = this.checked;
-        alert('New windows will open ' + (this.checked ? 'smaller' : 'normal') + ' next time. Current window not affected.');
-    };
-    sizeLabel.appendChild(sizeCheck);
-    sizeLabel.appendChild(document.createTextNode(' Open new apps in smaller window'));
-    generalsettings.appendChild(sizeLabel);
 
     var resetH2 = document.createElement('h2');
     resetH2.innerText = 'System';

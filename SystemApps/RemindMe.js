@@ -37,7 +37,7 @@ function RemindMe(){
     fullscreen.style.textAlign = 'right';
     fullscreen.className = "appheadbutt";
     minimize.type = 'image';
-    minimize.title = 'Small';
+    minimize.title = 'Minimize';
     minimize.id = "minimize";
     minimize.className = "appheadbutt";
     appbody.className = 'appbody';
