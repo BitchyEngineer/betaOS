@@ -104,20 +104,22 @@ h3{
     overflow: hidden;
 }
 
-.vthumb{
-    width: 30%;
-    height: 30%;
-    background-size: cover;
+.vthumb {
+    width: 350px;
+    height: 150px;
     border-radius: 15px;
-    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 30px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 2.5px 2.5px 2.5px;
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 .vthumb:hover{
-    box-shadow: rgba(0, 0, 0, 0.75) 7.5px 7.5px 7.5px;
-    transform: scale(1.25);
+    box-shadow: rgba(0, 0, 0, 0.25) 0 5px 5px 5px; 
+    transform: scale(1.10);
+    border-radius: 25px;
+    backdrop-filter: blur(25px);
 }
 
 .appopt{
@@ -725,6 +727,7 @@ input[type="range"]::-moz-range-thumb {
     width: 90%;
     height: 90%;
     margin: 10px;
+    border-radius: 25px;
 }
 
 .uesricon {
@@ -778,16 +781,16 @@ input[type="range"]::-moz-range-thumb {
     height: 75px;
     border-radius: 15px;
     margin: 10px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0 2.5px 2.5px 2.5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 2.5px 2.5px 2.5px;
     background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
 }
 .backgroundoption:hover{
-    box-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px; 
-    transform: scale(1.25);
-    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 5px 5px 5px; 
+    transform: scale(1.10);
+    border-radius: 25px;
     backdrop-filter: blur(25px);
 }
 
@@ -1333,7 +1336,7 @@ select{
     padding: 14px 16px;
     transition: 0.3s;
     border-radius: 15px;
-    font-size: 40px;
+    font-size: 17px;
     background: rgba(0, 0, 0, 0);
     text-shadow: rgba(0, 0, 0, 0.5) 0 5px 5px 5px;
     color: white;
@@ -1361,6 +1364,18 @@ input[type=image]{
 }
 
 #lockbody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(15px);
+    z-index: 9999;
     animation: slideDownLock 0.6s ease-out forwards;
     transition: transform 0.5s ease-in-out;
 }
@@ -1607,13 +1622,12 @@ button{
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
-  } button:hover {
+} button:hover {
     box-shadow: rgba(0, 0, 0, .5) 0 0 2.5px 2.5px;
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(25px);
     transform: scale(1.10);
     border-radius: 15px;
-  }
-
+}
   
 
 .uploadbutt{
@@ -1621,17 +1635,19 @@ button{
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
+    margin-left: 30px;
+    margin-right: 30px;
     transition: 0.3s;
     border-radius: 15px;
     font-size: 17px;
     background: rgba(0, 0, 0, 0);
     font-family: Arial, Helvetica, sans-serif;
     color: white;
-    text-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+    text-shadow: rgba(0, 0, 0, .5) 0 0 5px 5px;
 } .uploadbutt:hover {
-    box-shadow: rgba(0, 0, 0, .5) 0 5px 5px 5px;
-    transform: scale(1.25);
-    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, .25) 0 0 5px 5px;
+    transform: scale(1.10);
+    border-radius: 25px;
   }
 
 .tab {

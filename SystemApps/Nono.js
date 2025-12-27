@@ -146,7 +146,7 @@ clipsList.className = "ntabcontent";
 // === We keep your original manual array so it actually works ===
 
 var clip = ['AdoredFarawayBabirusa','AmplePrizeEel','AppropriateWearySeaurchin','AshamedStripedSnail',
-            'AuthorizedBlaringFulmar', ''];
+            'AuthorizedBlaringFulmar'];
 // Add new video base names here whenever you add a new .mp4 to the nonoclips folder
 
 // Build the list from the manual array
@@ -155,16 +155,7 @@ for(let i = 0; i < clip.length; i++){
     cthumbnail.className = 'vthumb';
     cthumbnail.id = "thumbnail" + clip[i];
     cthumbnail.title = clip[i];
-    cthumbnail.innerText = clip[i];  // Show the name as text (no thumbnail image)
-    cthumbnail.style.backgroundColor = '#222';
-    cthumbnail.style.color = 'white';
-    cthumbnail.style.border = '1px solid #555';
-    cthumbnail.style.padding = '20px';
-    cthumbnail.style.margin = '10px';
-    cthumbnail.style.fontSize = '16px';
-    cthumbnail.style.minWidth = '200px';
-    cthumbnail.style.textAlign = 'center';
-    cthumbnail.style.cursor = 'pointer';
+    cthumbnail.innerText = clip[i]; 
 
     cthumbnail.onclick = function(){
         vidPlay("nonoclips/" + clip[i] + ".mp4");

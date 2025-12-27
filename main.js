@@ -4,7 +4,7 @@
     See LICENSE file for details.
 */
 bootDesktop();
-var betaosversion = "v1.1.4";
+var betaosversion = "v1.1.5";
 var defaultengine;
 var saveddefault = localStorage.getItem("DefaultEngine");
 var savedtheme = localStorage.getItem("theme");
@@ -111,6 +111,12 @@ var changelog = `betaOS Changelog:
     - BCIT videos in the Nono app are now streamed from PMVHaven
 .betaOS 1.1.4
     - Settings app and Timer app sizing changed
+    - Bug fixes (ew, bugs)
+.betaOS 1.1.5
+    - Tasks app bug fixes
+    - Files app now has a delete button for each file and lists the file's size
+    - Files in the Files app can now be sorted in a few different ways (sorting also applies to searches)
+    - Nono app has been slightly redesigned to make the video thumbnails not overlap
     - Bug fixes (ew, bugs)`;
 
 var savedbackground = localStorage.getItem('background');
@@ -1116,6 +1122,7 @@ var passwordInput = document.createElement('input');
 var signInBtn = document.createElement('button');
 lockbody.id = 'lockbody';
 lockbody.style.display = 'none';
+    timetxt.className = 'timetxt';
 document.body.appendChild(lockbody);
 
 //Sign Out
@@ -1127,6 +1134,14 @@ function signOut(){
     timetxt.style.fontFamily = "Arial";
     timetxt.style.fontSize = '100px';
     timetxt.style.opacity = '50%';
+    if(savedtheme){
+        if(savedtheme === 'rgba(0, 0, 0, 0)'){
+            timetxt.style.color = 'white';
+        } else {
+            timetxt.style.color = savedtheme;
+        }
+        
+    }
     timetxt.style.alignItems = 'center';
     timetxt.style.justifyContent = 'center';
     timetxt.style.display = 'flex';
@@ -1714,7 +1729,7 @@ function vidPlay(vidtitle, vidsrc){
     app.className = 'app';
     apphead.className = 'appheader';
     appheadtext.className = 'appheadtxt';
-    appheadtext.innerText = vidtitle;
+    appheadtext.innerText = appsname + " | " + vidtitle;
     close.type = 'image';
     close.id = "close"
     close.title = 'Close';
@@ -1883,6 +1898,12 @@ function Tasks(){
     refreshbutt.onclick = function() {refreshTasks()};
     header.appendChild(refreshbutt);
 
+    
+    var tasksbody = document.createElement('div');
+    tasksbody.style.height = 'calc(100% - 120px)';
+    tasksbody.style.width = '100%';
+    appbody.appendChild(tasksbody);
+
     var apps = document.getElementsByClassName('app');
 
     refreshTasks();
@@ -1930,19 +1951,19 @@ function Tasks(){
                 };
             })(appId);
 
-            appbody.appendChild(taskButton);
+            tasksbody.appendChild(taskButton);
         }
 
         // If no other apps are open
         if (appbody.children.length === 1) {
-            var noApps = document.createElement('div');
-            noApps.innerHTML = 'No other applications are currently running.';
+            var noApps = document.createElement('h2');
+            noApps.innerText = 'No other applications are currently running.';
             noApps.style.textAlign = 'center';
             noApps.style.padding = '50px';
             noApps.style.fontSize = '18px';
             noApps.style.color = '#aaa';
             noApps.style.fontStyle = 'italic';
-            appbody.appendChild(noApps);
+            tasksbody.appendChild(noApps);
         }
     }
 }

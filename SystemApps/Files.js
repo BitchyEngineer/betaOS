@@ -12,7 +12,7 @@ function Files(){
     var appnumber = Math.random();
     var appsname = 'Files';
     app.scroll = false;
-    appbody.scroll = true;
+    appbody.scroll = false;
     tasks++;
     app.onerror = function(){errorsound.play();};
     headtextdiv.style.textAlign = 'left';
@@ -64,17 +64,17 @@ function Files(){
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
-            app.style.height = 'calc(100% - 80px)'; 
-            app.style.top = '0px'; 
+            app.style.height = 'calc(100% - 80px)';
+            app.style.top = '0px';
             app.style.left = '0%';
             if(savedtheme){
                 app.style.backgroundColor = localStorage.getItem('theme');
             }
             isfull = true;
         } else if (isfull == true){
-            app.style.width = '50%'; 
+            app.style.width = '50%';
             app.style.height = '50%';
-            app.style.top = '25%'; 
+            app.style.top = '25%';
             app.style.left = '25%';
             isfull = false;
             if(savedtheme){
@@ -83,136 +83,264 @@ function Files(){
         }
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
-    
+
     var fileInput = document.createElement('input');
     var uploadButton = document.createElement('button');
     var searchInput = document.createElement('input');
     var fileList = document.createElement('div');
+    fileList.style.overflowY = 'auto';
+
+    // Upload row (unchanged - stays exactly as before)
+    fileInput.type = 'file';
+    fileInput.className = 'uploadbutt';
+    uploadButton.innerText = 'Upload File';
+    uploadButton.className = 'uploadbutt';
+
+    // Search + Sort row - search bar first, then sort options next to it
+    var searchSortContainer = document.createElement('div');
+    searchSortContainer.style.display = 'flex';
+    searchSortContainer.style.justifyContent = 'flex-start';
+    searchSortContainer.style.alignItems = 'center';
+    searchSortContainer.style.gap = '15px';
+    searchSortContainer.style.margin = '10px 20px';
+
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Search Files...';
+    // Keep the original size (no forced width - it will take available space naturally)
+
+    var sortLabel = document.createElement('span');
+    sortLabel.innerText = 'Sort by:';
+    sortLabel.style.color = '#aaa';
+    sortLabel.style.whiteSpace = 'nowrap';
+
+    var sortSelect = document.createElement('select');
+    sortSelect.innerHTML = `
+        <option value="name-asc">Name (A → Z)</option>
+        <option value="name-desc">Name (Z → A)</option>
+        <option value="size-asc">Size (Smallest first)</option>
+        <option value="size-desc">Size (Largest first)</option>
+        <option value="type-asc">Type (Audio → Video)</option>
+        <option value="type-desc">Type (Video → Audio)</option>
+    `;
+    sortSelect.selectedIndex = 0;
+
+    // Order: search bar → sort label → sort dropdown
+    searchSortContainer.appendChild(searchInput);
+    searchSortContainer.appendChild(sortLabel);
+    searchSortContainer.appendChild(sortSelect);
 
     // Initialize IndexedDB
     var db;
-    var request = indexedDB.open("FileStorage", 3); // Incremented version to 2
+    var request = indexedDB.open("FileStorage", 3);
     request.onupgradeneeded = function(event) {
         db = event.target.result;
-
         if (!db.objectStoreNames.contains("videos")) {
-            db.createObjectStore("videos", { keyPath: "name" }); // Create object store if it doesn't exist
+            db.createObjectStore("videos", { keyPath: "name" });
         }
     };
-
     request.onsuccess = function(event) {
         db = event.target.result;
-        displayFiles(); // Display files if any
 
-        // Set up file input and buttons inside `onsuccess`
-        fileInput.type = 'file';
-        fileInput.className = 'uploadbutt';
-        fileInput.text = 'Choose a file';
-        uploadButton.innerText = 'Upload File';
-        searchInput.type = 'text';
-        searchInput.placeholder = 'Search Files...';
-
-        // Append elements to app body
+        // Append in original order
         appbody.appendChild(fileInput);
         appbody.appendChild(uploadButton);
-        appbody.appendChild(searchInput);
+        appbody.appendChild(searchSortContainer);
         appbody.appendChild(fileList);
 
-        // Upload file handler
-        // Notify the user where the file will be saved
+        // Helper functions
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            var k = 1024;
+            var sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            var i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
 
+        function getFileType(name) {
+            if (name.endsWith('.mp3') || name.endsWith('.wav') || name.endsWith('.ogg')) {
+                return 'Audio';
+            } else if (name.endsWith('.mp4') || name.endsWith('.avi') || name.endsWith('.mov')) {
+                return 'Video';
+            } else {
+                return 'Unknown';
+            }
+        }
+
+        function getTypeSortValue(name) {
+            return getFileType(name) === 'Audio' ? 0 : 1;
+        }
+
+        // Upload handler
         uploadButton.onclick = function() {
             var file = fileInput.files[0];
             if (!file) { alert('Please select a file to upload.'); return; }
-
             var isVideo = file.name.endsWith('.mp4') || file.name.endsWith('.avi') || file.name.endsWith('.mov');
             var isAudio = file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.ogg');
             if (!(isVideo || isAudio)) { alert('The uploaded file is not an audio or video file.'); return; }
-
             var reader = new FileReader();
             reader.onload = function(event) {
+                var arrayBuffer = event.target.result;
                 var transaction = db.transaction(["videos"], "readwrite");
                 var store = transaction.objectStore("videos");
-                store.put({ name: file.name, content: event.target.result });
-
-                var blob = new Blob([event.target.result], { type: file.type || 'application/octet-stream' });
+                store.put({ name: file.name, content: arrayBuffer, size: file.size });
+                var blob = new Blob([arrayBuffer], { type: file.type || 'application/octet-stream' });
                 var url = URL.createObjectURL(blob);
-
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = file.name; // download hint (Safari uses its setting to decide dialog)
+                a.download = file.name;
                 a.style.display = 'none';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-
                 alert(`Your ${isVideo ? 'video' : 'audio'} is ready. Please save it into the "betaOS/videos" folder.`);
                 displayFiles();
                 fileInput.value = '';
             };
             reader.readAsArrayBuffer(file);
         };
-        // Display uploaded files
+
         function displayFiles() {
-            var transaction = db.transaction(["videos"]); // Use "videos" store
+            var transaction = db.transaction(["videos"]);
             var store = transaction.objectStore("videos");
             var request = store.getAll();
-
             request.onsuccess = function(event) {
                 var files = event.target.result;
-                fileList.innerHTML = ''; // Clear previous entries
-                files.forEach(createFileButton); // Create a button for each file
+
+                var sortMode = sortSelect.value;
+                files.sort(function(a, b) {
+                    var sizeA = a.size || (a.content ? a.content.byteLength : 0);
+                    var sizeB = b.size || (b.content ? b.content.byteLength : 0);
+                    var typeA = getTypeSortValue(a.name);
+                    var typeB = getTypeSortValue(b.name);
+
+                    switch(sortMode) {
+                        case 'name-asc': return a.name.localeCompare(b.name);
+                        case 'name-desc': return b.name.localeCompare(a.name);
+                        case 'size-asc': return sizeA - sizeB;
+                        case 'size-desc': return sizeB - sizeA;
+                        case 'type-asc': return typeA - typeB || a.name.localeCompare(b.name);
+                        case 'type-desc': return typeB - typeA || a.name.localeCompare(b.name);
+                        default: return 0;
+                    }
+                });
+
+                fileList.innerHTML = '';
+                files.forEach(createFileEntry);
             };
         }
 
-        function createFileButton(fileData) {
-            var fileButton = document.createElement('button');
-            fileButton.className = 'backgroundoption'; 
-            fileButton.innerText = fileData.name;
-            fileButton.style.width = '400px';
-            fileButton.style.height = '60px';
+        function createFileEntry(fileData) {
+            var entryDiv = document.createElement('div');
+            entryDiv.style.marginBottom = '8px';
+            entryDiv.style.display = 'flex';
+            entryDiv.style.alignItems = 'center';
+            entryDiv.style.justifyContent = 'space-between';
 
+            var fileButton = document.createElement('button');
+            fileButton.className = 'backgroundoption';
+            fileButton.innerText = fileData.name;
+            fileButton.style.width = '45%';
+            fileButton.style.marginRight = '10px';
+            fileButton.style.marginLeft = '50px';
             if(fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')){
                 fileButton.style.backgroundColor = 'rgba(0,255,0,0.25)';
             } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.avi') || fileData.name.endsWith('.mov')) {
                 fileButton.style.backgroundColor = 'rgba(255, 0, 0, 0.25)';
             }
-
-            // Determine file type and set behavior
             fileButton.onclick = function() {
                 if (fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')) {
-                    currentAudioContent = fileData.content; // Set current audio content globally
-                    AudioPlayer(fileData.name); // Open the AudioPlayer (implement this function separately)
+                    currentAudioContent = fileData.content;
+                    AudioPlayer(fileData.name);
                 } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.mov')) {
-                    vidPlay(fileData.name, 'videos/' + fileData.name); // Function to play video files
+                    vidPlay(fileData.name, 'videos/' + fileData.name);
                 } else {
-                    alert('File type not supported for playback.'); // Alert for unsupported file types
+                    alert('File type not supported for playback.');
                 }
             };
-                
-            fileList.appendChild(fileButton);
+
+            var typeSpan = document.createElement('span');
+            typeSpan.innerText = getFileType(fileData.name);
+            typeSpan.style.color = '#aaa';
+            typeSpan.style.marginRight = '30px';
+            typeSpan.style.minWidth = '80px';
+            typeSpan.style.textAlign = 'center';
+
+            var sizeSpan = document.createElement('span');
+            var size = fileData.size || (fileData.content ? fileData.content.byteLength : 0);
+            sizeSpan.innerText = formatFileSize(size);
+            sizeSpan.style.color = '#aaa';
+            sizeSpan.style.marginRight = '30px';
+            sizeSpan.style.minWidth = '100px';
+            sizeSpan.style.textAlign = 'right';
+
+            var deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.style.backgroundColor = '#ff4444';
+            deleteButton.style.color = 'white';
+            deleteButton.style.border = 'none';
+            deleteButton.style.padding = '8px 12px';
+            deleteButton.style.cursor = 'pointer';
+            deleteButton.style.marginRight = '30px';
+            deleteButton.onclick = function(e) {
+                e.stopPropagation();
+                if (confirm('Are you sure you want to delete "' + fileData.name + '"?')) {
+                    var transaction = db.transaction(["videos"], "readwrite");
+                    var store = transaction.objectStore("videos");
+                    store.delete(fileData.name);
+                    transaction.oncomplete = function() {
+                        displayFiles();
+                    };
+                }
+            };
+
+            entryDiv.appendChild(fileButton);
+            entryDiv.appendChild(typeSpan);
+            entryDiv.appendChild(sizeSpan);
+            entryDiv.appendChild(deleteButton);
+            fileList.appendChild(entryDiv);
         }
 
-        // Search file handler
+        // Initial display
+        displayFiles();
+
+        // Re-sort on change
+        sortSelect.addEventListener('change', displayFiles);
+
+        // Search with sorting
         searchInput.addEventListener('input', function() {
             var query = searchInput.value.toLowerCase();
-            var transaction = db.transaction(["videos"]); // Use "videos" store
+            var transaction = db.transaction(["videos"]);
             var store = transaction.objectStore("videos");
             var request = store.getAll();
-
             request.onsuccess = function(event) {
-                var files = event.target.result;
-                fileList.innerHTML = ''; // Clear previous search results
-                files.forEach(function(fileData) {
-                    if (fileData.name.toLowerCase().includes(query)) {
-                        createFileButton(fileData); // Create button for matching files
+                var files = event.target.result.filter(function(fileData) {
+                    return fileData.name.toLowerCase().includes(query);
+                });
+
+                var sortMode = sortSelect.value;
+                files.sort(function(a, b) {
+                    var sizeA = a.size || (a.content ? a.content.byteLength : 0);
+                    var sizeB = b.size || (b.content ? b.content.byteLength : 0);
+                    var typeA = getTypeSortValue(a.name);
+                    var typeB = getTypeSortValue(b.name);
+
+                    switch(sortMode) {
+                        case 'name-asc': return a.name.localeCompare(b.name);
+                        case 'name-desc': return b.name.localeCompare(a.name);
+                        case 'size-asc': return sizeA - sizeB;
+                        case 'size-desc': return sizeB - sizeA;
+                        case 'type-asc': return typeA - typeB || a.name.localeCompare(b.name);
+                        case 'type-desc': return typeB - typeA || a.name.localeCompare(b.name);
+                        default: return 0;
                     }
                 });
+
+                fileList.innerHTML = '';
+                files.forEach(createFileEntry);
             };
         });
     };
-
     request.onerror = function(event) {
         console.error("Error opening IndexedDB:", event.target.error);
     };

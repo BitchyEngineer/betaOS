@@ -69,10 +69,6 @@ function Settings(){
     dragWindow(document.getElementById(app.id));
     app.onclick = function () {bringToFront(app.id)};
 
-    // === REAL, IMMEDIATELY WORKING SETTINGS (all affect behavior right now) ===
-    // 1. Confirm before closing apps
-    var confirmCloseEnabled = (localStorage.getItem('confirmAppClose') !== 'false');
-
     // 2. Error sound on/off
     var errorSoundEnabled = (localStorage.getItem('errorSoundEnabled') !== 'false');
     // Apply error sound setting immediately
@@ -104,18 +100,9 @@ function Settings(){
             isfull = false;
         }
     };
-
-    // Close button with confirm
     close.onclick = function () {
-        if (confirmCloseEnabled) {
-            if (confirm("Close Settings?")) {
-                desktopbody.removeChild(app);
-                tasks--;
-            }
-        } else {
-            desktopbody.removeChild(app);
-            tasks--;
-        }
+        desktopbody.removeChild(app);
+        tasks--;
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
@@ -498,6 +485,7 @@ function Settings(){
             document.getElementById('menu').style.backgroundColor = this.style.backgroundColor;
             document.getElementById('notificon').style.backgroundColor = this.style.backgroundColor;
             document.getElementById('datetime').style.backgroundColor = this.style.backgroundColor;
+            document.getElementById('timetxt').style.backgroundColor = this.style.backgroundColor;
             localStorage.setItem('theme', this.style.backgroundColor);
         };
         themeContainer.appendChild(tchoice);
