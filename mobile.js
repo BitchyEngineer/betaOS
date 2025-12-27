@@ -645,7 +645,7 @@ var currentTasks = 0;
 var tasks = 0;
 var numTasks = document.getElementById('numtasks');
 
-var currentAudioContent = ''; // Global variable to hold the audio data
+var currentAudioName = ''; // Tracks the audio file name selected in Files
 
 
 function vidPlay(vidtitle){
@@ -698,14 +698,91 @@ function vidPlay(vidtitle){
     apphead.id = app.id + "header";
     app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
-    close.onclick = function () { mobilebody.removeChild(app); tasks--;};
+    var vidplayer = document.createElement('video');
+    var statusDisplay = document.createElement('div');
+    var videoObjectUrl = null;
 
-    var vidplayer = document.createElement("video");
-    vidplayer.className = "vidplay";
-    vidplayer.src = "videos/" + vidtitle;
+    vidplayer.className = 'vidplay';
     vidplayer.controls = true;
+    statusDisplay.style.color = '#ccc';
+    statusDisplay.style.margin = '8px 0';
+    statusDisplay.innerText = 'Loading from FileStorage...';
+
     appheadtext.innerHTML = vidtitle;
+    appbody.appendChild(statusDisplay);
     appbody.appendChild(vidplayer);
+
+    function guessVideoMime(name) {
+        if (name.endsWith('.mp4')) return 'video/mp4';
+        if (name.endsWith('.mov')) return 'video/quicktime';
+        if (name.endsWith('.avi')) return 'video/x-msvideo';
+        return 'application/octet-stream';
+    }
+
+    function loadVideoFromIndexedDB() {
+        return new Promise(function(resolve, reject) {
+            var request = indexedDB.open('FileStorage', 3);
+
+            request.onupgradeneeded = function(event) {
+                var db = event.target.result;
+                if (!db.objectStoreNames.contains('videos')) {
+                    db.createObjectStore('videos', { keyPath: 'name' });
+                }
+            };
+
+            request.onerror = function(event) {
+                reject(event.target.error || new Error('Could not open FileStorage'));
+            };
+
+            request.onsuccess = function(event) {
+                var db = event.target.result;
+                var tx = db.transaction(['videos'], 'readonly');
+                var store = tx.objectStore('videos');
+                var getRequest = store.get(vidtitle);
+
+                getRequest.onerror = function(ev) {
+                    reject(ev.target.error || new Error('Unable to read file'));
+                };
+
+                getRequest.onsuccess = function(ev) {
+                    var fileData = ev.target.result;
+                    if (fileData && fileData.content) {
+                        var blob = new Blob([fileData.content], { type: guessVideoMime(vidtitle) });
+                        resolve(URL.createObjectURL(blob));
+                    } else {
+                        reject(new Error('File not found in FileStorage'));
+                    }
+                };
+            };
+        });
+    }
+
+    function setVideoSource() {
+        loadVideoFromIndexedDB()
+            .then(function(url) {
+                if (videoObjectUrl) {
+                    URL.revokeObjectURL(videoObjectUrl);
+                }
+                videoObjectUrl = url;
+                vidplayer.src = url;
+                statusDisplay.innerText = '';
+            })
+            .catch(function(err) {
+                console.error('Unable to load video from FileStorage:', err);
+                statusDisplay.innerText = 'Video not found in FileStorage.';
+            });
+    }
+
+    setVideoSource();
+
+    close.onclick = function () {
+        if (videoObjectUrl) {
+            URL.revokeObjectURL(videoObjectUrl);
+        }
+        mobilebody.removeChild(app);
+        tasks--;
+    };
+
     bringToFront(app.id);
 }
 
@@ -1085,12 +1162,12 @@ function mobileApp(appsname){
                 // Determine file type and set behavior
                 fileButton.onclick = function() {
                     if (fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')) {
-                        currentAudioContent = fileData.content; // Set current audio content globally
-                        mobileApp("AudioPlayer"); // Open the AudioPlayer (implement this function separately)
+                        currentAudioName = fileData.name;
+                        mobileApp("AudioPlayer");
                     } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.mov')) {
-                        vidPlay(fileData.name); // Function to play video files
+                        vidPlay(fileData.name);
                     } else {
-                        alert('File type not supported for playback.'); // Alert for unsupported file types
+                        alert('File type not supported for playback.');
                     }
                 };
                 
@@ -1123,50 +1200,93 @@ function mobileApp(appsname){
         var audioPlayer = document.createElement('audio');
         var playButton = document.createElement('button');
         var stopButton = document.createElement('button');
-        var fileNameDisplay = document.createElement('div'); // Element to display the audio filename
+        var fileNameDisplay = document.createElement('div');
+        var statusDisplay = document.createElement('div');
+        var audioObjectUrl = null;
 
-        // Set up playback buttons
-        fileNameDisplay.innerText = 'Not Playing';
+        fileNameDisplay.innerText = currentAudioName || 'Not Playing';
+        statusDisplay.style.color = '#ccc';
+        statusDisplay.style.marginBottom = '6px';
         playButton.innerText = 'Play';
         stopButton.innerText = 'Stop';
 
-        // Append elements to app body
-        appbody.appendChild(fileNameDisplay); // Append filename display first
+        appbody.appendChild(fileNameDisplay);
+        appbody.appendChild(statusDisplay);
         appbody.appendChild(audioPlayer);
         appbody.appendChild(playButton);
         appbody.appendChild(stopButton);
 
-        // Function to handle playing the audio
-        playButton.onclick = function() {
-            if (currentAudioContent) {
-                audioPlayer.src = currentAudioContent; // Set the source to the global variable
-                
-                // Get the filename
-                let fileName;
-                if (typeof currentAudioContent === 'string') {
-                    // If it's a URL or string path
-                    fileName = currentAudioContent.split('/').pop();
-                } else if (currentAudioContent instanceof File) {
-                    // If currentAudioContent is a File object
-                    fileName = currentAudioContent.name;
-                } else {
-                    fileName = 'Unknown file'; // Default fallback
+        function guessAudioMime(name) {
+            if (name.endsWith('.mp3')) return 'audio/mpeg';
+            if (name.endsWith('.wav')) return 'audio/wav';
+            if (name.endsWith('.ogg')) return 'audio/ogg';
+            return 'application/octet-stream';
+        }
+
+        function loadAudioFromIndexedDB(fileName) {
+            return new Promise(function(resolve, reject) {
+                var request = indexedDB.open('FileStorage', 3);
+
+                request.onupgradeneeded = function(event) {
+                    var db = event.target.result;
+                    if (!db.objectStoreNames.contains('videos')) {
+                        db.createObjectStore('videos', { keyPath: 'name' });
+                    }
+                };
+
+                request.onerror = function(event) {
+                    reject(event.target.error || new Error('Could not open FileStorage'));
+                };
+
+                request.onsuccess = function(event) {
+                    var db = event.target.result;
+                    var tx = db.transaction(['videos'], 'readonly');
+                    var store = tx.objectStore('videos');
+                    var getRequest = store.get(fileName);
+
+                    getRequest.onerror = function(ev) {
+                        reject(ev.target.error || new Error('Unable to read file'));
+                    };
+
+                    getRequest.onsuccess = function(ev) {
+                        var fileData = ev.target.result;
+                        if (fileData && fileData.content) {
+                            var blob = new Blob([fileData.content], { type: guessAudioMime(fileName) });
+                            resolve(URL.createObjectURL(blob));
+                        } else {
+                            reject(new Error('File not found in FileStorage'));
+                        }
+                    };
+                };
+            });
+        }
+
+        playButton.onclick = async function() {
+            if (!currentAudioName) {
+                alert('No audio file selected. Choose one in Files first.');
+                return;
+            }
+
+            try {
+                var url = await loadAudioFromIndexedDB(currentAudioName);
+                if (audioObjectUrl) {
+                    URL.revokeObjectURL(audioObjectUrl);
                 }
-                
-                fileNameDisplay.innerText = fileName; // Display the filename
-                audioPlayer.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                });
-            } else {
-                alert('No audio file selected.');
+                audioObjectUrl = url;
+                audioPlayer.src = url;
+                fileNameDisplay.innerText = currentAudioName;
+                statusDisplay.innerText = '';
+                await audioPlayer.play();
+            } catch (err) {
+                console.error('Error playing audio from FileStorage:', err);
+                statusDisplay.innerText = 'Unable to load from FileStorage.';
+                alert('Unable to play that audio. Upload it through Files first.');
             }
         };
 
-        // Stop audio button handler
         stopButton.onclick = function() {
             audioPlayer.pause();
-            audioPlayer.currentTime = 0; // Reset to the start
-            fileNameDisplay.innerText = ''; // Clear the displayed filename
+            audioPlayer.currentTime = 0;
         };
     } else if (appsname === "Settings") {
         var tab = document.createElement('div');

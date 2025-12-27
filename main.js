@@ -1593,7 +1593,13 @@ function AudioPlayer(audio){
     dragWindow(document.getElementById(app.id));
     app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
-    close.onclick = function () { desktopbody.removeChild(app); tasks--;};
+    close.onclick = function () {
+        if (audioObjectUrl) {
+            URL.revokeObjectURL(audioObjectUrl);
+        }
+        desktopbody.removeChild(app);
+        tasks--;
+    };
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
@@ -1654,18 +1660,70 @@ function AudioPlayer(audio){
     appbody.appendChild(seekBar);
     appbody.appendChild(timeDisplay);
 
-    var currentAudioContent = "videos/" + audio;
+    var currentAudioName = audio;
+    var audioObjectUrl = null;
 
-    // FULLY WORKING CONTROLS – FIXED
-    function loadAudio() {
-        audioPlayer.src = currentAudioContent;
-        let fileName = currentAudioContent.split('/').pop();
-        fileNameDisplay.innerText = fileName;
+    function guessAudioMime(name) {
+        if (name.endsWith('.mp3')) return 'audio/mpeg';
+        if (name.endsWith('.wav')) return 'audio/wav';
+        if (name.endsWith('.ogg')) return 'audio/ogg';
+        return 'application/octet-stream';
     }
 
-    playButton.onclick = function() {
-        if (!audioPlayer.src) loadAudio();
-        audioPlayer.play();
+    function loadAudioFromIndexedDB() {
+        return new Promise(function(resolve, reject) {
+            var request = indexedDB.open('FileStorage', 3);
+
+            request.onupgradeneeded = function(event) {
+                var db = event.target.result;
+                if (!db.objectStoreNames.contains('videos')) {
+                    db.createObjectStore('videos', { keyPath: 'name' });
+                }
+            };
+
+            request.onerror = function(event) {
+                reject(event.target.error || new Error('Could not open FileStorage database'));
+            };
+
+            request.onsuccess = function(event) {
+                var db = event.target.result;
+                var tx = db.transaction(['videos'], 'readonly');
+                var store = tx.objectStore('videos');
+                var getRequest = store.get(currentAudioName);
+
+                getRequest.onerror = function(ev) {
+                    reject(ev.target.error || new Error('Unable to read file'));
+                };
+
+                getRequest.onsuccess = function(ev) {
+                    var fileData = ev.target.result;
+                    if (fileData && fileData.content) {
+                        if (audioObjectUrl) {
+                            URL.revokeObjectURL(audioObjectUrl);
+                        }
+                        var blob = new Blob([fileData.content], { type: guessAudioMime(currentAudioName) });
+                        audioObjectUrl = URL.createObjectURL(blob);
+                        audioPlayer.src = audioObjectUrl;
+                        fileNameDisplay.innerText = fileData.name || currentAudioName;
+                        resolve();
+                    } else {
+                        reject(new Error('File not found in FileStorage'));
+                    }
+                };
+            };
+        });
+    }
+
+    playButton.onclick = async function() {
+        try {
+            if (!audioPlayer.src) {
+                await loadAudioFromIndexedDB();
+            }
+            await audioPlayer.play();
+        } catch (err) {
+            console.error('Unable to play audio from FileStorage:', err);
+            alert('Unable to load audio from your Files app. Make sure the file exists in FileStorage.');
+        }
     };
 
     pauseButton.onclick = function() {
@@ -1764,7 +1822,6 @@ function vidPlay(vidtitle, vidsrc){
     dragWindow(document.getElementById(app.id));
     app.onload = bringToFront(app.id);
     app.onclick = function () {bringToFront(app.id)};
-    close.onclick = function () { desktopbody.removeChild(app); tasks--;};
     fullscreen.onclick = function () {
         if (isfull == false){
             app.style.width = '100%';
@@ -1788,12 +1845,94 @@ function vidPlay(vidtitle, vidsrc){
     };
     minimize.onclick = function () {minimizer(appsname + "(" + appnumber + ")")};
 
-    var vidplayer = document.createElement("video");
-    vidplayer.className = "vidplay";
-    vidplayer.src = vidsrc;
+    var vidplayer = document.createElement('video');
+    var videoObjectUrl = null;
+    var statusText = document.createElement('div');
+
+    vidplayer.className = 'vidplay';
     vidplayer.controls = true;
+    statusText.style.color = '#ccc';
+    statusText.style.margin = '8px 0';
+    statusText.innerText = 'Loading from FileStorage...';
+
     appheadtext.innerHTML = vidtitle;
+    appbody.appendChild(statusText);
     appbody.appendChild(vidplayer);
+
+    function guessVideoMime(name) {
+        if (name.endsWith('.mp4')) return 'video/mp4';
+        if (name.endsWith('.mov')) return 'video/quicktime';
+        if (name.endsWith('.avi')) return 'video/x-msvideo';
+        return 'application/octet-stream';
+    }
+
+    function loadVideoFromIndexedDB() {
+        return new Promise(function(resolve, reject) {
+            var request = indexedDB.open('FileStorage', 3);
+
+            request.onupgradeneeded = function(event) {
+                var db = event.target.result;
+                if (!db.objectStoreNames.contains('videos')) {
+                    db.createObjectStore('videos', { keyPath: 'name' });
+                }
+            };
+
+            request.onerror = function(event) {
+                reject(event.target.error || new Error('Could not open FileStorage database'));
+            };
+
+            request.onsuccess = function(event) {
+                var db = event.target.result;
+                var tx = db.transaction(['videos'], 'readonly');
+                var store = tx.objectStore('videos');
+                var getRequest = store.get(vidtitle);
+
+                getRequest.onerror = function(ev) {
+                    reject(ev.target.error || new Error('Unable to read file'));
+                };
+
+                getRequest.onsuccess = function(ev) {
+                    var fileData = ev.target.result;
+                    if (fileData && fileData.content) {
+                        if (videoObjectUrl) {
+                            URL.revokeObjectURL(videoObjectUrl);
+                        }
+                        var blob = new Blob([fileData.content], { type: guessVideoMime(vidtitle) });
+                        videoObjectUrl = URL.createObjectURL(blob);
+                        resolve(videoObjectUrl);
+                    } else {
+                        reject(new Error('File not found in FileStorage'));
+                    }
+                };
+            };
+        });
+    }
+
+    function setVideoSource() {
+        loadVideoFromIndexedDB()
+            .then(function(url) {
+                vidplayer.src = url;
+                statusText.innerText = '';
+            })
+            .catch(function(err) {
+                console.error('Unable to load video from FileStorage:', err);
+                statusText.innerText = 'Video not found in FileStorage.';
+                if (vidsrc) {
+                    vidplayer.src = vidsrc;
+                    statusText.innerText += ' Falling back to provided source.';
+                }
+            });
+    }
+
+    setVideoSource();
+
+    close.onclick = function () {
+        if (videoObjectUrl) {
+            URL.revokeObjectURL(videoObjectUrl);
+        }
+        desktopbody.removeChild(app);
+        tasks--;
+    };
 }
 
 function Tasks(){

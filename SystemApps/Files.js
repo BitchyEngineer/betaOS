@@ -250,10 +250,9 @@ function Files(){
             }
             fileButton.onclick = function() {
                 if (fileData.name.endsWith('.mp3') || fileData.name.endsWith('.wav') || fileData.name.endsWith('.ogg')) {
-                    currentAudioContent = fileData.content;
                     AudioPlayer(fileData.name);
                 } else if (fileData.name.endsWith('.mp4') || fileData.name.endsWith('.mov')) {
-                    vidPlay(fileData.name, 'videos/' + fileData.name);
+                    vidPlay(fileData.name);
                 } else {
                     alert('File type not supported for playback.');
                 }
