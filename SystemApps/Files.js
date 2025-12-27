@@ -183,18 +183,6 @@ function Files(){
                 var transaction = db.transaction(["videos"], "readwrite");
                 var store = transaction.objectStore("videos");
                 store.put({ name: file.name, content: arrayBuffer, size: file.size });
-                var blob = new Blob([arrayBuffer], { type: file.type || 'application/octet-stream' });
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = file.name;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                alert(`Your ${isVideo ? 'video' : 'audio'} is ready. Please save it into the "betaOS/videos" folder.`);
-                displayFiles();
                 fileInput.value = '';
             };
             reader.readAsArrayBuffer(file);
